@@ -436,6 +436,18 @@ git push origin dev
 **Do not remove the `POST /api/test` route just yet. You will be using it much
 later when setting up your frontend.**
 
+```js
+// backend/routes/api/index.js
+// ...
+
+// Keep this route to test frontend setup in Mod 5
+router.post('/test', function (req, res) {
+  res.json({ requestBody: req.body });
+});
+
+// ...
+```
+
 ### Refactor to add `firstName` and `lastName` attributes
 
 Now, try to refactor your code to add this simple change.
