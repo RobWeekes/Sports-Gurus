@@ -8,6 +8,8 @@ const csurf = require('csurf');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 
+const routes = require('./routes');
+
 // Create a variable called isProduction that will be true if the environment is in production or not by checking the environment key in the configuration file (backend/config/index.js):
 
 const { environment } = require('./config');
@@ -40,7 +42,7 @@ app.use(
   })
 ); // allow images with URLs to render in deployment
 
-// Set the _csrf token and create req.csrfToken method
+// Set the _csrf token and create req.csrfToken method *
 app.use(
   csurf({
     cookie: {
@@ -51,4 +53,12 @@ app.use(
   })
 );
 
-// The csurf middleware will add a _csrf cookie that is HTTP-only (can't be read by JavaScript) to any server response. It also adds a method on all requests (req.csrfToken) that will be set to another cookie (XSRF-TOKEN) later on. These two cookies work together to provide CSRF (Cross-Site Request Forgery) protection for your application. The XSRF-TOKEN cookie value needs to be sent in the header of any request with all HTTP verbs besides GET. This header will be used to validate the _csrf cookie to confirm that the request comes from your site and not an unauthorized site.
+// connect the exported router to app after all the middlewares:
+app.use(routes); // Connect all the routes
+
+
+
+
+module.exports = app;
+
+// * The csurf middleware will add a _csrf cookie that is HTTP-only (can't be read by JavaScript) to any server response. It also adds a method on all requests (req.csrfToken) that will be set to another cookie (XSRF-TOKEN) later on. These two cookies work together to provide CSRF (Cross-Site Request Forgery) protection for your application. The XSRF-TOKEN cookie value needs to be sent in the header of any request with all HTTP verbs besides GET. This header will be used to validate the _csrf cookie to confirm that the request comes from your site and not an unauthorized site.
