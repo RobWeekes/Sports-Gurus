@@ -1,4 +1,4 @@
-# `Authenticate Me Backend Project`
+# `Sports Gurus Capstone Project`
 
 ## Database Schema Design
 
