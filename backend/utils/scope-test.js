@@ -1,6 +1,6 @@
 const { Sequelize, DataTypes } = require('sequelize');
-const config = require('../../config');
-const UserModel = require('../../db/models/user');
+const config = require('../config');
+const UserModel = require('../db/models/user');
 
 // Create a new Sequelize instance
 const sequelize = new Sequelize({
@@ -18,7 +18,7 @@ const TestUser = UserModel(sequelize, DataTypes);
 // For testing "all fields" query, enable "withAllFields" scope in user model file. Otherwise: SequelizeScopeError: Invalid scope...
 
 // run this command in /backend:
-// node db/models/scope-test.js
+// node utils/scope-test.js
 
 
 
@@ -29,8 +29,8 @@ async function testScope() {
     console.log("Default scope:", JSON.stringify(users, null, 2));
 
     // This will include all fields
-    const usersWithAllFields = await TestUser.scope('withAllFields').findAll();
-    console.log("All fields:", JSON.stringify(usersWithAllFields, null, 2));
+    // const usersWithAllFields = await TestUser.scope('withAllFields').findAll();
+    // console.log("All fields:", JSON.stringify(usersWithAllFields, null, 2));
   } catch (error) {
     console.error("Error:", error);
   } finally {

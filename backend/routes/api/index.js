@@ -1,13 +1,57 @@
 // backend/routes/api/index.js
 
 const router = require('express').Router();
+const { setTokenCookie } = require('../../utils/auth.js');
+const { User } = require('../../db/models');
 
-// All the URLs of the routes in the api router will be prefixed with /api
+const { restoreUser } = require('../../utils/auth.js');
+const { requireAuth } = require('../../utils/auth.js');
 
-// test route
-router.post('/test', function (req, res) {
-  res.json({ requestBody: req.body });
-});
+// All the URLs of routes in the api router will be prefixed with /api
+
+
+// connect 'restoreUser' to the router before any other middleware or route handlers are connected. If current user session is valid, set req.user to the user in the database
+router.use(restoreUser);
+
+
+// // ***************************** // //
+// // RESTORE TEST ROUTES IF NEEDED // //
+
+// // test 'restoreUser' middleware & see if the req.user key has been populated by the middleware
+// // GET /api/restore-user
+// router.get('/restore-user', (req, res) => {
+//   return res.json(req.user);
+// });   // response = demo user info as JSON. Then, remove the token cookie in your browser DevTools & refresh. response = empty/null
+
+
+// // test 'requireAuth' middleware: this represents any auth route
+// // GET /api/require-auth
+// router.get('/require-auth', requireAuth, (req, res) => {
+//   return res.json(req.user);
+// });   // If there is no session user, return an error. To test:
+// // delete token in browser DevTools & refresh: "Auth. required"
+// // Otherwise response = session user info. Restore: /set-token-cookie
+
+
+// // test the setTokenCookie function with a demo user
+// // GET /api/set-token-cookie
+// router.get('/set-token-cookie', async (_req, res) => {
+//   const user = await User.findOne({
+//     where: { username: 'Demo-lition' }
+//   });
+//   setTokenCookie(res, user);
+//   return res.json({ user: user });
+// });   // should see a token cookie in browser DevTools
+
+
+// // test route req.body
+// // POST /api/test
+// router.post('/test', function (req, res) {
+//   res.json({ requestBody: req.body });
+// });
+
+// // RESTORE TEST ROUTES IF NEEDED // //
+// // ***************************** // //
 
 
 

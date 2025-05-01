@@ -1,7 +1,5 @@
 'use strict';
 
-// const { Op } = require('sequelize');
-// const { User } = require('../models');
 const bcrypt = require('bcryptjs');
 
 // define your schema in options object
@@ -19,7 +17,7 @@ module.exports = {
         firstName: 'Dude',
         lastName: 'Bro',
         email: 'demo@user.io',
-        userName: 'Demolition',
+        userName: 'Demo-lition',
         hashedPassword: bcrypt.hashSync('password')
       },
       {
