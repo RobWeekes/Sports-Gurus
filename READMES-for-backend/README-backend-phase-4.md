@@ -134,11 +134,12 @@ successfully logged in:
 // ...
 
 // Log in
+// POST /api/session
 router.post(
   '/',
   async (req, res, next) => {
     const { credential, password } = req.body;
-
+    // unscoped method is needed to bypass default scope (-email -pw) during login query
     const user = await User.unscoped().findOne({
       where: {
         [Op.or]: {

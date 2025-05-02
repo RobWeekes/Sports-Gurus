@@ -85,6 +85,11 @@ module.exports = (sequelize, DataTypes) => {
           if (Validator.isEmail(value)) {
             throw new Error("Cannot be an email.");
           }
+        },
+        hasNoSpaces(value) {
+          for (const char of value) {
+            if (char === ' ') throw new Error('Special characters allowed, except no spaces.');
+          }
         }
       }
     },
@@ -101,8 +106,8 @@ module.exports = (sequelize, DataTypes) => {
     defaultScope: {
       attributes: {
         exclude: ["hashedPassword", "email", "createdAt", "updatedAt"]
-      },
-    },
+      }
+    }
     // scopes: {
     //   withAllFields: {
     //     attributes: {
