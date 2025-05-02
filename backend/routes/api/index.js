@@ -1,17 +1,41 @@
 // backend/routes/api/index.js
 
 const router = require('express').Router();
+const sessionRouter = require('./session.js');
+const usersRouter = require('./users.js');
+
+// imports used for session/authorization functions:
+const { restoreUser } = require('../../utils/auth.js');
 const { setTokenCookie } = require('../../utils/auth.js');
 const { User } = require('../../db/models');
-
-const { restoreUser } = require('../../utils/auth.js');
 const { requireAuth } = require('../../utils/auth.js');
 
 // All the URLs of routes in the api router will be prefixed with /api
 
-
 // connect 'restoreUser' to the router before any other middleware or route handlers are connected. If current user session is valid, set req.user to the user in the database
 router.use(restoreUser);
+
+router.use('/session', sessionRouter);
+
+router.use('/users', usersRouter);
+
+router.post('/test', (req, res) => {
+  res.json({ requestBody: req.body });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // // ***************************** // //
@@ -50,14 +74,6 @@ router.use(restoreUser);
 //   res.json({ requestBody: req.body });
 // });
 
-// // RESTORE TEST ROUTES IF NEEDED // //
-// // ***************************** // //
-
-
-
-module.exports = router;
-
-
 
 // Example fetch request:
 
@@ -69,3 +85,10 @@ module.exports = router;
 //   },
 //   body: JSON.stringify({ hello: 'world' })
 // }).then(res => res.json()).then(data => console.log(data));
+
+// // RESTORE TEST ROUTES IF NEEDED // //
+// // ***************************** // //
+
+
+
+module.exports = router;
