@@ -8,6 +8,7 @@ const { User } = require('../../db/models');
 const bcrypt = require('bcryptjs');
 
 // Log In
+// POST /api/session
 router.post('/', async (req, res, next) => {
   const { credential, password } = req.body;
 
@@ -43,7 +44,16 @@ router.post('/', async (req, res, next) => {
   });
 });
 
-// test the login route in browser console:
+
+// Log Out
+// DEL /api/session
+router.delete('/', (_req, res) => {
+  res.clearCookie('token');
+  return res.json({ message: 'success' });
+})
+
+
+// to test the login route use Postman or browser console:
 // add XSRF & comment out code before running fetch command
 
 // fetch('/api/session', {
@@ -55,6 +65,18 @@ router.post('/', async (req, res, next) => {
 //   body: JSON.stringify({ credential: 'Demo-lition', password: 'password' })
 // }).then(res => res.json()).then(data => console.log(data));
 
+
+// to test the log out route:
+
+// fetch('/api/session', {
+//   method: 'DELETE',
+//   headers: {
+//     "Content-Type": "application/json",
+//     "XSRF-TOKEN": `<value of XSRF-TOKEN cookie>`
+//   }
+// }).then(res => res.json()).then(data => console.log(data));
+
+// You should see the token cookie disappear from the list of cookies in your browser's DevTools. If you don't have the XSRF-TOKEN cookie anymore, use the /api/csrf/restore route to add the cookie back.
 
 
 
