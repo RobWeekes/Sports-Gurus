@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-// import { Sequelize, DataTypes } from 'sequelize';
-const { Model, Validator } = require('sequelize');
+// import { Sequelize, DataTypes } from "sequelize";
+const { Model, Validator } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -15,8 +15,28 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [2, 30],
-        isAlpha: true
+        len: [2, 40],
+        isAllowedSpecialChars(value) {
+          const charCounts = { '-': 0, '.': 0, "'": 0, ' ': 0 };
+          const limits = { '-': 2, '.': 2, "'": 1, ' ': 2 };
+          const errorMessages = {
+            '-': "Limit 2 hyphens.",
+            '.': "Limit 2 periods.",
+            "'": "Limit 1 apostrophe.",
+            ' ': "Limit 2 spaces."
+          };
+
+          for (const char of value) {
+            if (charCounts[char] !== undefined) {
+              charCounts[char]++;
+              if (charCounts[char] > limits[char]) {
+                throw new Error(errorMessages[char]);
+              }
+            } else if (!/[a-zA-Z]/.test(char)) {
+              throw new Error("Must use alpha characters ( - . ' & spaces allowed).");
+            }
+          }
+        }
       }
     },
     lastName: {
@@ -24,15 +44,26 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         len: [2, 40],
-        isAlphaHyphen(value) {
-          let hyphen = 0;
-          for (const char of value) {
-            if (char === '-') hyphen++;
-            if (hyphen > 2) throw new Error('Limit 2 hyphens.')
-            if (!/[a-zA-Z]/.test(char) && char !== '-') {
-              throw new Error('Must use alpha characters. Hyphens allowed.')
-            }
+        isAllowedSpecialChars(value) {
+          const charCounts = { '-': 0, '.': 0, "'": 0, ' ': 0 };
+          const limits = { '-': 2, '.': 2, "'": 1, ' ': 2 };
+          const errorMessages = {
+            '-': "Limit 2 hyphens.",
+            '.': "Limit 2 periods.",
+            "'": "Limit 1 apostrophe.",
+            ' ': "Limit 2 spaces."
           };
+
+          for (const char of value) {
+            if (charCounts[char] !== undefined) {
+              charCounts[char]++;
+              if (charCounts[char] > limits[char]) {
+                throw new Error(errorMessages[char]);
+              }
+            } else if (!/[a-zA-Z]/.test(char)) {
+              throw new Error("Must use alpha characters ( - . ' & spaces allowed).");
+            }
+          }
         }
       }
     },
@@ -52,7 +83,7 @@ module.exports = (sequelize, DataTypes) => {
         len: [4, 30],
         isNotEmail(value) {
           if (Validator.isEmail(value)) {
-            throw new Error('Cannot be an email.');
+            throw new Error("Cannot be an email.");
           }
         }
       }
@@ -66,16 +97,16 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     sequelize,
-    modelName: 'User',
+    modelName: "User",
     defaultScope: {
       attributes: {
-        exclude: ['hashedPassword', 'email', 'createdAt', 'updatedAt']
+        exclude: ["hashedPassword", "email", "createdAt", "updatedAt"]
       },
     },
     // scopes: {
     //   withAllFields: {
     //     attributes: {
-    //       exclude: ['hashedPassword']
+    //       exclude: ["hashedPassword"]
     //     }
     //   }
     // }
