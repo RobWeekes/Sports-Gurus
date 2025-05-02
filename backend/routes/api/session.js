@@ -2,7 +2,7 @@
 
 const express = require('express');
 const { Op } = require('sequelize');
-const { setTokenCookie } = require('../../utils/auth');
+const { setTokenCookie, restoreUser } = require('../../utils/auth');
 const router = express.Router();
 const { User } = require('../../db/models');
 const bcrypt = require('bcryptjs');
@@ -50,6 +50,25 @@ router.post('/', async (req, res, next) => {
 router.delete('/', (_req, res) => {
   res.clearCookie('token');
   return res.json({ message: 'success' });
+})
+
+
+// Get Current User
+// GET /api/session
+router.get('/', (req, res) => {
+  const { user } = req;
+  if (user) {
+    const safeUser = {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      userName: user.userName,
+    };
+    return res.json({
+      user: safeUser
+    });
+  } else return res.json({ user: null });
 })
 
 
