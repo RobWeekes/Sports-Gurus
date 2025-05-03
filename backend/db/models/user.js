@@ -3,6 +3,30 @@
 // import { Sequelize, DataTypes } from "sequelize";
 const { Model, Validator } = require("sequelize");
 
+
+// helper function for name validation
+function validateNameCharacters (value) {
+  const charCounts = { '-': 0, '.': 0, "'": 0, ' ': 0 };
+  const limits = { '-': 2, '.': 2, "'": 1, ' ': 2 };
+  const errorMessages = {
+    '-': "Limit 2 hyphens.",
+    '.': "Limit 2 periods.",
+    "'": "Limit 1 apostrophe.",
+    ' ': "Limit 2 spaces."
+  };
+
+  for (const char of value) {
+    if (charCounts[char] !== undefined) {
+      charCounts[char]++;
+      if (charCounts[char] > limits[char]) {
+        throw new Error(errorMessages[char]);
+      }
+    } else if (!/[a-zA-Z]/.test(char)) {
+      throw new Error("Must use alpha characters (- . ' and spaces allowed)");
+    }
+  }
+};
+
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
@@ -17,25 +41,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         len: [2, 40],
         isAllowedSpecialChars(value) {
-          const charCounts = { '-': 0, '.': 0, "'": 0, ' ': 0 };
-          const limits = { '-': 2, '.': 2, "'": 1, ' ': 2 };
-          const errorMessages = {
-            '-': "Limit 2 hyphens.",
-            '.': "Limit 2 periods.",
-            "'": "Limit 1 apostrophe.",
-            ' ': "Limit 2 spaces."
-          };
-
-          for (const char of value) {
-            if (charCounts[char] !== undefined) {
-              charCounts[char]++;
-              if (charCounts[char] > limits[char]) {
-                throw new Error(errorMessages[char]);
-              }
-            } else if (!/[a-zA-Z]/.test(char)) {
-              throw new Error("Must use alpha characters ( - . ' & spaces allowed).");
-            }
-          }
+          validateNameCharacters(value);
         }
       }
     },
@@ -45,25 +51,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         len: [2, 40],
         isAllowedSpecialChars(value) {
-          const charCounts = { '-': 0, '.': 0, "'": 0, ' ': 0 };
-          const limits = { '-': 2, '.': 2, "'": 1, ' ': 2 };
-          const errorMessages = {
-            '-': "Limit 2 hyphens.",
-            '.': "Limit 2 periods.",
-            "'": "Limit 1 apostrophe.",
-            ' ': "Limit 2 spaces."
-          };
-
-          for (const char of value) {
-            if (charCounts[char] !== undefined) {
-              charCounts[char]++;
-              if (charCounts[char] > limits[char]) {
-                throw new Error(errorMessages[char]);
-              }
-            } else if (!/[a-zA-Z]/.test(char)) {
-              throw new Error("Must use alpha characters ( - . ' & spaces allowed).");
-            }
-          }
+          validateNameCharacters(value);
         }
       }
     },
