@@ -1,15 +1,33 @@
 // backend/routes/api/session.js
 
 const express = require('express');
-const { Op } = require('sequelize');
-const { setTokenCookie, restoreUser } = require('../../utils/auth');
 const router = express.Router();
+const { Op } = require('sequelize');
+// Session authenticators
+const { setTokenCookie, restoreUser } = require('../../utils/auth');
 const { User } = require('../../db/models');
 const bcrypt = require('bcryptjs');
+// Validating login request body
+const { check } = require('express-validator');
+const { handleValidationErrors } = require('../../utils/validation');
+
+
+// 'validateLogin' middleware will check for request body keys (credential: userName/email, pasword: ) and validate them (not empty)
+const validateLogin = [
+  check('credential')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage('Please provide a valid email or username.'),
+  check('password')
+    .exists({ checkFalsy: true })
+    .withMessage('Please provide a password.'),
+  handleValidationErrors
+];
+
 
 // Log In
 // POST /api/session
-router.post('/', async (req, res, next) => {
+router.post('/', validateLogin, async (req, res, next) => {
   const { credential, password } = req.body;
 
   const user = await User.unscoped().findOne({
@@ -21,7 +39,9 @@ router.post('/', async (req, res, next) => {
     }
   });
 
-  if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
+  if (!user || !bcrypt.compareSync(
+    password, user.hashedPassword.toString()
+  )) {
     const err = new Error('Login failed');
     err.status = 401;
     err.title = 'Login failed';
@@ -79,7 +99,7 @@ router.get('/', (req, res) => {
 //   method: 'POST',
 //   headers: {
 //     "Content-Type": "application/json",
-//     "XSRF-TOKEN": `eXHiYa7w-Yj2Z1mdSZFYM9_-cbUHFPgTXBbI`
+//     "XSRF-TOKEN": `<value of XSRF-TOKEN cookie>`
 //   },
 //   body: JSON.stringify({ credential: 'Demo-lition', password: 'password' })
 // }).then(res => res.json()).then(data => console.log(data));
