@@ -5,7 +5,7 @@ const { Model, Validator } = require("sequelize");
 
 
 // helper function for name validation
-function validateNameCharacters (value) {
+function validateNameCharacters(value) {
   const charCounts = { '-': 0, '.': 0, "'": 0, ' ': 0 };
   const limits = { '-': 2, '.': 2, "'": 1, ' ': 2 };
   const errorMessages = {
@@ -91,6 +91,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: "User",
+    tableName: "users",
     defaultScope: {
       attributes: {
         exclude: ["hashedPassword", "email", "createdAt", "updatedAt"]

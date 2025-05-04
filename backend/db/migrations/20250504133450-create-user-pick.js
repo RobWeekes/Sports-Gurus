@@ -1,6 +1,6 @@
 'use strict';
 
-// define the schema name for Postgres production database in options object
+// define production schema in options object
 let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;
@@ -9,33 +9,31 @@ if (process.env.NODE_ENV === 'production') {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('users', {
+    await queryInterface.createTable('userpicks', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type:  Sequelize.INTEGER
+        type: Sequelize.INTEGER
       },
-      firstName: {
-        allowNull: false,
-        type: Sequelize.STRING(30)
+      user_id: {
+        type: Sequelize.INTEGER
       },
-      lastName: {
+      pagename: {
         allowNull: false,
         type: Sequelize.STRING(40)
       },
-      email: {
-        allowNull: false,
-        unique: true,
+      sport_league: {
         type: Sequelize.STRING(40)
       },
-      userName: {
-        unique: true,
-        type: Sequelize.STRING(30)
+      predicted_winning_team: {
+        type: Sequelize.STRING(40)
       },
-      hashedPassword: {
-        allowNull: false,
-        type: Sequelize.STRING.BINARY
+      predicted_losing_team: {
+        type: Sequelize.STRING(40)
+      },
+      win_type: {
+        type: Sequelize.STRING(20)
       },
       createdAt: {
         allowNull: false,
@@ -50,7 +48,7 @@ module.exports = {
     }, options);
   },
   async down(queryInterface, Sequelize) {
-    options.tableName = 'users';
+    options.tableName = 'userpicks';
     return queryInterface.dropTable(options);
   }
 };

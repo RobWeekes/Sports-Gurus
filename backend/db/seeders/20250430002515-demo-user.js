@@ -2,7 +2,7 @@
 
 const bcrypt = require('bcryptjs');
 
-// define your schema in options object
+// define production schema in options object
 let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;
@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === 'production') {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    options.tableName = 'Users';
+    options.tableName = 'users';
     return queryInterface.bulkInsert(options, [
       {
         firstName: 'Dude',
@@ -38,7 +38,7 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    options.tableName = 'Users';
+    options.tableName = 'users';
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
       email: { [Op.in]: ['demo@user.io', 'user1@user.io', 'user2@user.io'] }
