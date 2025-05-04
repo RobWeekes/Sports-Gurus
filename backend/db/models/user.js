@@ -40,8 +40,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         len: [2, 40],
-        isAllowedSpecialChars(value) {
-          validateNameCharacters(value);
+        isAllowedSpecialChars(name) {
+          validateNameCharacters(name);
         }
       }
     },
@@ -50,8 +50,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         len: [2, 40],
-        isAllowedSpecialChars(value) {
-          validateNameCharacters(value);
+        isAllowedSpecialChars(name) {
+          validateNameCharacters(name);
         }
       }
     },
