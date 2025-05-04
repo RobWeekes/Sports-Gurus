@@ -26,18 +26,6 @@ router.post('/test', (req, res) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 // // ***************************** // //
 // // RESTORE TEST ROUTES IF NEEDED // //
 
@@ -68,11 +56,20 @@ router.post('/test', (req, res) => {
 // });   // should see a token cookie in browser DevTools
 
 
-// // test route req.body
-// // POST /api/test
-// router.post('/test', function (req, res) {
-//   res.json({ requestBody: req.body });
-// });
+// test route req.body
+// POST /api/test
+router.post('/test', function (req, res) {
+  res.json({ requestBody: req.body });
+});
+
+
+// // RESTORE TEST ROUTES IF NEEDED // //
+// // ***************************** // //
+
+
+
+module.exports = router;
+
 
 
 // Example fetch request:
@@ -85,10 +82,3 @@ router.post('/test', (req, res) => {
 //   },
 //   body: JSON.stringify({ hello: 'world' })
 // }).then(res => res.json()).then(data => console.log(data));
-
-// // RESTORE TEST ROUTES IF NEEDED // //
-// // ***************************** // //
-
-
-
-module.exports = router;
