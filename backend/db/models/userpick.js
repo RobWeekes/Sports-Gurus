@@ -11,10 +11,19 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'user_id'
       });
 
-      // // UserPick belongs to a ScheduledGame
-      // UserPick.belongsTo(models.ScheduledGame, {
-      //   foreignKey: 'game_id'
-      // });
+      // UserPick belongs to a UserPickPage
+      UserPick.belongsTo(models.UserPickPage, {
+        foreignKey: 'page_id'
+      });
+
+      // UserPick belongs to a ScheduledGame
+      UserPick.belongsTo(models.ScheduledGame, {
+        foreignKey: 'game_id'
+      });
+
+
+
+      // I THINK THESE ARE OBSOLETE \/ 'pagename' is now userpicks.page_id
 
       // // UserPick has many Subscriptions through pagename
       // UserPick.hasMany(models.Subscription, {
@@ -43,8 +52,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    pagename: {
-      type: DataTypes.STRING(40),
+    page_id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     game_id: {
@@ -56,27 +65,18 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     prediction: {
-      type: DataTypes.STRING(20),
+      type: DataTypes.STRING(30),
       allowNull: false,
     },
     result: {
       type: DataTypes.STRING(4),
-      defaultValue: 'TBD',
       allowNull: false,
+      defaultValue: 'TBD',
     }
   }, {
     sequelize,
     modelName: 'UserPick',
     tableName: "userpicks",
-    // maintain data integrity: a user cannot create multiple prediction pages with the same name
-    indexes: [
-      {
-        unique: true,
-        fields: ['user_id', 'pagename'],
-        name: 'unique_user_pagename'
-      }
-    ]
   });
-
   return UserPick;
 };

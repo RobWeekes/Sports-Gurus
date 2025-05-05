@@ -9,52 +9,51 @@ if (process.env.NODE_ENV === 'production') {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('userpicks', {
+    await queryInterface.createTable('userpickpages', {
       id: {
         type: Sequelize.INTEGER,
-        autoIncrement: true,
         primaryKey: true,
+        autoIncrement: true,
         allowNull: false,
       },
       user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: 'users',
+          key: 'id'
+        },
+        onDelete: 'CASCADE'
       },
       pagename: {
         type: Sequelize.STRING(40),
-        allowNull: false,
-      },
-      game_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
-      prediction_type: {
-        type: Sequelize.STRING(12),
-        allowNull: false,
-      },
-      prediction: {
-        type: Sequelize.STRING(30),
-        allowNull: false,
-      },
-      result: {
-        type: Sequelize.STRING(4),
-        defaultValue: Sequelize.literal('TBD'),
-        allowNull: false,
+        allowNull: false
       },
       createdAt: {
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
       updatedAt: {
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       }
     }, options);
+
+    // Add unique constraint - combination user_id and pagename is unique
+    await queryInterface.addConstraint('userpickpages', {
+      fields: ['user_id', 'pagename'],
+      type: 'unique',
+      name: 'unique_user_pagename'
+    }, options);
   },
+
   async down(queryInterface, Sequelize) {
-    options.tableName = 'userpicks';
+    options.tableName = 'userpickpages';
+    // Remove the constraint first
+    await queryInterface.removeConstraint('userpickpages', 'unique_user_pagename', options);
+    // Then drop the table
     return queryInterface.dropTable(options);
   }
 };
