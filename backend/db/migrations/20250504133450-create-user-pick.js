@@ -52,9 +52,20 @@ module.exports = {
         allowNull: false,
       }
     }, options);
+
+    // Add unique constraint for user_id and pagename combination
+    await queryInterface.addConstraint('userpicks', {
+      fields: ['user_id', 'pagename'],
+      type: 'unique',
+      name: 'unique_user_pagename'
+    }, options);
   },
+
   async down(queryInterface, Sequelize) {
     options.tableName = 'userpicks';
+    // Remove the constraint first
+    await queryInterface.removeConstraint('userpicks', 'unique_user_pagename', options);
+    // Then drop the table
     return queryInterface.dropTable(options);
   }
 };

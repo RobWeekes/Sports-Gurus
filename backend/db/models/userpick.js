@@ -68,6 +68,15 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'UserPick',
     tableName: "userpicks",
+    // maintain data integrity: a user cannot create multiple prediction pages with the same name
+    indexes: [
+      {
+        unique: true,
+        fields: ['user_id', 'pagename'],
+        name: 'unique_user_pagename'
+      }
+    ]
   });
+
   return UserPick;
 };
