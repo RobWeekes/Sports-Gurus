@@ -16,10 +16,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'page_id'
       });
 
-      // UserPick belongs to a ScheduledGame
-      UserPick.belongsTo(models.ScheduledGame, {
-        foreignKey: 'game_id'
-      });
+      // // UserPick belongs to a ScheduledGame
+      // UserPick.belongsTo(models.ScheduledGame, {
+      //   foreignKey: 'game_id'
+      // });
 
 
 

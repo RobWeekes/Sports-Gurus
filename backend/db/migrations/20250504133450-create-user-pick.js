@@ -20,8 +20,8 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      pagename: {
-        type: Sequelize.STRING(40),
+      page_id: {
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
       game_id: {
