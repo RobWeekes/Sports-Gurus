@@ -6,13 +6,13 @@ const { Model, Validator } = require("sequelize");
 
 // helper function for name validation
 function validateNameCharacters(value) {
-  const charCounts = { '-': 0, '.': 0, "'": 0, ' ': 0 };
-  const limits = { '-': 2, '.': 2, "'": 1, ' ': 2 };
+  const charCounts = { "-": 0, ".": 0, "'": 0, " ": 0 };
+  const limits = { "-": 2, ".": 2, "'": 1, " ": 2 };
   const errorMessages = {
-    '-': "Limit 2 hyphens.",
-    '.': "Limit 2 periods.",
+    "-": "Limit 2 hyphens.",
+    ".": "Limit 2 periods.",
     "'": "Limit 1 apostrophe.",
-    ' ': "Limit 2 spaces."
+    " ": "Limit 2 spaces."
   };
 
   for (const char of value) {
@@ -30,7 +30,52 @@ function validateNameCharacters(value) {
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
-      // define association here
+      // User has many UserPicks
+      User.hasMany(models.UserPick, {
+        foreignKey: 'user_id',
+        onDelete: 'CASCADE',
+        hooks: true
+      });
+
+      // // Other associations for User model
+      // User.hasOne(models.UserProfile, {
+      //   foreignKey: 'user_id',
+      //   onDelete: 'CASCADE',
+      //   hooks: true
+      // });
+
+      // User.hasMany(models.Comment, {
+      //   foreignKey: 'user_id',
+      //   onDelete: 'CASCADE',
+      //   hooks: true
+      // });
+
+      // User.hasMany(models.Post, {
+      //   foreignKey: 'user_id',
+      //   onDelete: 'CASCADE',
+      //   hooks: true
+      // });
+
+      // User.hasMany(models.Subscription, {
+      //   foreignKey: 'user_id',
+      //   onDelete: 'CASCADE',
+      //   hooks: true
+      // });
+
+      // // For followers relationship (self-referential)
+      // User.belongsToMany(models.User, {
+      //   through: models.Follower,
+      //   as: 'Followers',
+      //   foreignKey: 'follows_user_id',
+      //   otherKey: 'user_id'
+      // });
+
+      // User.belongsToMany(models.User, {
+      //   through: models.Follower,
+      //   as: 'Following',
+      //   foreignKey: 'user_id',
+      //   otherKey: 'follows_user_id'
+      // });
     }
   }
 
@@ -76,7 +121,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         hasNoSpaces(value) {
           for (const char of value) {
-            if (char === ' ') throw new Error('Special characters allowed, except no spaces.');
+            if (char === " ") throw new Error("Special characters allowed, except no spaces.");
           }
         }
       }

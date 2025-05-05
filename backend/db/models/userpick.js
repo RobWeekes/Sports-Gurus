@@ -1,25 +1,69 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+
+const { Model, Validator } = require("sequelize");
+
+
 module.exports = (sequelize, DataTypes) => {
   class UserPick extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // define association here
+      // UserPick belongs to a User
+      UserPick.belongsTo(models.User, {
+        foreignKey: 'user_id'
+      });
+
+      // // UserPick belongs to a ScheduledGame
+      // UserPick.belongsTo(models.ScheduledGame, {
+      //   foreignKey: 'game_id'
+      // });
+
+      // // UserPick has many Subscriptions through pagename
+      // UserPick.hasMany(models.Subscription, {
+      //   foreignKey: 'user_picks_pagename',
+      //   sourceKey: 'pagename',
+      //   constraints: false
+      // });
+
+      // // UserPick has many Comments through pagename
+      // UserPick.hasMany(models.Comment, {
+      //   foreignKey: 'user_picks_pagename',
+      //   sourceKey: 'pagename',
+      //   constraints: false
+      // });
+
+      // // UserPick has many Posts through pagename
+      // UserPick.hasMany(models.Post, {
+      //   foreignKey: 'user_picks_pagename',
+      //   sourceKey: 'pagename',
+      //   constraints: false
+      // });
     }
   }
   UserPick.init({
-    user_id: DataTypes.INTEGER,
-    pagename: DataTypes.STRING,
-    sport_league: DataTypes.STRING,
-    predicted_winning_team: DataTypes.STRING,
-    predicted_losing_team: DataTypes.STRING,
-    win_type: DataTypes.STRING
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    pagename: {
+      type: DataTypes.STRING(40),
+      allowNull: false,
+    },
+    game_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    prediction_type: {
+      type: DataTypes.STRING(12),
+      allowNull: false,
+    },
+    prediction: {
+      type: DataTypes.STRING(20),
+      allowNull: false,
+    },
+    result: {
+      type: DataTypes.STRING(4),
+      defaultValue: 'TBD',
+      allowNull: false,
+    }
   }, {
     sequelize,
     modelName: 'UserPick',

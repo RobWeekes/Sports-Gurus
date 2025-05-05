@@ -11,39 +11,45 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('userpicks', {
       id: {
-        allowNull: false,
+        type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        allowNull: false,
       },
       user_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false,
       },
       pagename: {
+        type: Sequelize.STRING(40),
         allowNull: false,
-        type: Sequelize.STRING(40)
       },
-      sport_league: {
-        type: Sequelize.STRING(40)
+      game_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
       },
-      predicted_winning_team: {
-        type: Sequelize.STRING(40)
+      prediction_type: {
+        type: Sequelize.STRING(12),
+        allowNull: false,
       },
-      predicted_losing_team: {
-        type: Sequelize.STRING(40)
+      prediction: {
+        type: Sequelize.STRING(20),
+        allowNull: false,
       },
-      win_type: {
-        type: Sequelize.STRING(20)
+      result: {
+        type: Sequelize.STRING(4),
+        defaultValue: Sequelize.literal('TBD'),
+        allowNull: false,
       },
       createdAt: {
-        allowNull: false,
+        type: Sequelize.DATE,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
-        type: Sequelize.DATE
+        allowNull: false,
       },
       updatedAt: {
-        allowNull: false,
+        type: Sequelize.DATE,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
-        type: Sequelize.DATE
+        allowNull: false,
       }
     }, options);
   },
