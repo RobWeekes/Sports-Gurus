@@ -17,27 +17,39 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'CASCADE'
       });
 
-      // UserPickPage has many Subscriptions through pagename
-      UserPickPage.hasMany(models.Subscription, {
-        foreignKey: 'userpickpages_name',
-        sourceKey: 'pagename',
-        constraints: false
-      });  // sourceKey: 'pagename' - for a relationship based on the pagename column rather than the primary key
-      // constraints: false - no formal foreign key constraint - for relationships connecting tables through a non-primary key field
+      // // UserPickPage has many Subscriptions through pagename
+      // UserPickPage.hasMany(models.Subscription, {
+      //   foreignKey: 'userpickpages_name',
+      //   sourceKey: 'pagename',
+      //   constraints: false
+      // });  // sourceKey: 'pagename' - for a relationship based on the pagename column rather than the primary key
+      // // constraints: false - no formal foreign key constraint - for relationships connecting tables through a non-primary key field
 
-      // UserPickPage has many Comments through pagename
-      UserPickPage.hasMany(models.Comment, {
-        foreignKey: 'userpickpages_name',
-        sourceKey: 'pagename',
-        constraints: false
-      });
+      // // UserPickPage has many Comments through pagename
+      // UserPickPage.hasMany(models.Comment, {
+      //   foreignKey: 'userpickpages_name',
+      //   sourceKey: 'pagename',
+      //   constraints: false
+      // });
 
-      // UserPickPage has many Posts through pagename
-      UserPickPage.hasMany(models.Post, {
-        foreignKey: 'userpickpages_name',
-        sourceKey: 'pagename',
-        constraints: false
-      });
+      // // UserPickPage has many Posts through pagename
+      // UserPickPage.hasMany(models.Post, {
+      //   foreignKey: 'userpickpages_name',
+      //   sourceKey: 'pagename',
+      //   constraints: false
+      // });
+
+
+      // // Make sure that the Subscription, Comment, and Post models are properly defined and that they have the corresponding belongsTo relationships back to the UserPickPage model. For example:
+
+      // // In Subscription model
+      // Subscription.belongsTo(models.UserPickPage, {
+      //   foreignKey: 'userpickpages_name',
+      //     targetKey: 'pagename',
+      //     constraints: false
+      // });
+
+      // // Similar for Comment and Post models
 
     }
   }
@@ -66,5 +78,6 @@ module.exports = (sequelize, DataTypes) => {
       }
     ]
   });
+
   return UserPickPage;
 };
