@@ -17,7 +17,7 @@ module.exports = {
         user_id: 1,
         page_id: 1,
         game_id: 1,
-        prediction_type: "point spread",
+        predictionType: "point spread",
         prediction: "Philadelphia covers spread",
         result: "TBD"
       },
@@ -25,7 +25,7 @@ module.exports = {
         user_id: 1,
         page_id: 2,
         game_id: 2,
-        prediction_type: "over/under",
+        predictionType: "over/under",
         prediction: "total points: over",
         result: "TBD"
       },
@@ -33,7 +33,7 @@ module.exports = {
         user_id: 2,
         page_id: 3,
         game_id: 3,
-        prediction_type: "point spread",
+        predictionType: "point spread",
         prediction: "Detroit covers spread",
         result: "TBD"
       },
@@ -41,7 +41,7 @@ module.exports = {
         user_id: 1,
         page_id: 4,
         game_id: 4,
-        prediction_type: "over/under",
+        predictionType: "over/under",
         prediction: "total points: under",
         result: "TBD"
       },
@@ -49,7 +49,7 @@ module.exports = {
         user_id: 1,
         page_id: 5,
         game_id: 5,
-        prediction_type: "point spread",
+        predictionType: "point spread",
         prediction: "Atlanta covers spread",
         result: "TBD"
       },

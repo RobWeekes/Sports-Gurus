@@ -30,6 +30,7 @@ function validateNameCharacters(value) {
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
+
       // User has many UserPickPages
       User.hasMany(models.UserPickPage, {
         foreignKey: 'user_id',

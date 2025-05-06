@@ -13,23 +13,23 @@ module.exports = {
     return queryInterface.bulkInsert(options, [
       {
         user_id: 1,
-        pagename: "Rob's Basketball Picks",
+        pageName: "Rob's Basketball Picks",
       },
       {
         user_id: 1,
-        pagename: "Rob's Soccer Dojo",
+        pageName: "Rob's Soccer Dojo",
       },
       {
         user_id: 2,
-        pagename: "Dustin's NFL Picks",
+        pageName: "Dustin's NFL Picks",
       },
       {
         user_id: 1,
-        pagename: "Rob's Football Picks",
+        pageName: "Rob's Football Picks",
       },
       {
         user_id: 1,
-        pagename: "Rob's Baseball Page",
+        pageName: "Rob's Baseball Page",
       },
     ], { validate: true });
   },

@@ -6,6 +6,7 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class UserPickPage extends Model {
     static associate(models) {
+
       // UserPickPage belongs to a User
       UserPickPage.belongsTo(models.User, {
         foreignKey: 'user_id'
@@ -17,25 +18,25 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'CASCADE'
       });
 
-      // // UserPickPage has many Subscriptions through pagename
+      // // UserPickPage has many Subscriptions through pageName
       // UserPickPage.hasMany(models.Subscription, {
       //   foreignKey: 'userpickpages_name',
-      //   sourceKey: 'pagename',
+      //   sourceKey: 'pageName',
       //   constraints: false
-      // });  // sourceKey: 'pagename' - for a relationship based on the pagename column rather than the primary key
+      // });  // sourceKey: 'pageName' - for a relationship based on the pageName column rather than the primary key
       // // constraints: false - no formal foreign key constraint - for relationships connecting tables through a non-primary key field
 
-      // // UserPickPage has many Comments through pagename
+      // // UserPickPage has many Comments through pageName
       // UserPickPage.hasMany(models.Comment, {
       //   foreignKey: 'userpickpages_name',
-      //   sourceKey: 'pagename',
+      //   sourceKey: 'pageName',
       //   constraints: false
       // });
 
-      // // UserPickPage has many Posts through pagename
+      // // UserPickPage has many Posts through pageName
       // UserPickPage.hasMany(models.Post, {
       //   foreignKey: 'userpickpages_name',
-      //   sourceKey: 'pagename',
+      //   sourceKey: 'pageName',
       //   constraints: false
       // });
 
@@ -45,7 +46,7 @@ module.exports = (sequelize, DataTypes) => {
       // // In Subscription model
       // Subscription.belongsTo(models.UserPickPage, {
       //   foreignKey: 'userpickpages_name',
-      //     targetKey: 'pagename',
+      //     targetKey: 'pageName',
       //     constraints: false
       // });
 
@@ -59,7 +60,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    pagename: {
+    pageName: {
       type: DataTypes.STRING(40),
       allowNull: false,
       validate: {
@@ -73,7 +74,7 @@ module.exports = (sequelize, DataTypes) => {
     indexes: [
       {
         unique: true,
-        fields: ['user_id', 'pagename'],
+        fields: ['user_id', 'pageName'],
         name: 'unique_user_pagename'
       }
     ]

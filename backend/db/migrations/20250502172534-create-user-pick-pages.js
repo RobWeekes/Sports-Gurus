@@ -25,7 +25,7 @@ module.exports = {
         },
         onDelete: 'CASCADE'
       },
-      pagename: {
+      pageName: {
         type: Sequelize.STRING(40),
         allowNull: false
       },
@@ -43,8 +43,8 @@ module.exports = {
       ...options,
       uniqueKeys: {
         unique_user_pagename: {
-          fields: ['user_id', 'pagename']
-        } // Added unique constraint - combination user_id and pagename
+          fields: ['user_id', 'pageName']
+        } // Added unique constraint - combination user_id and pageName
       }
     });
   },

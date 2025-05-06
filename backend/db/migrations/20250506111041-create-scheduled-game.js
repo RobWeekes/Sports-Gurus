@@ -1,6 +1,6 @@
 'use strict';
 
-// define the schema name for Postgres production database in options object
+// define production schema in options object
 let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;
@@ -9,48 +9,41 @@ if (process.env.NODE_ENV === 'production') {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('users', {
+    await queryInterface.createTable('scheduledgames', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,
       },
-      firstName: {
-        type: Sequelize.STRING(30),
+      league: {
+        type: Sequelize.STRING,
         allowNull: false,
       },
-      lastName: {
-        type: Sequelize.STRING(40),
+      gameDay: {
+        type: Sequelize.DATE,
         allowNull: false,
       },
-      email: {
-        type: Sequelize.STRING(40),
+      homeTeam: {
+        type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
       },
-      userName: {
-        type: Sequelize.STRING(30),
-        unique: true,
-      },
-      hashedPassword: {
-        type: Sequelize.STRING.BINARY,
+      awayTeam: {
+        type: Sequelize.STRING,
         allowNull: false,
       },
       createdAt: {
-        type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        type: Sequelize.DATE,
       },
       updatedAt: {
-        type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        type: Sequelize.DATE,
       }
     }, options);
   },
   async down(queryInterface, Sequelize) {
-    options.tableName = 'users';
+    options.tableName = 'scheduledgames';
     return queryInterface.dropTable(options);
   }
 };

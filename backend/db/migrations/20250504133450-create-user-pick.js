@@ -12,23 +12,38 @@ module.exports = {
     await queryInterface.createTable('userpicks', {
       id: {
         type: Sequelize.INTEGER,
-        autoIncrement: true,
         primaryKey: true,
+        autoIncrement: true,
         allowNull: false,
       },
       user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: 'users',
+          key: 'id'
+        },
+        onDelete: 'CASCADE'
       },
       page_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: 'userpickpages',
+          key: 'id'
+        },
+        onDelete: 'CASCADE'
       },
       game_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: 'scheduledgames',
+          key: 'id'
+        },
+        onDelete: 'CASCADE'
       },
-      prediction_type: {
+      predictionType: {
         type: Sequelize.STRING(12),
         allowNull: false,
       },
@@ -38,18 +53,18 @@ module.exports = {
       },
       result: {
         type: Sequelize.STRING(4),
-        defaultValue: 'TBD',
         allowNull: false,
+        defaultValue: 'TBD',
       },
       createdAt: {
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
       updatedAt: {
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       }
     }, options);
   },
