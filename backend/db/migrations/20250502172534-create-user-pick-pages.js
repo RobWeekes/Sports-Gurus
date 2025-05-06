@@ -42,7 +42,7 @@ module.exports = {
     }, options);
 
     // Add unique constraint - combination user_id and pagename is unique
-    await queryInterface.addConstraint('userpickpages', {
+    return queryInterface.addConstraint('userpickpages', {
       fields: ['user_id', 'pagename'],
       type: 'unique',
       name: 'unique_user_pagename'
