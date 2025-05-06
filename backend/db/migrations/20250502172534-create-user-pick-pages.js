@@ -39,21 +39,25 @@ module.exports = {
         allowNull: false,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       }
-    }, options);
+    }, {
+      ...options,
+      uniqueKeys: {
+        unique_user_pagename: {
+          fields: ['user_id', 'pagename']
+        } // Add unique constraint - combination user_id and pagename
+      }
+    });
 
     // Add unique constraint - combination user_id and pagename is unique
-    return queryInterface.addConstraint('userpickpages', {
-      fields: ['user_id', 'pagename'],
-      type: 'unique',
-      name: 'unique_user_pagename'
-    }, options);
+    // return queryInterface.addConstraint('userpickpages', {
+    //   fields: ['user_id', 'pagename'],
+    //   type: 'unique',
+    //   name: 'unique_user_pagename'
+    // }, options);
   },
 
   async down(queryInterface, Sequelize) {
     options.tableName = 'userpickpages';
-    // Remove the constraint first
-    await queryInterface.removeConstraint('userpickpages', 'unique_user_pagename', options);
-    // Then drop the table
     return queryInterface.dropTable(options);
   }
 };
