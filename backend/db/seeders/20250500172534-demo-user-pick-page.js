@@ -17,19 +17,15 @@ module.exports = {
       },
       {
         user_id: 1,
-        pageName: "Rob's Soccer Dojo",
-      },
-      {
-        user_id: 2,
-        pageName: "Dustin's NFL Picks",
-      },
-      {
-        user_id: 1,
         pageName: "Rob's Football Picks",
       },
       {
         user_id: 1,
         pageName: "Rob's Baseball Page",
+      },
+      {
+        user_id: 2,
+        pageName: "Dustin's NFL Picks",
       },
     ], { validate: true });
   },

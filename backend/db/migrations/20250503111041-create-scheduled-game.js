@@ -17,7 +17,7 @@ module.exports = {
         allowNull: false,
       },
       league: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(40),
         allowNull: false,
       },
       gameDay: {
@@ -25,20 +25,22 @@ module.exports = {
         allowNull: false,
       },
       homeTeam: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(30),
         allowNull: false,
       },
       awayTeam: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(30),
         allowNull: false,
       },
       createdAt: {
-        allowNull: false,
         type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
       updatedAt: {
-        allowNull: false,
         type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       }
     }, options);
   },
