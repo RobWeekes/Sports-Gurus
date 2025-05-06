@@ -30,6 +30,13 @@ function validateNameCharacters(value) {
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
+      // User has many UserPickPages
+      User.hasMany(models.UserPickPage, {
+        foreignKey: 'user_id',
+        onDelete: 'CASCADE',
+        hooks: true   // not needed?
+      });
+
       // User has many UserPicks
       User.hasMany(models.UserPick, {
         foreignKey: 'user_id',
@@ -37,7 +44,9 @@ module.exports = (sequelize, DataTypes) => {
         hooks: true
       });
 
-      // // Other associations for User model
+      // Other associations for User model
+
+      // User has one UserProfile
       // User.hasOne(models.UserProfile, {
       //   foreignKey: 'user_id',
       //   onDelete: 'CASCADE',
@@ -81,7 +90,7 @@ module.exports = (sequelize, DataTypes) => {
 
   User.init({
     firstName: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(30),
       allowNull: false,
       validate: {
         len: [2, 40],
@@ -91,7 +100,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     lastName: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(40),
       allowNull: false,
       validate: {
         len: [2, 40],
@@ -101,7 +110,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     email: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(40),
       allowNull: false,
       unique: true,
       validate: {
@@ -110,7 +119,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     userName: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(30),
       unique: true,
       validate: {
         len: [4, 30],
@@ -150,5 +159,6 @@ module.exports = (sequelize, DataTypes) => {
     //   }
     // }
   });
+
   return User;
 };

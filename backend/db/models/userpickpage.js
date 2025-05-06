@@ -13,8 +13,32 @@ module.exports = (sequelize, DataTypes) => {
 
       // UserPickPage has many UserPicks
       UserPickPage.hasMany(models.UserPick, {
-        foreignKey: 'page_id'
+        foreignKey: 'page_id',
+        onDelete: 'CASCADE'
       });
+
+      // UserPickPage has many Subscriptions through pagename
+      UserPickPage.hasMany(models.Subscription, {
+        foreignKey: 'userpickpages_name',
+        sourceKey: 'pagename',
+        constraints: false
+      });  // sourceKey: 'pagename' - for a relationship based on the pagename column rather than the primary key
+      // constraints: false - no formal foreign key constraint - for relationships connecting tables through a non-primary key field
+
+      // UserPickPage has many Comments through pagename
+      UserPickPage.hasMany(models.Comment, {
+        foreignKey: 'userpickpages_name',
+        sourceKey: 'pagename',
+        constraints: false
+      });
+
+      // UserPickPage has many Posts through pagename
+      UserPickPage.hasMany(models.Post, {
+        foreignKey: 'userpickpages_name',
+        sourceKey: 'pagename',
+        constraints: false
+      });
+
     }
   }
 
@@ -26,6 +50,9 @@ module.exports = (sequelize, DataTypes) => {
     pagename: {
       type: DataTypes.STRING(40),
       allowNull: false,
+      validate: {
+        len: [1, 40]
+      }
     }
   }, {
     sequelize,

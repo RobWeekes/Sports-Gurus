@@ -2,7 +2,6 @@
 
 const { Model, Validator } = require("sequelize");
 
-
 module.exports = (sequelize, DataTypes) => {
   class UserPick extends Model {
     static associate(models) {
@@ -19,31 +18,6 @@ module.exports = (sequelize, DataTypes) => {
       // // UserPick belongs to a ScheduledGame
       // UserPick.belongsTo(models.ScheduledGame, {
       //   foreignKey: 'game_id'
-      // });
-
-
-
-      // I THINK THESE ARE OBSOLETE \/ 'pagename' is now userpicks.page_id
-
-      // // UserPick has many Subscriptions through pagename
-      // UserPick.hasMany(models.Subscription, {
-      //   foreignKey: 'user_picks_pagename',
-      //   sourceKey: 'pagename',
-      //   constraints: false
-      // });
-
-      // // UserPick has many Comments through pagename
-      // UserPick.hasMany(models.Comment, {
-      //   foreignKey: 'user_picks_pagename',
-      //   sourceKey: 'pagename',
-      //   constraints: false
-      // });
-
-      // // UserPick has many Posts through pagename
-      // UserPick.hasMany(models.Post, {
-      //   foreignKey: 'user_picks_pagename',
-      //   sourceKey: 'pagename',
-      //   constraints: false
       // });
     }
   }
@@ -67,16 +41,23 @@ module.exports = (sequelize, DataTypes) => {
     prediction: {
       type: DataTypes.STRING(30),
       allowNull: false,
+      validate: {
+        len: [1, 30]
+      }
     },
     result: {
       type: DataTypes.STRING(4),
       allowNull: false,
       defaultValue: 'TBD',
+      validate: {
+        len: [1, 4]
+      }
     }
   }, {
     sequelize,
     modelName: 'UserPick',
     tableName: "userpicks",
   });
+
   return UserPick;
 };
