@@ -44,16 +44,9 @@ module.exports = {
       uniqueKeys: {
         unique_user_pagename: {
           fields: ['user_id', 'pagename']
-        } // Add unique constraint - combination user_id and pagename
+        } // Added unique constraint - combination user_id and pagename
       }
     });
-
-    // Add unique constraint - combination user_id and pagename is unique
-    // return queryInterface.addConstraint('userpickpages', {
-    //   fields: ['user_id', 'pagename'],
-    //   type: 'unique',
-    //   name: 'unique_user_pagename'
-    // }, options);
   },
 
   async down(queryInterface, Sequelize) {

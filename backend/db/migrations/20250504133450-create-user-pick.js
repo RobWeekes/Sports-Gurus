@@ -38,7 +38,7 @@ module.exports = {
       },
       result: {
         type: Sequelize.STRING(4),
-        defaultValue: Sequelize.literal('TBD'),
+        defaultValue: 'TBD',
         allowNull: false,
       },
       createdAt: {
