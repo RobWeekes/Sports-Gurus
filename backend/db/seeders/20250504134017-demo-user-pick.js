@@ -15,32 +15,40 @@ module.exports = {
         user_id: 1,
         page_id: 1,
         game_id: 1,
-        predictionType: "point spread",
-        prediction: "Los Angeles covers spread",
+        predictionType: "POINT SPREAD",
+        prediction: "LOS ANGELES COVERS SPREAD",
         result: "TBD"
       },
       {
         user_id: 1,
         page_id: 2,
         game_id: 2,
-        predictionType: "point spread",
-        prediction: "Kansas City covers spread",
+        predictionType: "POINT SPREAD",
+        prediction: "KANSAS CITY COVERS SPREAD",
         result: "TBD"
       },
       {
         user_id: 1,
         page_id: 1,
         game_id: 3,
-        predictionType: "point spread",
-        prediction: "Boston covers spread",
+        predictionType: "POINT SPREAD",
+        prediction: "BOSTON COVERS SPREAD",
         result: "TBD"
       },
       {
         user_id: 1,
         page_id: 3,
         game_id: 4,
-        predictionType: "point spread",
-        prediction: "New York covers spread",
+        predictionType: "OVER / UNDER",
+        prediction: "TOTAL RUNS OVER",
+        result: "TBD"
+      },
+      {
+        user_id: 2,
+        page_id: 4,
+        game_id: 2,
+        predictionType: "POINT SPREAD",
+        prediction: "BUFFALO COVERS SPREAD",
         result: "TBD"
       },
     ], { validate: true });
@@ -48,9 +56,6 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     options.tableName = "userpicks";
-    const Op = Sequelize.Op;
-    return queryInterface.bulkDelete(options, {
-      id: { [Op.in]: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] }
-    }, {});
+    return queryInterface.bulkDelete(options, {}, {});
   }
 };

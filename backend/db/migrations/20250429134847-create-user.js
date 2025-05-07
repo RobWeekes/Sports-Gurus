@@ -1,15 +1,15 @@
-'use strict';
+"use strict";
 
 // define the schema name for Postgres production database in options object
 let options = {};
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === "production") {
   options.schema = process.env.SCHEMA;
 }
 
-/** @type {import('sequelize-cli').Migration} */
+/** @type {import("sequelize-cli").Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('users', {
+    await queryInterface.createTable("users", {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -40,17 +40,18 @@ module.exports = {
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
       updatedAt: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       }
     }, options);
   },
+
   async down(queryInterface, Sequelize) {
-    options.tableName = 'users';
+    options.tableName = "users";
     return queryInterface.dropTable(options);
   }
 };

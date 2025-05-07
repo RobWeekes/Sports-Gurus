@@ -35,14 +35,13 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.UserPickPage, {
         foreignKey: 'user_id',
         onDelete: 'CASCADE',
-        hooks: true   // not needed?
+        // hooks: true   // not needed since the UserPickPage and UserPick models have no hooks defined
       });
 
       // User has many UserPicks
       User.hasMany(models.UserPick, {
         foreignKey: 'user_id',
         onDelete: 'CASCADE',
-        hooks: true
       });
 
       // Other associations for User model
@@ -51,25 +50,21 @@ module.exports = (sequelize, DataTypes) => {
       // User.hasOne(models.UserProfile, {
       //   foreignKey: 'user_id',
       //   onDelete: 'CASCADE',
-      //   hooks: true
       // });
 
       // User.hasMany(models.Comment, {
       //   foreignKey: 'user_id',
       //   onDelete: 'CASCADE',
-      //   hooks: true
       // });
 
       // User.hasMany(models.Post, {
       //   foreignKey: 'user_id',
       //   onDelete: 'CASCADE',
-      //   hooks: true
       // });
 
       // User.hasMany(models.Subscription, {
       //   foreignKey: 'user_id',
       //   onDelete: 'CASCADE',
-      //   hooks: true
       // });
 
       // // For followers relationship (self-referential)

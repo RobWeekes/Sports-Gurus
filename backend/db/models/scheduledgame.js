@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-const { Model } = require('sequelize');
+const { Model } = require("sequelize");
 
 
 module.exports = (sequelize, DataTypes) => {
@@ -9,12 +9,14 @@ module.exports = (sequelize, DataTypes) => {
 
       // ScheduledGame has one UserPick
       ScheduledGame.hasOne(models.UserPick, {
-        foreignKey: 'game_id'
+        foreignKey: "game_id",
+        onDelete: "CASCADE"
       });
 
       // // ScheduledGame has one GameResult
       // ScheduledGame.hasOne(models.GameResult, {
-      //   foreignKey: 'game_id'
+      //   foreignKey: "game_id",
+      //   onDelete: "CASCADE"
       // });
     }
   }
@@ -24,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(40),
       allowNull: false,
       validate: {
-        len: [1, 40]
+        len: [3, 40]
       }
     },
     gameDay: {
@@ -35,19 +37,19 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(30),
       allowNull: false,
       validate: {
-        len: [1, 30]
+        len: [3, 30]
       }
     },
     awayTeam: {
       type: DataTypes.STRING(30),
       allowNull: false,
       validate: {
-        len: [1, 30]
+        len: [3, 30]
       }
     }
   }, {
     sequelize,
-    modelName: 'ScheduledGame',
+    modelName: "ScheduledGame",
     tableName: "scheduledgames",
   });
 

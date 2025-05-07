@@ -7,17 +7,17 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // UserPick belongs to a User
       UserPick.belongsTo(models.User, {
-        foreignKey: 'user_id'
+        foreignKey: "user_id"
       });
 
       // UserPick belongs to a UserPickPage
       UserPick.belongsTo(models.UserPickPage, {
-        foreignKey: 'page_id'
+        foreignKey: "page_id"
       });
 
       // // UserPick belongs to a ScheduledGame
       // UserPick.belongsTo(models.ScheduledGame, {
-      //   foreignKey: 'game_id'
+      //   foreignKey: "game_id"
       // });
     }
   }
@@ -37,25 +37,28 @@ module.exports = (sequelize, DataTypes) => {
     predictionType: {
       type: DataTypes.STRING(12),
       allowNull: false,
+      validate: {
+        isIn: [["POINT SPREAD", "OVER / UNDER"]]
+      }
     },
     prediction: {
       type: DataTypes.STRING(30),
       allowNull: false,
       validate: {
-        len: [1, 30]
+        len: [3, 30]
       }
     },
     result: {
-      type: DataTypes.STRING(4),
+      type: DataTypes.STRING(8),
       allowNull: false,
-      defaultValue: 'TBD',
+      defaultValue: "TBD",
       validate: {
-        len: [1, 4]
+        isIn: [["TBD", "WIN", "LOSS", "CANCELED"]]
       }
     }
   }, {
     sequelize,
-    modelName: 'UserPick',
+    modelName: "UserPick",
     tableName: "userpicks",
   });
 

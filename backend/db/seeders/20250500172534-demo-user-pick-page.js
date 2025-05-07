@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 // define production schema in options object
 let options = {};
@@ -6,7 +6,7 @@ if (process.env.NODE_ENV === "production") {
   options.schema = process.env.SCHEMA;
 }
 
-/** @type {import('sequelize-cli').Migration} */
+/** @type {import("sequelize-cli").Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
     options.tableName = "userpickpages";
@@ -32,10 +32,6 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     options.tableName = "userpickpages";
-    const Op = Sequelize.Op;
-    return queryInterface.bulkDelete(options, {
-      id: { [Op.in]: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] }
-    }, {});
-
+    return queryInterface.bulkDelete(options, {}, {});
   }
 };
