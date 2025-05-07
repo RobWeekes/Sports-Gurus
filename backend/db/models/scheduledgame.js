@@ -7,17 +7,17 @@ module.exports = (sequelize, DataTypes) => {
   class ScheduledGame extends Model {
     static associate(models) {
 
-      // ScheduledGame has one UserPick
-      ScheduledGame.hasOne(models.UserPick, {
+      // ScheduledGame has many UserPicks
+      ScheduledGame.hasMany(models.UserPick, {
         foreignKey: "game_id",
         onDelete: "CASCADE"
       });
 
-      // // ScheduledGame has one GameResult
-      // ScheduledGame.hasOne(models.GameResult, {
-      //   foreignKey: "game_id",
-      //   onDelete: "CASCADE"
-      // });
+      // ScheduledGame has one GameResult
+      ScheduledGame.hasOne(models.GameResult, {
+        foreignKey: "game_id",
+        onDelete: "CASCADE"
+      });
     }
   }
 

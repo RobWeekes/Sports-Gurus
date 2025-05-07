@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-const { Model } = require('sequelize');
+const { Model } = require("sequelize");
 
 
 module.exports = (sequelize, DataTypes) => {
@@ -9,34 +9,37 @@ module.exports = (sequelize, DataTypes) => {
 
       // UserPickPage belongs to a User
       UserPickPage.belongsTo(models.User, {
-        foreignKey: 'user_id'
+        foreignKey: "user_id"
       });
 
       // UserPickPage has many UserPicks
       UserPickPage.hasMany(models.UserPick, {
-        foreignKey: 'page_id',
-        onDelete: 'CASCADE'
+        foreignKey: "page_id",
+        onDelete: "CASCADE"
       });
 
       // // UserPickPage has many Subscriptions through pageName
       // UserPickPage.hasMany(models.Subscription, {
-      //   foreignKey: 'userpickpages_name',
-      //   sourceKey: 'pageName',
+      //   foreignKey: "userpickpages_name",
+      //   sourceKey: "pageName",
+      //   onDelete: "CASCADE",
       //   constraints: false
-      // });  // sourceKey: 'pageName' - for a relationship based on the pageName column rather than the primary key
+      // });  // sourceKey: "pageName" - for a relationship based on the pageName column rather than the primary key
       // // constraints: false - no formal foreign key constraint - for relationships connecting tables through a non-primary key field
 
       // // UserPickPage has many Comments through pageName
       // UserPickPage.hasMany(models.Comment, {
-      //   foreignKey: 'userpickpages_name',
-      //   sourceKey: 'pageName',
+      //   foreignKey: "userpickpages_name",
+      //   sourceKey: "pageName",
+      //   onDelete: "CASCADE",
       //   constraints: false
       // });
 
       // // UserPickPage has many Posts through pageName
       // UserPickPage.hasMany(models.Post, {
-      //   foreignKey: 'userpickpages_name',
-      //   sourceKey: 'pageName',
+      //   foreignKey: "userpickpages_name",
+      //   sourceKey: "pageName",
+      //   onDelete: "CASCADE",
       //   constraints: false
       // });
 
@@ -45,9 +48,10 @@ module.exports = (sequelize, DataTypes) => {
 
       // // In Subscription model
       // Subscription.belongsTo(models.UserPickPage, {
-      //   foreignKey: 'userpickpages_name',
-      //     targetKey: 'pageName',
-      //     constraints: false
+      //   foreignKey: "userpickpages_name",
+      //   onDelete: "CASCADE",
+      //   targetKey: "pageName",
+      //   constraints: false
       // });
 
       // // Similar for Comment and Post models
@@ -69,13 +73,13 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     sequelize,
-    modelName: 'UserPickPage',
+    modelName: "UserPickPage",
     tableName: "userpickpages",
     indexes: [
       {
         unique: true,
-        fields: ['user_id', 'pageName'],
-        name: 'unique_user_pagename'
+        fields: ["user_id", "pageName"],
+        name: "unique_user_pagename"
       }
     ]
   });

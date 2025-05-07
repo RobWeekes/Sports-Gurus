@@ -19,7 +19,11 @@ module.exports = {
       game_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        // references:
+        references: {
+          model: "scheduledgames",
+          key: "id"
+        },
+        onDelete: "CASCADE"
       },
       favorite: {
         type: Sequelize.STRING(30),

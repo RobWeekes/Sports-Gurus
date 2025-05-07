@@ -7,8 +7,10 @@ module.exports = (sequelize, DataTypes) => {
   class GameResult extends Model {
     static associate(models) {
 
-      // GameResult has
-
+      // GameResult belongs to ScheduledGame
+      GameResult.belongsTo(models.ScheduledGame, {
+        foreignKey: "game_id",
+      })
     }
   }
 

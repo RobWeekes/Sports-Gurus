@@ -5,6 +5,7 @@ const { Model, Validator } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class UserPick extends Model {
     static associate(models) {
+
       // UserPick belongs to a User
       UserPick.belongsTo(models.User, {
         foreignKey: "user_id"
@@ -15,10 +16,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "page_id"
       });
 
-      // // UserPick belongs to a ScheduledGame
-      // UserPick.belongsTo(models.ScheduledGame, {
-      //   foreignKey: "game_id"
-      // });
+      // UserPick belongs to a ScheduledGame
+      UserPick.belongsTo(models.ScheduledGame, {
+        foreignKey: "game_id"
+      });
     }
   }
   UserPick.init({
