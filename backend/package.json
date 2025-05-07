@@ -29,6 +29,8 @@
     "sqlite3": "^5.1.7"
   },
   "scripts": {
+    "reset-soft": "./reset-soft.sh",
+    "reset-hard": "./reset-hard.sh",
     "sequelize": "sequelize",
     "sequelize-cli": "sequelize-cli",
     "start": "per-env",

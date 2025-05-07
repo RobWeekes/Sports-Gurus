@@ -17,7 +17,7 @@ module.exports = {
       },
       {
         user_id: 1,
-        pageName: "Rob's Football Picks",
+        pageName: "Rob's Football Dojo",
       },
       {
         user_id: 1,
