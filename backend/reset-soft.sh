@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Display what's happening
+# Display what"s happening
 echo "Undoing seeders & migrations..."
 
 # Undo seeders

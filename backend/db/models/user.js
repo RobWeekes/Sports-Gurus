@@ -33,53 +33,53 @@ module.exports = (sequelize, DataTypes) => {
 
       // User has many UserPickPages
       User.hasMany(models.UserPickPage, {
-        foreignKey: 'user_id',
-        onDelete: 'CASCADE',
+        foreignKey: "user_id",
+        onDelete: "CASCADE",
         // hooks: true   // not needed since the UserPickPage and UserPick models have no hooks defined
       });
 
       // User has many UserPicks
       User.hasMany(models.UserPick, {
-        foreignKey: 'user_id',
-        onDelete: 'CASCADE',
+        foreignKey: "user_id",
+        onDelete: "CASCADE",
       });
 
       // Other associations for User model
 
       // User has one UserProfile
       // User.hasOne(models.UserProfile, {
-      //   foreignKey: 'user_id',
-      //   onDelete: 'CASCADE',
+      //   foreignKey: "user_id",
+      //   onDelete: "CASCADE",
       // });
 
       // User.hasMany(models.Comment, {
-      //   foreignKey: 'user_id',
-      //   onDelete: 'CASCADE',
+      //   foreignKey: "user_id",
+      //   onDelete: "CASCADE",
       // });
 
       // User.hasMany(models.Post, {
-      //   foreignKey: 'user_id',
-      //   onDelete: 'CASCADE',
+      //   foreignKey: "user_id",
+      //   onDelete: "CASCADE",
       // });
 
       // User.hasMany(models.Subscription, {
-      //   foreignKey: 'user_id',
-      //   onDelete: 'CASCADE',
+      //   foreignKey: "user_id",
+      //   onDelete: "CASCADE",
       // });
 
       // // For followers relationship (self-referential)
       // User.belongsToMany(models.User, {
       //   through: models.Follower,
-      //   as: 'Followers',
-      //   foreignKey: 'follows_user_id',
-      //   otherKey: 'user_id'
+      //   as: "Followers",
+      //   foreignKey: "follows_user_id",
+      //   otherKey: "user_id"
       // });
 
       // User.belongsToMany(models.User, {
       //   through: models.Follower,
-      //   as: 'Following',
-      //   foreignKey: 'user_id',
-      //   otherKey: 'follows_user_id'
+      //   as: "Following",
+      //   foreignKey: "user_id",
+      //   otherKey: "follows_user_id"
       // });
     }
   }

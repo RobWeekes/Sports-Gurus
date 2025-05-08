@@ -1,11 +1,11 @@
-// const { Sequelize, DataTypes } = require('sequelize');
-// const config = require('../config');
-// const UserModel = require('../db/models/user');
+// const { Sequelize, DataTypes } = require("sequelize");
+// const config = require("../config");
+// const UserModel = require("../db/models/user");
 
 // // Create a new Sequelize instance
 // const sequelize = new Sequelize({
-//   dialect: 'sqlite',
-//   storage: config.dbFile || 'db/dev.db'
+//   dialect: "sqlite",
+//   storage: config.dbFile || "db/dev.db"
 // });
 
 // // Initialize the User model directly
@@ -29,7 +29,7 @@
 //     console.log("Default scope:", JSON.stringify(users, null, 2));
 
 //     // This will include all fields
-//     // const usersWithAllFields = await TestUser.scope('withAllFields').findAll();
+//     // const usersWithAllFields = await TestUser.scope("withAllFields").findAll();
 //     // console.log("All fields:", JSON.stringify(usersWithAllFields, null, 2));
 //   } catch (error) {
 //     console.error("Error:", error);

@@ -1,6 +1,6 @@
-import configureStore from './store';
+import configureStore from "./store";
 // use this import when ready:
-// import { restoreCSRF, csrfFetch } from './csrf';
+// import { restoreCSRF, csrfFetch } from "./csrf";
 
 // Export the configureStore function as the default export
 export default configureStore;
@@ -15,7 +15,7 @@ export default configureStore;
 // NOTE: When importing from /store in other files:
 
 // // To import the configureStore function
-// import configureStore from './store';
+// import configureStore from "./store";
 
 // // To import both the store and CSRF utilities
-// import configureStore, { restoreCSRF, csrfFetch } from './store';
+// import configureStore, { restoreCSRF, csrfFetch } from "./store";

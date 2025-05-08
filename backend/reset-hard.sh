@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Display what's happening
+# Display what"s happening
 echo "Resetting development database..."
 
 # Remove the SQLite database file
