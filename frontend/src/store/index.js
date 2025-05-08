@@ -1,11 +1,12 @@
 import configureStore from './store';
-import { restoreCSRF, csrfFetch } from './csrf';
+// use this import when ready:
+// import { restoreCSRF, csrfFetch } from './csrf';
 
 // Export the configureStore function as the default export
 export default configureStore;
 
-// Export the CSRF-related functions
-export { restoreCSRF, csrfFetch };
+// when ready: Export the CSRF-related functions
+// export { restoreCSRF, csrfFetch };
 
 
 
