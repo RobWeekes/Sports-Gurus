@@ -7,8 +7,8 @@ import "./index.css";
 // using Provider from Redux to provide the Redux store
 import { Provider } from "react-redux";
 import configureStore from "./store";
-// use this when ready:
-// import { restoreCSRF, csrfFetch } from "./store/csrf";
+// use this before rendering
+import { restoreCSRF, csrfFetch } from "./store/csrf";
 
 
 // Create a variable to access the store and expose it on the window.
@@ -16,12 +16,11 @@ import configureStore from "./store";
 
 const store = configureStore();
 
-if (process.env.NODE_ENV !== "production") {
-  // use when ready:
-  // restoreCSRF();
-  // window.csrfFetch = csrfFetch;
+if (import.meta.env.MODE !== 'production') {
+  restoreCSRF();
+  window.csrfFetch = csrfFetch;
   window.store = store;
-}
+} // in Vite projects, environment variables are accessed through import.meta.env instead of process.env (used in other webpack-based setups)
 
 // Wrap the rendered App component in Redux"s Provider component, passing store as a prop of the same name to the Provider
 

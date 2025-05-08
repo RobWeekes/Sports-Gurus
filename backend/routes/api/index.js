@@ -56,20 +56,19 @@ router.post("/test", (req, res) => {
 // });   // should see a token cookie in browser DevTools
 
 
-// test route req.body
-// POST /api/test
-router.post("/test", function (req, res) {
-  res.json({ requestBody: req.body });
-});
+// // test route req.body
+// // POST /api/test
+// router.post("/test", function (req, res) {
+//   res.json({ requestBody: req.body });
+// });
+// // You can now remove the POST /api/test test route in your backend code, as you won"t be needing it anymore -- frontend-phase-0
 
 
 // // RESTORE TEST ROUTES IF NEEDED // //
 // // ***************************** // //
 
 
-
 module.exports = router;
-
 
 
 // Example fetch request:

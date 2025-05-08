@@ -25,3 +25,11 @@ export async function csrfFetch(url, options = {}) {
   // if the response status code is under 400, then return the response to the next promise chain
   return res;
 }
+
+
+// The GET /api/csrf/restore route needs to be called when the application is loaded. "restoreCSRF" will call the custom csrfFetch function with /api/csrf/restore as the url parameter.
+
+// Call this to get the "XSRF-TOKEN" cookie, only use in development
+export function restoreCSRF() {
+  return csrfFetch('/api/csrf/restore');
+}
