@@ -57,6 +57,28 @@ export const restoreUser = () => async (dispatch) => {
   return response;
 };
 
+// thunk action creator: calls POST /api/users
+export const signup = (user) => async (dispatch) => {
+  const { firstName, lastName, email, password, userName } = user;
+  const requestBody = {
+    firstName,
+    lastName,
+    email,
+    password
+  };
+  // Only include userName if input by user (optional)
+  if (userName) {
+    requestBody.userName = userName;
+  }
+  const response = await csrfFetch("/api/users", {
+    method: "POST",
+    body: JSON.stringify(requestBody)
+  }); // call backend API to sign up, then set session user from response
+  const data = await response.json();
+  dispatch(setUser(data.user));
+  return response;
+};
+
 // test the login thunk action in browser console:
 // store.dispatch(
 //   sessionActions.login({
@@ -67,6 +89,17 @@ export const restoreUser = () => async (dispatch) => {
 
 // test the restoreUser thunk action in browser console:
 // store.dispatch(sessionActions.restoreUser());
+
+// test the signup thunk action in browser console:
+// store.dispatch(
+//   sessionActions.signup({
+//     "firstName": "Neil",
+//     "lastName": "Armstrong--Harris",
+//     "email": "demo25@user.io",
+//     "password": "Password2!",
+//     "userName": "MoonLander-1970"
+//   })
+// )
 
 
 
