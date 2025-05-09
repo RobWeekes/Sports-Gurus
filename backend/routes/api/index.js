@@ -15,6 +15,12 @@ const { requireAuth } = require("../../utils/auth.js");
 // connect "restoreUser" to the router before any other middleware or route handlers are connected. If current user session is valid, set req.user to the user in the database
 router.use(restoreUser);
 
+// temporarily log all incoming requests for debugging
+router.use((req, res, next) => {
+  console.log(`API Request: ${req.method} ${req.path}`);
+  next();
+});
+
 router.use("/session", sessionRouter);
 
 router.use("/users", usersRouter);
