@@ -21,7 +21,7 @@ const removeUser = () => {
   };
 };
 
-// thunk action creator: POST /api/session
+// thunk action creator: calls POST /api/session
 export const login = (user) => async (dispatch) => {
   const { credential, password } = user;
   const response = await csrfFetch("/api/session", {
@@ -49,13 +49,24 @@ const sessionReducer = (state = initialState, action) => {
   }
 };
 
-// test the log in thunk action in browser console:
+// thunk action creator: calls GET /api/session
+export const restoreUser = () => async (dispatch) => {
+  const response = await csrfFetch("/api/session");
+  const data = await response.json();
+  dispatch(setUser(data.user));
+  return response;
+};
+
+// test the login thunk action in browser console:
 // store.dispatch(
 //   sessionActions.login({
 //     credential: "Demo-lition",
 //     password: "password"
 //   })
 // )
+
+// test the restoreUser thunk action in browser console:
+// store.dispatch(sessionActions.restoreUser());
 
 
 
