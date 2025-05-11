@@ -21,21 +21,6 @@ const removeUser = () => {
   };
 };
 
-// thunk action creator: calls POST /api/session
-export const login = (user) => async (dispatch) => {
-  const { credential, password } = user;
-  const response = await csrfFetch("/api/session", {
-    method: "POST",
-    body: JSON.stringify({
-      credential,
-      password
-    })
-  }); // call backend API to log in, then set session user from response
-  const data = await response.json();
-  dispatch(setUser(data.user));
-  return response;
-};
-
 const initialState = { user: null };
 
 const sessionReducer = (state = initialState, action) => {
@@ -57,7 +42,22 @@ export const restoreUser = () => async (dispatch) => {
   return response;
 };
 
-// thunk action creator: calls POST /api/users
+// Log In thunk action creator: calls POST /api/session
+export const login = (user) => async (dispatch) => {
+  const { credential, password } = user;
+  const response = await csrfFetch("/api/session", {
+    method: "POST",
+    body: JSON.stringify({
+      credential,
+      password
+    })
+  }); // call backend API to log in, then set session user from response
+  const data = await response.json();
+  dispatch(setUser(data.user));
+  return response;
+};
+
+// Sign Up thunk action creator: calls POST /api/users
 export const signup = (user) => async (dispatch) => {
   const { firstName, lastName, email, password, userName } = user;
   const requestBody = {
@@ -79,6 +79,26 @@ export const signup = (user) => async (dispatch) => {
   return response;
 };
 
+// Log Out thunk action creator: calls POST /api/session
+export const logout = () => async (dispatch) => {
+  const response = await csrfFetch("/api/session", {
+    method: "DELETE"
+  }); // call backend API to log out, then remove session user
+  dispatch(removeUser());
+  return response;
+};
+
+
+export default sessionReducer;
+
+
+// Testing thunk actions: uncomment & ignore terminal:
+// "105:1  error  "store" is not defined"
+// "106:3  error  "sessionActions" is not defined"
+
+// test the restoreUser thunk action in browser console:
+// store.dispatch(sessionActions.restoreUser());
+
 // test the login thunk action in browser console:
 // store.dispatch(
 //   sessionActions.login({
@@ -87,10 +107,7 @@ export const signup = (user) => async (dispatch) => {
 //   })
 // )
 
-// test the restoreUser thunk action in browser console:
-// store.dispatch(sessionActions.restoreUser());
-
-// test the signup thunk action in browser console:
+// test signup thunk action w/ unique email/username:
 // store.dispatch(
 //   sessionActions.signup({
 //     "firstName": "Neil",
@@ -101,6 +118,5 @@ export const signup = (user) => async (dispatch) => {
 //   })
 // )
 
-
-
-export default sessionReducer;
+// test the logout thunk action in browser:
+// store.dispatch(sessionActions.logout())

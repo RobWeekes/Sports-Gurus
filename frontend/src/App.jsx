@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import LoginFormPage from "./components/LoginFormPage/LoginFormPage";
 import SignupFormPage from "./components/SignupFormPage/SignupFormPage";
+import Navigation from "./components/Navigation/Navigation";
 import * as sessionActions from "./store/session";
 
 
@@ -20,9 +21,11 @@ function Layout() {
 
   return (
     <>
+      {/* render Nav bar first with isLoaded context */}
+      <Navigation isLoaded={isLoaded} />
       {isLoaded && <Outlet />}
     </>
-  );  // wait for restoreUser to load, then render Outlet: children
+  );  // after restoreUser loads state, render Outlet: children
 }
 
 const router = createBrowserRouter([
