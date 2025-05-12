@@ -75,6 +75,7 @@ router.post("/", validateSignup, async (req, res) => {
 router.put("/:userId/profile", requireAuth, async (req, res) => {
   const { userId } = req.params;
   const { aboutMe, sportIcon } = req.body;
+  console.log("Updating profile for user:", userId, { aboutMe, sportIcon });
 
   // ensure user can only update their own profile
   if (req.user.id !== parseInt(userId)) {
@@ -83,7 +84,7 @@ router.put("/:userId/profile", requireAuth, async (req, res) => {
 
   try {
     // find or create the user profile
-    const userProfile = await UserProfile.findOne({
+    let userProfile = await UserProfile.findOne({
       where: { user_id: userId }
     });
 
@@ -93,7 +94,7 @@ router.put("/:userId/profile", requireAuth, async (req, res) => {
         aboutMe: aboutMe || "",
         sportIcon: sportIcon || "usercircle"
       });
-    } else {
+    } else {  // update existing profile
       await userProfile.update({
         aboutMe: aboutMe !== undefined ?
           aboutMe : userProfile.aboutMe,
@@ -102,8 +103,16 @@ router.put("/:userId/profile", requireAuth, async (req, res) => {
       });
     }
 
-    // return updated user with profile info
-    const user = await User.findByPk(userId);
+    // get the updated user with profile
+    const user = await User.findByPk(userId, {
+      attributes: {
+        include: ['email', 'createdAt', 'updatedAt']
+      },
+      include: [{
+        model: UserProfile,
+        attributes: ['aboutMe', 'sportIcon']
+      }]
+    });
 
     const safeUser = {
       id: user.id,

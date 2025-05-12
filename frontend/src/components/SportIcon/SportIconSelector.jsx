@@ -1,14 +1,14 @@
 import { useState, useRef, useEffect } from "react";
-// import { useDispatch } from "react-redux";
 import SportIcon from "./SportIcon";
 import "./SportIconSelector.css";
 
-
 function SportIconSelector({ user, onSelectIcon }) {
   const [showDropdown, setShowDropdown] = useState(false);
-  const [selectedIcon, setSelectedIcon] = useState(user?.sportIcon || "baseball");
+  const [selectedIcon, setSelectedIcon] = useState(user?.sportIcon || "usercircle");
   const dropdownRef = useRef(null);
-  // const dispatch = useDispatch();
+
+  console.log("SportIconSelector rendered with user:", user);
+  console.log("Initial selectedIcon:", selectedIcon);
 
   // available sport icons
   const sportIconOptions = [
@@ -39,8 +39,12 @@ function SportIconSelector({ user, onSelectIcon }) {
 
   // handle icon selection
   const handleSelectIcon = (iconId) => {
+    console.log("Icon selected:", iconId);
     setSelectedIcon(iconId);
-    setShowDropdown(false);
+
+    // IMPORTANT: Don't close the dropdown when selecting an icon
+    // Remove or comment out this line:
+    // setShowDropdown(false);
 
     if (onSelectIcon) {
       onSelectIcon(iconId);
@@ -63,6 +67,14 @@ function SportIconSelector({ user, onSelectIcon }) {
     };
   }, [showDropdown]);
 
+  // update the selected icon when user prop changes
+  useEffect(() => {
+    if (user && user.sportIcon) {
+      console.log("User sportIcon changed to:", user.sportIcon);
+      setSelectedIcon(user.sportIcon);
+    }
+  }, [user]);
+
   return (
     <div className="sport-icon-selector" ref={dropdownRef}>
       <button
@@ -70,7 +82,7 @@ function SportIconSelector({ user, onSelectIcon }) {
         onClick={toggleDropdown}
         aria-label="Select a sport icon"
       >
-        <SportIcon sport={selectedIcon} size="1.5em" />
+        <SportIcon sporticon={selectedIcon} size="1.5em" />
         <span className="icon-name">{sportIconOptions.find(option => option.id === selectedIcon)?.name}</span>
       </button>
 
@@ -85,7 +97,7 @@ function SportIconSelector({ user, onSelectIcon }) {
                 onClick={() => handleSelectIcon(option.id)}
                 title={option.name}
               >
-                <SportIcon sport={option.id} size="1.5em" />
+                <SportIcon sporticon={option.id} size="1.5em" />
               </div>
             ))}
           </div>

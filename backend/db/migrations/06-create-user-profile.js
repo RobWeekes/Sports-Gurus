@@ -27,6 +27,7 @@ module.exports = {
       },
       aboutMe: {
         type: Sequelize.STRING(300),
+        defaultValue: "Sport Nut"
       },
       sportIcon: {
         type: Sequelize.STRING(12),

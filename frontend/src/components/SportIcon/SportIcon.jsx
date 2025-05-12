@@ -28,8 +28,8 @@ function SportIcon({ sporticon, size = "1em", color = "currentColor" }) {
   // Return the icon with the specified size and color
   return (
     <div style={{ fontSize: size, color: color }}>
-      {sportIcons[sporticon] || sportIcons["baseball"]}
-      {/* default to baseball if sport not found */}
+      {sportIcons[sporticon] || sportIcons["usercircle"]}
+      {/* default to usercircle if sport not found */}
     </div>
   );
 }

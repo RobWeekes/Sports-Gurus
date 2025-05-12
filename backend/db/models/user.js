@@ -44,13 +44,13 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "CASCADE",
       });
 
-      // Other associations for User model
-
       // User has one UserProfile
-      // User.hasOne(models.UserProfile, {
-      //   foreignKey: "user_id",
-      //   onDelete: "CASCADE",
-      // });
+      User.hasOne(models.UserProfile, {
+        foreignKey: "user_id",
+        onDelete: "CASCADE",
+      });
+
+      // Other associations for User model
 
       // User.hasMany(models.Comment, {
       //   foreignKey: "user_id",

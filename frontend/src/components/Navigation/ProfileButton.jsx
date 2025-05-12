@@ -58,7 +58,7 @@ function ProfileButton({ user }) {
   return (
     <>
       <button onClick={toggleMenu} className="profile-button">
-        <SportIcon sport={user.sportIcon || "usercircle"} size="1.5em" />
+        <SportIcon sporticon={user.sportIcon || "usercircle"} size="1.5em" />
       </button>
       <ul className={ulClassName} ref={ulRef}>
         <li>{user.userName}</li>
@@ -79,7 +79,7 @@ function ProfileButton({ user }) {
 //     <>
 //       <button onClick={toggleMenu}>
 //         {user.sportIcon ? (
-//             <SportIcon sport={user.sportIcon} size="2em" />
+//             <SportIcon sporticon={user.sportIcon} size="2em" />
 //         ) : (
 //           <FaUserCircle />
 //         )}

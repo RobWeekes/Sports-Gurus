@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SportIconSelector from "../SportIcon/SportIconSelector";
+import SportIcon from "../SportIcon/SportIcon";
 import { updateProfile } from "../../store/session";
 import "./ProfilePage.css";
 
@@ -23,12 +24,14 @@ function ProfilePage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Submitting form with sportIcon:", sportIcon);
 
     try {
-      await dispatch(updateProfile(sessionUser.id, {
+      const result = await dispatch(updateProfile(sessionUser.id, {
         aboutMe,
         sportIcon
       }));
+      console.log("Profile update result:", result);
 
       setMessage("Profile updated successfully!");
       setIsEditing(false);
@@ -37,11 +40,14 @@ function ProfilePage() {
         setMessage("");
       }, 3000);
     } catch (error) {
+      console.error("Error updating profile:", error);
       setMessage("Failed to update profile. Please try again.");
     }
   };
 
+  // only update local state when an icon is selected
   const handleSelectIcon = (iconId) => {
+    console.log("Selected icon:", iconId);
     setSportIcon(iconId);
   };
 
@@ -58,7 +64,8 @@ function ProfilePage() {
           <div className="form-group">
             <label htmlFor="sportIcon">Choose Your Profile Icon</label>
             <SportIconSelector
-              user={sessionUser}
+              // pass the local sportIcon state
+              user={{ ...sessionUser, sportIcon }}
               onSelectIcon={handleSelectIcon}
             />
           </div>
@@ -95,7 +102,8 @@ function ProfilePage() {
         <div className="profile-display">
           <div className="profile-header">
             <div className="user-icon">
-              <SportIconSelector user={sessionUser} onSelectIcon={null} />
+              {/* display the sport icon */}
+              <SportIcon sporticon={sportIcon} size="3em" />
             </div>
             <div className="user-info">
               <h2>{sessionUser.firstName} {sessionUser.lastName}</h2>
