@@ -7,6 +7,7 @@ import { csrfFetch } from "./csrf";
 // action creators - to log in / log out
 const SET_USER = "session/setUser";
 const REMOVE_USER = "session/removeUser";
+const UPDATE_USER_PROFILE = "session/updateUserProfile";
 
 const setUser = (user) => {
   return {
@@ -21,6 +22,13 @@ const removeUser = () => {
   };
 };
 
+const updateProfile = (user) => {
+  return {
+    type: UPDATE_USER_PROFILE,
+    payload: user
+  }
+}
+
 const initialState = { user: null };
 
 const sessionReducer = (state = initialState, action) => {
@@ -29,12 +37,14 @@ const sessionReducer = (state = initialState, action) => {
       return { ...state, user: action.payload };
     case REMOVE_USER:
       return { ...state, user: null };
+    case UPDATE_USER_PROFILE:
+      return { ...state, user: { ...state.user, ...action.payload } };
     default:
       return state;
   }
 };
 
-// thunk action creator: calls GET /api/session
+// Get Session thunk action creator: calls GET /api/session
 export const restoreUser = () => async (dispatch) => {
   const response = await csrfFetch("/api/session");
   const data = await response.json();
@@ -86,6 +96,18 @@ export const logout = () => async (dispatch) => {
   }); // call backend API to log out, then remove session user
   dispatch(removeUser());
   return response;
+};
+
+// Update Profile thunk creator: calls PATCH /api/users/profile
+export const updateUserProfile = (userId, profileData) => async (dispatch) => {
+  const response = await csrfFetch(`/api/users/${userId}/profile`, {
+    method: "PUT",
+    body: JSON.stringify(profileData)
+  });
+
+  const data = await response.json();
+  dispatch(updateProfile(data.user));
+  return data;
 };
 
 

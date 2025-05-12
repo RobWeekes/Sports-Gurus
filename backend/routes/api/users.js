@@ -69,8 +69,61 @@ router.post("/", validateSignup, async (req, res) => {
   });
 });
 
-// to test new valid user signup, run in browser devtools:
 
+// Update Profile
+// PUT /api/users/:userId/profile
+router.put("/:userId/profile", requireAuth, async (req, res) => {
+  const { userId } = req.params;
+  const { aboutMe, sportIcon } = req.body;
+
+  // ensure user can only update their own profile
+  if (req.user.id !== parseInt(userId)) {
+    return res.status(403).json({ message: "Forbidden" });
+  }
+
+  // find or create the user profile
+  const userProfile = await UserProfile.findOne({
+    where: { user_id: userId }
+  });
+
+  if (!userProfile) {
+    userProfile = await UserProfile.create({
+      user_id: userId,
+      aboutMe: aboutMe || "",
+      sportIcon: sportIcon || "usercircle"
+    });
+  } else {
+    await userProfile.update({
+      aboutMe: aboutMe !== undefined ?
+        aboutMe : userProfile.aboutMe,
+      sportIcon: sportIcon !== undefined ?
+        sportIcon : userProfile.sportIcon
+    });
+  }
+
+  // return updated user with profile info
+  const user = await User.findByPk(userId, {
+    attributes: {
+      include: ["email", "createdAt", "updatedAt"]
+    }
+  });
+
+  const safeUser = {
+    id: user.id,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+    userName: user.userName,
+    aboutMe: userProfile.aboutMe,
+    sportIcon: userProfile.sportIcon
+  };
+
+  return res.json({ user: safeUser });
+})
+
+
+
+// to test new valid user signup, run in browser devtools:
 // fetch("/api/users", {
 //   method: "POST",
 //   headers: {

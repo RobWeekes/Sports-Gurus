@@ -1,0 +1,68 @@
+.sport-icon-selector {
+  position: relative;
+  display: inline-block;
+}
+
+.selected-icon-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background-color: #f8f9fa;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  cursor: pointer;
+  min-width: 150px;
+}
+
+.selected-icon-button:hover {
+  background-color: #e9ecef;
+}
+
+.icon-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  margin-top: 4px;
+  padding: 12px;
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  width: 250px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.icon-option {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  background-color: #f8f9fa;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.icon-option:hover {
+  background-color: #e9ecef;
+  transform: scale(1.05);
+}
+
+.icon-option.selected {
+  background-color: #d1e7ff;
+  border-color: #0d6efd;
+}
+
+.icon-name {
+  font-size: 0.9em;
+}

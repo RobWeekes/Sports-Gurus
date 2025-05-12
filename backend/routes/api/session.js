@@ -6,6 +6,7 @@ const { Op } = require("sequelize");
 // Session authenticators
 const { setTokenCookie, restoreUser } = require("../../utils/auth");
 const { User } = require("../../db/models");
+const { UserProfile } = require("../../db/models");
 const bcrypt = require("bcryptjs");
 // Validating login request body
 const { check } = require("express-validator");
@@ -75,16 +76,24 @@ router.delete("/", (_req, res) => {
 
 // Get Current User
 // GET /api/session
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
   const { user } = req;
   if (user) {
+    // get user profile
+    const userProfile = await UserProfile.findOne({
+      where: { user_id: user.id }
+    });
+
     const safeUser = {
       id: user.id,
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
       userName: user.userName,
+      aboutMe: userProfile ? userProfile.aboutMe : null,
+      sportIcon: userProfile ? userProfile.sportIcon : "usercircle"
     };
+
     return res.json({
       user: safeUser
     });
