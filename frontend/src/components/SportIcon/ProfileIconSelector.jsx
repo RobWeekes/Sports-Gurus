@@ -1,14 +1,12 @@
 import { useState, useRef, useEffect } from "react";
 import SportIcon from "./SportIcon";
-import "./SportIconSelector.css";
+import "./ProfileIconSelector.css"; // Reuse the same CSS
 
-function SportIconSelector({ user, onSelectIcon }) {
+
+function ProfileIconSelector({ currentIcon, onSelectIcon }) {
   const [showDropdown, setShowDropdown] = useState(false);
-  const [selectedIcon, setSelectedIcon] = useState(user?.sportIcon || "usercircle");
+  const [selectedIcon, setSelectedIcon] = useState(currentIcon || "usercircle");
   const dropdownRef = useRef(null);
-
-  console.log("SportIconSelector rendered with user:", user);
-  console.log("Initial selectedIcon:", selectedIcon);
 
   // available sport icons
   const sportIconOptions = [
@@ -38,18 +36,23 @@ function SportIconSelector({ user, onSelectIcon }) {
   };
 
   // handle icon selection
-  const handleSelectIcon = (iconId) => {
-    console.log("Icon selected:", iconId);
+  const handleSelectIcon = (iconId, e) => {
+    if (e) e.stopPropagation();
     setSelectedIcon(iconId);
-
-    // IMPORTANT: Don't close the dropdown when selecting an icon
-    // Remove or comment out this line:
-    // setShowDropdown(false);
 
     if (onSelectIcon) {
       onSelectIcon(iconId);
     }
+
+    // Explicitly NOT closing the dropdown here
   };
+
+  // Update when prop changes
+  useEffect(() => {
+    if (currentIcon) {
+      setSelectedIcon(currentIcon);
+    }
+  }, [currentIcon]);
 
   // close dropdown when clicking outside
   useEffect(() => {
@@ -67,20 +70,13 @@ function SportIconSelector({ user, onSelectIcon }) {
     };
   }, [showDropdown]);
 
-  // update the selected icon when user prop changes
-  useEffect(() => {
-    if (user && user.sportIcon) {
-      console.log("User sportIcon changed to:", user.sportIcon);
-      setSelectedIcon(user.sportIcon);
-    }
-  }, [user]);
-
   return (
     <div className="sport-icon-selector" ref={dropdownRef}>
       <button
         className="selected-icon-button"
         onClick={toggleDropdown}
         aria-label="Select a sport icon"
+        type="button" // Prevent form submission
       >
         <SportIcon sporticon={selectedIcon} size="1.5em" />
         <span className="icon-name">{sportIconOptions.find(option => option.id === selectedIcon)?.name}</span>
@@ -94,7 +90,7 @@ function SportIconSelector({ user, onSelectIcon }) {
               <div
                 key={option.id}
                 className={`icon-option ${selectedIcon === option.id ? "selected" : ""}`}
-                onClick={() => handleSelectIcon(option.id)}
+                onClick={(e) => handleSelectIcon(option.id, e)}
                 title={option.name}
               >
                 <SportIcon sporticon={option.id} size="1.5em" />
@@ -109,4 +105,4 @@ function SportIconSelector({ user, onSelectIcon }) {
 
 
 
-export default SportIconSelector;
+export default ProfileIconSelector;

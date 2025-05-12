@@ -3,6 +3,7 @@ import { MdSportsFootball, MdOutlineSportsFootball, MdOutlineSportsBasketball, M
 import { FaFootballBall, FaBasketballBall, FaBaseballBall, FaHockeyPuck, FaGolfBall } from "react-icons/fa";
 import { GiBoxingGlove, GiCricketBat } from "react-icons/gi";
 
+
 function SportIcon({ sporticon, size = "1em", color = "currentColor" }) {
   // map sport names to icons
   const sportIcons = {
@@ -25,7 +26,7 @@ function SportIcon({ sporticon, size = "1em", color = "currentColor" }) {
     "usercircle": <FaUserCircle />
   };
 
-  // Return the icon with the specified size and color
+  // return the icon with the specified size and color
   return (
     <div style={{ fontSize: size, color: color }}>
       {sportIcons[sporticon] || sportIcons["usercircle"]}
@@ -33,5 +34,7 @@ function SportIcon({ sporticon, size = "1em", color = "currentColor" }) {
     </div>
   );
 }
+
+
 
 export default SportIcon;

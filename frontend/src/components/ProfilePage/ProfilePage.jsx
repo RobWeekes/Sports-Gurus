@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import SportIconSelector from "../SportIcon/SportIconSelector";
+import ProfileIconSelector from "../SportIcon/ProfileIconSelector"; //
 import SportIcon from "../SportIcon/SportIcon";
 import { updateProfile } from "../../store/session";
 import "./ProfilePage.css";
@@ -63,9 +63,8 @@ function ProfilePage() {
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="sportIcon">Choose Your Profile Icon</label>
-            <SportIconSelector
-              // pass the local sportIcon state
-              user={{ ...sessionUser, sportIcon }}
+            <ProfileIconSelector
+              currentIcon={sportIcon}
               onSelectIcon={handleSelectIcon}
             />
           </div>
@@ -102,7 +101,7 @@ function ProfilePage() {
         <div className="profile-display">
           <div className="profile-header">
             <div className="user-icon">
-              {/* display the sport icon */}
+              {/* display profile icon next to user info */}
               <SportIcon sporticon={sportIcon} size="3em" />
             </div>
             <div className="user-info">
