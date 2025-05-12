@@ -5,8 +5,7 @@ const router = express.Router();
 const { Op } = require("sequelize");
 // Session authenticators
 const { setTokenCookie, restoreUser } = require("../../utils/auth");
-const { User } = require("../../db/models");
-const { UserProfile } = require("../../db/models");
+const { User, UserProfile } = require("../../db/models");
 const bcrypt = require("bcryptjs");
 // Validating login request body
 const { check } = require("express-validator");

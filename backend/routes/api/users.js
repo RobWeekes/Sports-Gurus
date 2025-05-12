@@ -5,7 +5,7 @@ const router = express.Router();
 // // Session authenticators
 const bcrypt = require("bcryptjs");
 const { setTokenCookie, requireAuth } = require("../../utils/auth");
-const { User } = require("../../db/models");
+const { User, UserProfile } = require("../../db/models");
 // Validating signup request body
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
@@ -81,45 +81,46 @@ router.put("/:userId/profile", requireAuth, async (req, res) => {
     return res.status(403).json({ message: "Forbidden" });
   }
 
-  // find or create the user profile
-  const userProfile = await UserProfile.findOne({
-    where: { user_id: userId }
-  });
-
-  if (!userProfile) {
-    userProfile = await UserProfile.create({
-      user_id: userId,
-      aboutMe: aboutMe || "",
-      sportIcon: sportIcon || "usercircle"
+  try {
+    // find or create the user profile
+    const userProfile = await UserProfile.findOne({
+      where: { user_id: userId }
     });
-  } else {
-    await userProfile.update({
-      aboutMe: aboutMe !== undefined ?
-        aboutMe : userProfile.aboutMe,
-      sportIcon: sportIcon !== undefined ?
-        sportIcon : userProfile.sportIcon
-    });
-  }
 
-  // return updated user with profile info
-  const user = await User.findByPk(userId, {
-    attributes: {
-      include: ["email", "createdAt", "updatedAt"]
+    if (!userProfile) {
+      userProfile = await UserProfile.create({
+        user_id: userId,
+        aboutMe: aboutMe || "",
+        sportIcon: sportIcon || "usercircle"
+      });
+    } else {
+      await userProfile.update({
+        aboutMe: aboutMe !== undefined ?
+          aboutMe : userProfile.aboutMe,
+        sportIcon: sportIcon !== undefined ?
+          sportIcon : userProfile.sportIcon
+      });
     }
-  });
 
-  const safeUser = {
-    id: user.id,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email,
-    userName: user.userName,
-    aboutMe: userProfile.aboutMe,
-    sportIcon: userProfile.sportIcon
-  };
+    // return updated user with profile info
+    const user = await User.findByPk(userId);
 
-  return res.json({ user: safeUser });
-})
+    const safeUser = {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      userName: user.userName,
+      aboutMe: userProfile.aboutMe,
+      sportIcon: userProfile.sportIcon
+    };
+
+    return res.json({ user: safeUser });
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+});
 
 
 

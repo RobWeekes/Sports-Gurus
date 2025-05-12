@@ -1,0 +1,126 @@
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import SportIconSelector from "../SportIcon/SportIconSelector";
+import { updateProfile } from "../../store/session";
+import "./ProfilePage.css";
+
+
+function ProfilePage() {
+  const dispatch = useDispatch();
+  const sessionUser = useSelector(state => state.session.user);
+  const [aboutMe, setAboutMe] = useState(sessionUser?.aboutMe || "");
+  const [sportIcon, setSportIcon] = useState(sessionUser?.sportIcon || "usercircle");
+  const [isEditing, setIsEditing] = useState(false);
+  const [message, setMessage] = useState("");
+
+  // retrieve aboutMe, sportIcon from logged in user session
+  useEffect(() => {
+    if (sessionUser) {
+      setAboutMe(sessionUser.aboutMe || "");
+      setSportIcon(sessionUser.sportIcon || "usercircle");
+    }
+  }, [sessionUser]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      await dispatch(updateProfile(sessionUser.id, {
+        aboutMe,
+        sportIcon
+      }));
+
+      setMessage("Profile updated successfully!");
+      setIsEditing(false);
+
+      setTimeout(() => {
+        setMessage("");
+      }, 3000);
+    } catch (error) {
+      setMessage("Failed to update profile. Please try again.");
+    }
+  };
+
+  const handleSelectIcon = (iconId) => {
+    setSportIcon(iconId);
+  };
+
+  if (!sessionUser) return null;
+
+  return (
+    <div className="profile-page">
+      <h1>My Profile</h1>
+
+      {message && <div className="profile-message">{message}</div>}
+
+      {isEditing ? (
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="sportIcon">Choose Your Profile Icon</label>
+            <SportIconSelector
+              user={sessionUser}
+              onSelectIcon={handleSelectIcon}
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="aboutMe">About Me</label>
+            <textarea
+              id="aboutMe"
+              value={aboutMe}
+              onChange={(e) => setAboutMe(e.target.value)}
+              maxLength={300}
+              placeholder="Tell us about yourself (max 300 characters)"
+              rows={5}
+            />
+            <div className="char-count">{aboutMe.length}/300</div>
+          </div>
+
+          <div className="button-group">
+            <button type="submit" className="save-button">Save Changes</button>
+            <button
+              type="button"
+              className="cancel-button"
+              onClick={() => {
+                setIsEditing(false);
+                setAboutMe(sessionUser.aboutMe || "");
+                setSportIcon(sessionUser.sportIcon || "usercircle");
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      ) : (
+        <div className="profile-display">
+          <div className="profile-header">
+            <div className="user-icon">
+              <SportIconSelector user={sessionUser} onSelectIcon={null} />
+            </div>
+            <div className="user-info">
+              <h2>{sessionUser.firstName} {sessionUser.lastName}</h2>
+              <p>{sessionUser.userName}</p>
+              <p>{sessionUser.email}</p>
+            </div>
+          </div>
+
+          <div className="about-section">
+            <h3>About Me</h3>
+            <p>{aboutMe || "Not provided yet."}</p>
+          </div>
+
+          <button
+            className="edit-button"
+            onClick={() => setIsEditing(true)}
+          >
+            Edit Profile
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+
+
+export default ProfilePage;

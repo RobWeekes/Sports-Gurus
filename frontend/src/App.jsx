@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import LoginFormPage from "./components/LoginFormPage/LoginFormPage";
 import SignupFormPage from "./components/SignupFormPage/SignupFormPage";
 import Navigation from "./components/Navigation/Navigation";
+import ProfilePage from "./components/ProfilePage/ProfilePage";
 import * as sessionActions from "./store/session";
 
 
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
       {
         path: "/signup",
         element: <SignupFormPage />
+      },
+      {
+        path: "/profile",
+        element: <ProfilePage />
       },
     ]
   }

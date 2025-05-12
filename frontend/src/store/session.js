@@ -22,10 +22,11 @@ const removeUser = () => {
   };
 };
 
-const updateProfile = (user) => {
+// changed (user) to (profileData)
+const updateUserProfile  = (profileData) => {
   return {
     type: UPDATE_USER_PROFILE,
-    payload: user
+    payload: profileData
   }
 }
 
@@ -99,14 +100,14 @@ export const logout = () => async (dispatch) => {
 };
 
 // Update Profile thunk creator: calls PATCH /api/users/profile
-export const updateUserProfile = (userId, profileData) => async (dispatch) => {
+export const updateProfile = (userId, profileData) => async (dispatch) => {
   const response = await csrfFetch(`/api/users/${userId}/profile`, {
     method: "PUT",
     body: JSON.stringify(profileData)
   });
 
   const data = await response.json();
-  dispatch(updateProfile(data.user));
+  dispatch(updateUserProfile(data.user));
   return data;
 };
 
