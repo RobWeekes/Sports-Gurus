@@ -49,12 +49,19 @@ router.post("/", validateLogin, async (req, res, next) => {
     return next(err);
   }
 
+  // retrieve user"s profile data
+  const userProfile = await UserProfile.findOne({
+    where: { user_id: user.id }
+  });
+
   const safeUser = {
     id: user.id,
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,
     userName: user.userName,
+    aboutMe: userProfile ? userProfile.aboutMe : null,
+    sportIcon: userProfile ? userProfile.sportIcon : "usercircle"
   };
 
   await setTokenCookie(res, safeUser);
@@ -78,7 +85,7 @@ router.delete("/", (_req, res) => {
 router.get("/", async (req, res) => {
   const { user } = req;
   if (user) {
-    // get user profile
+    // get user profile data
     const userProfile = await UserProfile.findOne({
       where: { user_id: user.id }
     });
@@ -93,10 +100,12 @@ router.get("/", async (req, res) => {
       sportIcon: userProfile ? userProfile.sportIcon : "usercircle"
     };
 
+    await setTokenCookie(res, safeUser);
+
     return res.json({
       user: safeUser
     });
-  } else return res.json({ user: null });
+  } // else return res.json({ user: null });
 })
 
 

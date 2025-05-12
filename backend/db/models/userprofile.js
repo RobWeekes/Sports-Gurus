@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     aboutMe: {
       type: DataTypes.STRING(300),
+      defaultValue: "Sport Nut",
       validate: {
         len: [0, 300]
       }
