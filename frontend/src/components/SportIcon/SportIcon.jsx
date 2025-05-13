@@ -1,7 +1,8 @@
-import { FaUserCircle } from "react-icons/fa";
-import { MdSportsFootball, MdOutlineSportsFootball, MdOutlineSportsBasketball, MdOutlineSportsBaseball, MdSportsBaseball, MdSportsHockey, MdSportsSoccer, MdSportsTennis, MdSportsVolleyball } from "react-icons/md";
-import { FaFootballBall, FaBasketballBall, FaBaseballBall, FaHockeyPuck, FaGolfBall } from "react-icons/fa";
+import { FaUserCircle, FaFootballBall, FaBasketballBall, FaBaseballBall, FaHockeyPuck, FaGolfBall } from "react-icons/fa";
+import { FcSportsMode } from "react-icons/fc";
 import { GiBoxingGlove, GiCricketBat } from "react-icons/gi";
+import { IoCarSportSharp } from "react-icons/io5";
+import { MdSportsFootball, MdOutlineSportsFootball, MdSportsBasketball, MdOutlineSportsBasketball, MdOutlineSportsBaseball, MdSportsBaseball, MdSportsHockey, MdSportsSoccer, MdSportsTennis, MdSportsVolleyball, MdOutlineSportsVolleyball, MdOutlineSportsCricket, MdSportsMma, MdOutlineSportsMma, MdSportsRugby, MdOutlineSportsRugby, MdOutlineSportsScore, MdSportsMartialArts, MdSportsGolf, MdSportsMotorsports, MdSportsGymnastics, MdOutlineSportsKabaddi } from "react-icons/md";
 
 
 function SportIcon({ sporticon, size = "1em", color = "currentColor" }) {
@@ -11,19 +12,34 @@ function SportIcon({ sporticon, size = "1em", color = "currentColor" }) {
     "football2": <MdOutlineSportsFootball />,
     "football3": <MdSportsFootball />,
     "basketball": <FaBasketballBall />,
-    "basketball2": <MdOutlineSportsBasketball />,
+    "basketball2": <MdSportsBasketball />,
+    "basketball3": <MdOutlineSportsBasketball />,
     "baseball": <FaBaseballBall />,
     "baseball2": <MdOutlineSportsBaseball />,
     "baseball3": <MdSportsBaseball />,
-    "hockey": <FaHockeyPuck />,
-    "hockey2": <MdSportsHockey />,
-    "soccer": <MdSportsSoccer />,
-    "tennis": <MdSportsTennis />,
-    "volleyball": <MdSportsVolleyball />,
-    "golf": <FaGolfBall />,
     "boxing": <GiBoxingGlove />,
     "cricket": <GiCricketBat />,
-    "usercircle": <FaUserCircle />
+    "cricket2": <MdOutlineSportsCricket />,
+    "golf": <FaGolfBall />,
+    "golf2": <MdSportsGolf />,
+    "gymnastics": <MdSportsGymnastics />,
+    "hockey": <FaHockeyPuck />,
+    "hockey2": <MdSportsHockey />,
+    "martialarts": <MdSportsMartialArts />,
+    "mma": <MdSportsMma />,
+    "mma2": <MdOutlineSportsMma />,
+    "motorsports": <MdSportsMotorsports />,
+    "nascar": <IoCarSportSharp />,
+    "racing": <MdOutlineSportsScore />,
+    "rugby": <MdSportsRugby />,
+    "rugby2": <MdOutlineSportsRugby />,
+    "soccer": <MdSportsSoccer />,
+    "tennis": <MdSportsTennis />,
+    "track": <FcSportsMode />,
+    "usercircle": <FaUserCircle />,
+    "volleyball": <MdSportsVolleyball />,
+    "volleyball2": <MdOutlineSportsVolleyball />,
+    "wrestling": <MdOutlineSportsKabaddi />,
   };
 
   // return the icon with the specified size and color

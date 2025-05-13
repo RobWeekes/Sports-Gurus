@@ -22,15 +22,15 @@ function ProfileIconSelector({ currentIcon, onSelectIcon }) {
     { id: "baseball3", name: "Baseball Pro" },
     { id: "basketball", name: "Basketball" },
     { id: "basketball2", name: "Basketball Alt" },
+    { id: "boxing", name: "Boxing" },
+    { id: "cricket", name: "Cricket" },
+    { id: "golf", name: "Golf" },
     { id: "hockey", name: "Hockey" },
     { id: "hockey2", name: "Hockey Alt" },
+    { id: "rugby", name: "Rugby" },
     { id: "soccer", name: "Soccer" },
     { id: "tennis", name: "Tennis" },
     { id: "volleyball", name: "Volleyball" },
-    { id: "golf", name: "Golf" },
-    { id: "boxing", name: "Boxing" },
-    { id: "cricket", name: "Cricket" },
-    { id: "rugby", name: "Rugby" },
   ];
 
   // toggle dropdown visibility
