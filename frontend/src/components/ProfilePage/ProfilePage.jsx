@@ -45,13 +45,20 @@ function ProfilePage() {
     }
   };
 
-  // only update local state when an icon is selected
-  const handleSelectIcon = (iconId) => {
+  // only update local state when an icon is selected, then when user clicks out of icon menu, dispatch the last clicked icon to store & db
+  const handleSelectIcon = (iconId, isTemporary) => {
     console.log("Selected icon:", iconId);
-    setSportIcon(iconId);
-  };
+    setSportIcon(iconId);   // updates the local component state
+    // only dispatch if this is not a temporary update
+    if (!isTemporary && sessionUser && sessionUser.id) {
+      dispatch(updateProfile(sessionUser.id, {
+        sportIcon: iconId
+      }));
+    }
+  }; // this should batch the API calls, only sending the final selection to the server when the user clicks outside the dropdown - while also providing immediate visual feedback in the user"s local UI.
 
   if (!sessionUser) return null;
+
 
   return (
     <div className="profile-page">

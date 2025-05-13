@@ -22,15 +22,17 @@ const removeUser = () => {
   };
 };
 
-// changed (user) to (profileData)
+// Update Profile thunk: try dispatching "setUser" instead of "updateUserProfile" ?
 const updateUserProfile = (profileData) => {
+  console.log("updateUserProfile action creator called with:", profileData);
   return {
     type: UPDATE_USER_PROFILE,
     payload: profileData
-  }
-}
+  };
+};
 
 const initialState = { user: null };
+
 
 // SESSION REDUCER
 const sessionReducer = (state = initialState, action) => {
@@ -46,6 +48,7 @@ const sessionReducer = (state = initialState, action) => {
       return state;
   }
 };
+
 
 // Get Session thunk action creator: calls GET /api/session
 export const restoreUser = () => async (dispatch) => {
@@ -101,11 +104,11 @@ export const logout = () => async (dispatch) => {
   return response;
 };
 
-// Update Profile thunk creator: calls PATCH /api/users/profile
+// Update Profile thunk creator: calls PUT /api/users/:userId/profile
 export const updateProfile = (userId, profileData) => async (dispatch) => {
   console.log("updateProfile called with:", userId, profileData);
 
-  try {
+  try {   // do I need const userId = req.params.user ?
     const response = await csrfFetch(`/api/users/${userId}/profile`, {
       method: "PUT",
       body: JSON.stringify(profileData)
@@ -114,15 +117,20 @@ export const updateProfile = (userId, profileData) => async (dispatch) => {
     const data = await response.json();
     console.log("Profile update response:", data);
 
+    // dispatch the user object
     if (data.user) {
       dispatch(updateUserProfile(data.user));
-    }
+      // dispatch(setUser(data.user));
+      // use setUser instead of updateUserProfile ? this
+    } // might help ensure the entire user object is updated consistently
     return data;
+
   } catch (error) {
     console.error("Error in updateProfile thunk:", error);
     throw error;
   }
 };
+
 
 
 export default sessionReducer;

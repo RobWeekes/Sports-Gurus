@@ -1,9 +1,13 @@
 import { useState, useRef, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import SportIcon from "./SportIcon";
+import * as sessionActions from "../../store/session";
 import "./ProfileIconSelector.css"; // Reuse the same CSS
 
 
 function ProfileIconSelector({ currentIcon, onSelectIcon }) {
+  const dispatch = useDispatch();
+  const sessionUser = useSelector(state => state.session.user);
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedIcon, setSelectedIcon] = useState(currentIcon || "usercircle");
   const dropdownRef = useRef(null);
@@ -38,16 +42,17 @@ function ProfileIconSelector({ currentIcon, onSelectIcon }) {
   // handle icon selection
   const handleSelectIcon = (iconId, e) => {
     if (e) e.stopPropagation();
+
+    // update local state immediately for UI feedback
     setSelectedIcon(iconId);
 
+    // notify parent of temporary UI updates
     if (onSelectIcon) {
-      onSelectIcon(iconId);
+      onSelectIcon(iconId, true); // *pass true to indicate this is a temporary update
     }
-
-    // Explicitly NOT closing the dropdown here
   };
 
-  // Update when prop changes
+  // update when prop changes
   useEffect(() => {
     if (currentIcon) {
       setSelectedIcon(currentIcon);
@@ -58,17 +63,55 @@ function ProfileIconSelector({ currentIcon, onSelectIcon }) {
   useEffect(() => {
     if (!showDropdown) return;
 
-    const handleClickOutside = (event) => {
+    const handleClickOutside = async (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setShowDropdown(false);
+
+        // *batch sending API calls
+        if (selectedIcon !== currentIcon && sessionUser && sessionUser.id) {
+          dispatch(sessionActions.updateProfile(sessionUser.id, {
+            sportIcon: selectedIcon
+          })).then(result => {
+            console.log("ProfileIconSelector -> handleClickOutside -> Profile update completed:", result);
+            // notify parent with final icon update
+            if (onSelectIcon) {
+              onSelectIcon(selectedIcon, false); // *pass false to indicate this is the final update
+            }
+          });
+        }
+
+        // // working code, but sends API call with every icon click:
+        // // only dispatch if the icon has changed and we have a user ID
+        // if(selectedIcon !== currentIcon && sessionUser && sessionUser.id) {
+        //   console.log("Auto-saving icon:", selectedIcon);
+
+        //   try {
+        //     // use await to ensure the response is handled
+        //     const result = await dispatch(sessionActions.updateProfile(sessionUser.id, {
+        //       sportIcon: selectedIcon
+        //     }));
+
+        //     console.log("Profile update result:", result);
+
+        //     // force a refresh of the session user
+        //     dispatch(sessionActions.restoreUser());
+
+        //     // force a re-render or update local state if needed
+        //     if (onSelectIcon) {
+        //       onSelectIcon(selectedIcon);
+        //     }
+        //   } catch (error) {
+        //     console.error("Error updating profile icon:", error);
+        //   }
+        // }
       }
     };
 
     document.addEventListener("click", handleClickOutside);
     return () => {
       document.removeEventListener("click", handleClickOutside);
-    };
-  }, [showDropdown]);
+    };  // useEffect dependency array
+  }, [showDropdown, dispatch, selectedIcon, currentIcon, sessionUser, onSelectIcon]);
 
   return (
     <div className="sport-icon-selector" ref={dropdownRef}>
@@ -76,7 +119,7 @@ function ProfileIconSelector({ currentIcon, onSelectIcon }) {
         className="selected-icon-button"
         onClick={toggleDropdown}
         aria-label="Select a sport icon"
-        type="button" // Prevent form submission
+        type="button" // prevent form submission
       >
         <SportIcon sporticon={selectedIcon} size="1.5em" />
         <span className="icon-name">{sportIconOptions.find(option => option.id === selectedIcon)?.name}</span>

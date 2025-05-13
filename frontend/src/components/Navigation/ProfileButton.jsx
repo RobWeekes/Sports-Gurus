@@ -1,20 +1,17 @@
 // frontend/src/components/Navigation/ProfileButton.jsx
 
 import { useState, useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from 'react-router-dom';
-// import { FaUserCircle } from "react-icons/fa";
-// import { MdSportsFootball, MdOutlineSportsFootball, MdOutlineSportsBasketball, MdOutlineSportsBaseball, MdSportsBaseball, MdSportsHockey, MdSportsSoccer } from "react-icons/md";
-// import { FaFootballBall, FaBasketballBall, FaBaseballBall, FaHockeyPuck, FaGolfBall } from "react-icons/fa";
-// import { GiBoxingGlove, GiCricketBat } from "react-icons/gi";
 import * as sessionActions from "../../store/session";
 import SportIcon from "../SportIcon/SportIcon";
-// import SportIconSelector from "../SportIcon/SportIconSelector";
 import "./ProfileButton.css"
 
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
+  const sessionUser = useSelector(state => state.session.user);
+  console.log("ProfileButton rendering with user:", sessionUser);
 
   // ** beginning of SportIconSelector additions \/ **
   const [showMenu, setShowMenu] = useState(false);
