@@ -65,45 +65,26 @@ function ProfileIconSelector({ currentIcon, onSelectIcon }) {
 
     const handleClickOutside = async (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        console.log("Click outside detected");
         setShowDropdown(false);
+      // // debug the condition values
+      // console.log("selectedIcon:", selectedIcon);
+      // console.log("currentIcon:", currentIcon);
+      // console.log("Are they different?", selectedIcon !== currentIcon);
+      // console.log("sessionUser exists?", !!sessionUser);
+      // console.log("sessionUser.id exists?", sessionUser && !!sessionUser.id);
+      console.log("Auto-saving icon on dropdown close:", selectedIcon);
+      // *batch sending API calls, only dispatch if the icon has changed and we have a user ID
 
-        // *batch sending API calls
-        if (selectedIcon !== currentIcon && sessionUser && sessionUser.id) {
-          dispatch(sessionActions.updateProfile(sessionUser.id, {
-            sportIcon: selectedIcon
-          })).then(result => {
-            console.log("ProfileIconSelector -> handleClickOutside -> Profile update completed:", result);
-            // notify parent with final icon update
-            if (onSelectIcon) {
-              onSelectIcon(selectedIcon, false); // *pass false to indicate this is the final update
-            }
-          });
-        }
-
-        // // working code, but sends API call with every icon click:
-        // // only dispatch if the icon has changed and we have a user ID
-        // if(selectedIcon !== currentIcon && sessionUser && sessionUser.id) {
-        //   console.log("Auto-saving icon:", selectedIcon);
-
-        //   try {
-        //     // use await to ensure the response is handled
-        //     const result = await dispatch(sessionActions.updateProfile(sessionUser.id, {
-        //       sportIcon: selectedIcon
-        //     }));
-
-        //     console.log("Profile update result:", result);
-
-        //     // force a refresh of the session user
-        //     dispatch(sessionActions.restoreUser());
-
-        //     // force a re-render or update local state if needed
-        //     if (onSelectIcon) {
-        //       onSelectIcon(selectedIcon);
-        //     }
-        //   } catch (error) {
-        //     console.error("Error updating profile icon:", error);
-        //   }
-        // }
+        dispatch(sessionActions.updateProfile(sessionUser.id, {
+          sportIcon: selectedIcon
+        })).then(result => {
+          console.log("ProfileIconSelector -> handleClickOutside -> Profile update completed:", result);
+          // notify parent with final icon update
+          if (onSelectIcon) {
+            onSelectIcon(selectedIcon, false); // *pass false to indicate this is the final update
+          }
+        });
       }
     };
 

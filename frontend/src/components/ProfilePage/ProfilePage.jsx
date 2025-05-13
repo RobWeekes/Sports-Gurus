@@ -47,10 +47,13 @@ function ProfilePage() {
 
   // only update local state when an icon is selected, then when user clicks out of icon menu, dispatch the last clicked icon to store & db
   const handleSelectIcon = (iconId, isTemporary) => {
-    console.log("Selected icon:", iconId);
-    setSportIcon(iconId);   // updates the local component state
+    console.log("Selected icon:", iconId, "isTemporary:", isTemporary);
+    // always update local state for immediate UI feedback
+    setSportIcon(iconId);
+
     // only dispatch if this is not a temporary update
     if (!isTemporary && sessionUser && sessionUser.id) {
+      console.log("Dispatching final icon update to store:", iconId);
       dispatch(updateProfile(sessionUser.id, {
         sportIcon: iconId
       }));
