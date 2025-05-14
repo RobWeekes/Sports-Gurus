@@ -3,6 +3,11 @@ import { FcSportsMode } from "react-icons/fc";
 import { GiBoxingGlove, GiCricketBat } from "react-icons/gi";
 import { IoCarSportSharp } from "react-icons/io5";
 import { MdSportsFootball, MdOutlineSportsFootball, MdSportsBasketball, MdOutlineSportsBasketball, MdOutlineSportsBaseball, MdSportsBaseball, MdSportsHockey, MdSportsSoccer, MdSportsTennis, MdSportsVolleyball, MdOutlineSportsVolleyball, MdOutlineSportsCricket, MdSportsMma, MdOutlineSportsMma, MdSportsRugby, MdOutlineSportsRugby, MdOutlineSportsScore, MdSportsMartialArts, MdSportsGolf, MdSportsMotorsports, MdSportsGymnastics, MdOutlineSportsKabaddi } from "react-icons/md";
+// import the FontAwesomeIcon component
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// then import specific icons to use:
+import { faVolleyball } from '@fortawesome/free-solid-svg-icons';
+// render icon using prop: <FontAwesomeIcon icon={faVolleyball} />
 
 
 function SportIcon({ sporticon, size = "1em", color = "currentColor" }) {
@@ -39,6 +44,7 @@ function SportIcon({ sporticon, size = "1em", color = "currentColor" }) {
     "usercircle": <FaUserCircle />,
     "volleyball": <MdSportsVolleyball />,
     "volleyball2": <MdOutlineSportsVolleyball />,
+    "volleyball3": <FontAwesomeIcon icon={faVolleyball} />,
     "wrestling": <MdOutlineSportsKabaddi />,
   };
 

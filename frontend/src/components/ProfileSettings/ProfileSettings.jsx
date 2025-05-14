@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ProfileIconSelector from "../SportIcon/ProfileIconSelector"; //
 import SportIcon from "../SportIcon/SportIcon";
 import { updateProfile } from "../../store/session";
-import "./ProfilePage.css";
+import "./ProfileSettings.css";
 
 
 function ProfilePage() {
@@ -65,7 +65,7 @@ function ProfilePage() {
 
   return (
     <div className="profile-page">
-      <h1>My Profile</h1>
+      <h1>Profile Settings</h1>
 
       {message && <div className="profile-message">{message}</div>}
 

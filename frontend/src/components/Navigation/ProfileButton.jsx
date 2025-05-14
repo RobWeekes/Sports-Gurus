@@ -13,7 +13,6 @@ function ProfileButton({ user }) {
   const sessionUser = useSelector(state => state.session.user);
   console.log("ProfileButton rendering with user:", sessionUser);
 
-  // ** beginning of SportIconSelector additions \/ **
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
 
@@ -35,17 +34,7 @@ function ProfileButton({ user }) {
     return () => document.removeEventListener("click", closeMenu);
   }, [showMenu]);
 
-  // NOT NEEDED?
-  // // handle sport icon selection
-  // const handleIconSelect = (iconId) => {
-  //   // update the user"s profile
-  //   dispatch(sessionActions.updateUserProfile({ sportIcon: iconId }));
-  //   console.log("Selected icon:", iconId);
-  // };
-
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
-
-  // ** end of SportIconSelector additions ^^ **
 
   const logout = (e) => {
     e.preventDefault();
@@ -62,7 +51,7 @@ function ProfileButton({ user }) {
         <li>{user.firstName} {user.lastName}</li>
         <li>{user.email}</li>
         <li>
-          <NavLink to="/profile">My Profile</NavLink>
+          <NavLink to="/profile/settings">My Profile</NavLink>
         </li>
         <li>
           <button onClick={logout}>Log Out</button>
@@ -72,57 +61,6 @@ function ProfileButton({ user }) {
   );
 }
 
-//   return (
-//     <>
-//       <button onClick={toggleMenu}>
-//         {user.sportIcon ? (
-//             <SportIcon sporticon={user.sportIcon} size="2em" />
-//         ) : (
-//           <FaUserCircle />
-//         )}
-//       </button>
-//       {/* <button>
-//         <div style={{ color: "orange", fontSize: "100px" }}>
-//           <MdOutlineSportsFootball />
-//           <MdSportsFootball />
-//           <MdOutlineSportsBasketball />
-//           <MdOutlineSportsBaseball />
-//           <MdSportsBaseball />
-//           <MdSportsHockey />
-//           <MdSportsSoccer />
-
-//           <FaFootballBall />
-//           <FaBasketballBall />
-//           <FaBaseballBall />
-//           <FaHockeyPuck />
-//           <FaGolfBall />
-
-//           <GiBoxingGlove />
-//           <GiCricketBat />
-
-//         </div>
-//       </button> */}
-//       {/* <ul className="profile-dropdown"> */}
-//       {/* SportIconSelector addition \/ */}
-//       <ul className={ulClassName} ref={ulRef}>
-//         <li>{user.userName}</li>
-//         <li>{user.firstName} {user.lastName}</li>
-//         <li>{user.email}</li>
-//         {/* SportIconSelector addition \/ */}
-//         <li className="sport-icon-section">
-//           <h5>Choose Your Icon</h5>
-//           <SportIconSelector
-//             user={user}
-//             onSelectIcon={handleIconSelect}
-//           />
-//         </li>
-//         <li>
-//           <button onClick={logout}>Log Out</button>
-//         </li>
-//       </ul>
-//     </>
-//   );
-// }
 
 
 export default ProfileButton;

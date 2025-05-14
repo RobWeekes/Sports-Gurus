@@ -15,22 +15,38 @@ function ProfileIconSelector({ currentIcon, onSelectIcon }) {
   // available sport icons
   const sportIconOptions = [
     { id: "football", name: "Football" },
-    { id: "football2", name: "Football Alt" },
-    { id: "football3", name: "Football Pro" },
-    { id: "baseball", name: "Baseball" },
-    { id: "baseball2", name: "Baseball Alt" },
-    { id: "baseball3", name: "Baseball Pro" },
+    { id: "football2", name: "Football2" },
+    { id: "football3", name: "Football3" },
     { id: "basketball", name: "Basketball" },
-    { id: "basketball2", name: "Basketball Alt" },
+    { id: "basketball2", name: "Basketball2" },
+    { id: "basketball3", name: "Basketball3" },
+    { id: "baseball", name: "Baseball" },
+    { id: "baseball2", name: "Baseball2" },
+    { id: "baseball3", name: "Baseball3" },
     { id: "boxing", name: "Boxing" },
     { id: "cricket", name: "Cricket" },
+    { id: "cricket2", name: "Cricket2" },
     { id: "golf", name: "Golf" },
+    { id: "golf2", name: "Golf2" },
+    { id: "gymnastics", name: "Gymnastics" },
     { id: "hockey", name: "Hockey" },
-    { id: "hockey2", name: "Hockey Alt" },
+    { id: "hockey2", name: "Hockey2" },
+    { id: "martialarts", name: "MartialArts" },
+    { id: "mma", name: "MMA" },
+    { id: "mma2", name: "MMA2" },
+    { id: "motorsports", name: "Motorsports" },
+    { id: "nascar", name: "NASCAR" },
+    { id: "racing", name: "Racing" },
     { id: "rugby", name: "Rugby" },
+    { id: "rugby2", name: "Rugby2" },
     { id: "soccer", name: "Soccer" },
     { id: "tennis", name: "Tennis" },
+    { id: "track", name: "Track" },
+    { id: "usercircle", name: "UserCircle" },
     { id: "volleyball", name: "Volleyball" },
+    { id: "volleyball2", name: "Volleyball2" },
+    { id: "volleyball3", name: "Volleyball3" },
+    { id: "wrestling", name: "Wrestling" },
   ];
 
   // toggle dropdown visibility
@@ -67,14 +83,14 @@ function ProfileIconSelector({ currentIcon, onSelectIcon }) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         console.log("Click outside detected");
         setShowDropdown(false);
-      // // debug the condition values
-      // console.log("selectedIcon:", selectedIcon);
-      // console.log("currentIcon:", currentIcon);
-      // console.log("Are they different?", selectedIcon !== currentIcon);
-      // console.log("sessionUser exists?", !!sessionUser);
-      // console.log("sessionUser.id exists?", sessionUser && !!sessionUser.id);
-      console.log("Auto-saving icon on dropdown close:", selectedIcon);
-      // *batch sending API calls, only dispatch if the icon has changed and we have a user ID
+        // // debug the condition values
+        // console.log("selectedIcon:", selectedIcon);
+        // console.log("currentIcon:", currentIcon);
+        // console.log("Are they different?", selectedIcon !== currentIcon);
+        // console.log("sessionUser exists?", !!sessionUser);
+        // console.log("sessionUser.id exists?", sessionUser && !!sessionUser.id);
+        console.log("Auto-saving icon on dropdown close:", selectedIcon);
+        // *batch sending API calls, only dispatch if the icon has changed and we have a user ID
 
         dispatch(sessionActions.updateProfile(sessionUser.id, {
           sportIcon: selectedIcon

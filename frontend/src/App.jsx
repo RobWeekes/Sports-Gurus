@@ -6,7 +6,7 @@ import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import LoginFormPage from "./components/LoginFormPage/LoginFormPage";
 import SignupFormPage from "./components/SignupFormPage/SignupFormPage";
 import Navigation from "./components/Navigation/Navigation";
-import ProfilePage from "./components/ProfilePage/ProfilePage";
+import ProfileSettings from "./components/ProfileSettings/ProfileSettings";
 import * as sessionActions from "./store/session";
 
 
@@ -46,8 +46,8 @@ const router = createBrowserRouter([
         element: <SignupFormPage />
       },
       {
-        path: "/profile",
-        element: <ProfilePage />
+        path: "/profile/settings",
+        element: <ProfileSettings />
       },
     ]
   }
