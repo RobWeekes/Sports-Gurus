@@ -41,6 +41,7 @@ function ProfileIconSelector({ currentIcon, onSelectIcon }) {
     { id: "rugby2", name: "Rugby2" },
     { id: "soccer", name: "Soccer" },
     { id: "tennis", name: "Tennis" },
+    { id: "tabletennis", name: "TableTennis" },
     { id: "track", name: "Track" },
     { id: "usercircle", name: "UserCircle" },
     { id: "volleyball", name: "Volleyball" },

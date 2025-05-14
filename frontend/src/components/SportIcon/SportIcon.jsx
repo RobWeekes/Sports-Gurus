@@ -1,13 +1,13 @@
-import { FaUserCircle, FaFootballBall, FaBasketballBall, FaBaseballBall, FaHockeyPuck, FaGolfBall } from "react-icons/fa";
+import { FaUserCircle, FaFootballBall, FaBasketballBall, FaGolfBall } from "react-icons/fa";
 import { FcSportsMode } from "react-icons/fc";
 import { GiBoxingGlove, GiCricketBat } from "react-icons/gi";
 import { IoCarSportSharp } from "react-icons/io5";
-import { MdSportsFootball, MdOutlineSportsFootball, MdSportsBasketball, MdOutlineSportsBasketball, MdOutlineSportsBaseball, MdSportsBaseball, MdSportsHockey, MdSportsSoccer, MdSportsTennis, MdSportsVolleyball, MdOutlineSportsVolleyball, MdOutlineSportsCricket, MdSportsMma, MdOutlineSportsMma, MdSportsRugby, MdOutlineSportsRugby, MdOutlineSportsScore, MdSportsMartialArts, MdSportsGolf, MdSportsMotorsports, MdSportsGymnastics, MdOutlineSportsKabaddi } from "react-icons/md";
+import { MdSportsFootball, MdOutlineSportsFootball, MdSportsBasketball, MdOutlineSportsBasketball, MdOutlineSportsBaseball, MdSportsHockey, MdSportsSoccer, MdSportsTennis, MdSportsVolleyball, MdOutlineSportsVolleyball, MdOutlineSportsCricket, MdSportsMma, MdOutlineSportsMma, MdSportsRugby, MdOutlineSportsRugby, MdOutlineSportsScore, MdSportsMartialArts, MdSportsGolf, MdSportsMotorsports, MdSportsGymnastics, MdOutlineSportsKabaddi } from "react-icons/md";
 // import the FontAwesomeIcon component
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // then import specific icons to use:
-import { faVolleyball } from '@fortawesome/free-solid-svg-icons';
-// render icon using prop: <FontAwesomeIcon icon={faVolleyball} />
+import { faVolleyball, faBaseball, faBaseballBatBall, faTableTennisPaddleBall, faHockeyPuck  } from "@fortawesome/free-solid-svg-icons";
+// render icon using prop: <FontAwesomeIcon icon={faIcon} />
 
 
 function SportIcon({ sporticon, size = "1em", color = "currentColor" }) {
@@ -19,17 +19,18 @@ function SportIcon({ sporticon, size = "1em", color = "currentColor" }) {
     "basketball": <FaBasketballBall />,
     "basketball2": <MdSportsBasketball />,
     "basketball3": <MdOutlineSportsBasketball />,
-    "baseball": <FaBaseballBall />,
-    "baseball2": <MdOutlineSportsBaseball />,
-    "baseball3": <MdSportsBaseball />,
+    "baseball": <MdOutlineSportsBaseball />,
+    "baseball2": <FontAwesomeIcon icon={faBaseball} />,
+    "baseball3": <FontAwesomeIcon icon={faBaseballBatBall} />,
+    // <i class="fa-regular fa-baseball"></i>
     "boxing": <GiBoxingGlove />,
     "cricket": <GiCricketBat />,
     "cricket2": <MdOutlineSportsCricket />,
     "golf": <FaGolfBall />,
     "golf2": <MdSportsGolf />,
     "gymnastics": <MdSportsGymnastics />,
-    "hockey": <FaHockeyPuck />,
-    "hockey2": <MdSportsHockey />,
+    "hockey": <MdSportsHockey />,
+    "hockey2": <FontAwesomeIcon icon={faHockeyPuck} />,
     "martialarts": <MdSportsMartialArts />,
     "mma": <MdSportsMma />,
     "mma2": <MdOutlineSportsMma />,
@@ -40,6 +41,7 @@ function SportIcon({ sporticon, size = "1em", color = "currentColor" }) {
     "rugby2": <MdOutlineSportsRugby />,
     "soccer": <MdSportsSoccer />,
     "tennis": <MdSportsTennis />,
+    "tabletennis": <FontAwesomeIcon icon={faTableTennisPaddleBall} />,
     "track": <FcSportsMode />,
     "usercircle": <FaUserCircle />,
     "volleyball": <MdSportsVolleyball />,
