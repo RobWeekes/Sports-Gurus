@@ -29,7 +29,6 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         len: [0, 12]
-        // isIn: [["basketball","baseball","football"]]
       }
     }
   }, {
