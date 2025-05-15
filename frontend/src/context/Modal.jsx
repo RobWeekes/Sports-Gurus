@@ -1,7 +1,8 @@
 // frontend/src/context/Modal.jsx
 
-import { createContext, useContext, useRef, useState } from 'react';
-import ReactDOM from 'react-dom';
+import { createContext, useContext, useRef, useState } from "react";
+import ReactDOM from "react-dom";
+import "./Modal.css";
 
 const ModalContext = createContext();
 
@@ -12,7 +13,7 @@ export function ModalProvider({ children }) {
   // callback function that will be called when modal is closing
   const [onModalClose, setOnModalClose] = useState(null);
 
-const closeModal = () => {
+  const closeModal = () => {
     setModalContent(null); // clear the modal contents
     // if callback function is truthy, call the callback func & reset null
     if (typeof onModalClose === "function") {
@@ -39,13 +40,14 @@ const closeModal = () => {
   );
 }
 
-export function Modal () {
+
+export function Modal() {
   // Modal component should consume the value of the ModalContext by using the useContext React hook
   const { modalRef, modalContent, closeModal } = useContext(ModalContext);
   // if there is no div referenced by the modalRef or modalContent is not a truthy value, render nothing:
   if (!modalRef || !modalRef.current || !modalContent) {
     return null
-  };
+  }
 
   // render the following component to the div referenced by the modalRef
   return ReactDOM.createPortal(
@@ -56,3 +58,8 @@ export function Modal () {
     modalRef.current
   );
 }
+
+
+export function useModal() {
+  useContext(ModalContext);
+};

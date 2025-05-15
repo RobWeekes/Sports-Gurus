@@ -9,13 +9,14 @@ import { Provider } from "react-redux";
 import configureStore from "./store";
 // use this before rendering
 import { restoreCSRF, csrfFetch } from "./store/csrf";
-// wrap App in ModalProvider component
-import { ModalProvider } from "../../frontend/src/context/Modal";
+// wrap App in ModalProvider component,
+// render Modal component as a sibling right under App component
+import { Modal, ModalProvider } from "./context/Modal";
 // all the actions from session.js
 import * as sessionActions from "./store/session";
 // Create a variable to access the store and expose it on the window.
-// It should not be exposed in production
 const store = configureStore();
+// It should not be exposed in production
 
 // in Vite projects, environment variables are accessed through import.meta.env instead of process.env (used in other webpack-based setups)
 if (import.meta.env.MODE !== "production") {
@@ -32,6 +33,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <ModalProvider>
       <Provider store={store}>
         <App />
+        <Modal />
       </Provider>
     </ModalProvider>
   </React.StrictMode>
