@@ -61,5 +61,5 @@ export function Modal() {
 
 
 export function useModal() {
-  useContext(ModalContext);
-};
+  return useContext(ModalContext);
+}

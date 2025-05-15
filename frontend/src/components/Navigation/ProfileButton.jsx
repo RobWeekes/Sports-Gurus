@@ -6,6 +6,8 @@ import { NavLink } from 'react-router-dom';
 import * as sessionActions from "../../store/session";
 import SportIcon from "../SportIcon/SportIcon";
 import "./ProfileButton.css"
+import OpenModalButton from "../OpenModalButton";
+import Greeting from "../Greeting/Greeting";
 
 
 function ProfileButton({ user }) {
@@ -51,6 +53,10 @@ function ProfileButton({ user }) {
       <button onClick={toggleMenu} className="profile-button">
         <SportIcon sporticon={user.sportIcon || "usercircle"} size="1.5em" />
       </button>
+
+      {/* TESTING GREETING MODAL */}
+      <Greeting />
+
 
       <ul className={ulClassName} ref={ulRef}>
         <li>{user.userName}</li>
