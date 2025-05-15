@@ -1,6 +1,6 @@
+// IMPORT REACT ICONS
 import { CiBaseball } from "react-icons/ci";
 import { FaUserCircle, FaFootballBall, FaGolfBall } from "react-icons/fa";
-import { FaVolleyball } from "react-icons/fa6";
 import { FcSportsMode } from "react-icons/fc";
 import { GiAmericanFootballHelmet, GiAmericanFootballPlayer, GiBasketballBasket, GiBasketballJersey, GiBaseballGlove, GiBoxingGlove, GiCricketBat, GiSoccerBall, GiSoccerField, GiHockey, GiBoxingRing, GiTennisBall, GiTennisCourt, GiTennisRacket, GiF1Car, GiFullMotorcycleHelmet } from "react-icons/gi";
 import { IoCarSportSharp, IoCarSportOutline } from "react-icons/io5";
