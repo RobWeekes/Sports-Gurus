@@ -15,10 +15,22 @@ function Layout() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
+    console.log("Layout useEffect running");
     dispatch(sessionActions.restoreUser()).then(() => {
-      setIsLoaded(true)
-    });
+      console.log("User restored, setting isLoaded to true");
+      setIsLoaded(true);
+    })
+    .catch(err => {
+      console.error("Error restoring user in Layout:", err);
+      setIsLoaded(true); // still set isLoaded = true, even with an error
+    })  // troubleshooting - add finally to always set isLoaded to true
+    // .finally(() => {
+    //   console.log("Issue with restoreUser promise chain, setting isLoaded to true in finally block");
+    //   setIsLoaded(true);  // always set isLoaded to true
+    // })
   }, [dispatch]);
+
+  console.log("Layout rendering with isLoaded:", isLoaded);
 
   return (
     <>

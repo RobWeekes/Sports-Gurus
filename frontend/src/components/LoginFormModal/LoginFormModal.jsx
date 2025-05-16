@@ -13,7 +13,7 @@ function LoginFormModal() {
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
-  const { closeModal } = useModal;
+  const { closeModal } = useModal();
   // no longer needed after changing LoginFormPage to LoginFormModal:
   // // if user is already logged in when trying to access LoginFormPage, redirect them to the / path
   // if (sessionUser) return <Navigate to="/" replace={true} />;

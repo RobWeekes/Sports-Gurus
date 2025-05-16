@@ -52,10 +52,15 @@ const sessionReducer = (state = initialState, action) => {
 
 // Get Session thunk action creator: calls GET /api/session
 export const restoreUser = () => async (dispatch) => {
-  const response = await csrfFetch("/api/session");
-  const data = await response.json();
-  dispatch(setUser(data.user));
-  return response;
+  try {
+    const response = await csrfFetch("/api/session");
+    const data = await response.json();
+    dispatch(setUser(data.user));
+    return response;  // this should resolve the promise
+  } catch (error) {
+    console.error("Error in restoreUser:", error);
+    return { ok: false, error };  // this should also resolve the promise
+  }
 };
 
 // Log In thunk action creator: calls POST /api/session
