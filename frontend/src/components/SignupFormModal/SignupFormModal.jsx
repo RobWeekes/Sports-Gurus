@@ -1,13 +1,14 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useModal } from "../../context/Modal";
+// import { Navigate } from "react-router-dom";
 import * as sessionActions from "../../store/session";
 import "./SignupForm.css";
 
 
-function SignupFormPage() {
+function SignupFormModal() {
   const dispatch = useDispatch();
-  const sessionUser = useSelector((state) => state.session.user);
+  // const sessionUser = useSelector((state) => state.session.user);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -15,9 +16,11 @@ function SignupFormPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [userName, setUserName] = useState("");
   const [errors, setErrors] = useState({});
+  const { closeModal } = useModal();
 
+  // redirect no longer needed
   // if user is logged in to the Redux store and tries to access Sign Up form, redirect them to home page
-  if (sessionUser) return <Navigate to="/" replace={true} />;
+  // if (sessionUser) return <Navigate to="/" replace={true} />;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -30,13 +33,13 @@ function SignupFormPage() {
         email,
         password
       };
-
-      // Only include userName if input by user (optional)
+      // add userName key if input by user (optional)
       if (userName) {
         newUser.userName = userName;
       }
 
       return dispatch(sessionActions.signup(newUser))
+        .then(closeModal)
         .catch(async (res) => {
           const data = await res.json();
           if (data?.errors) {
@@ -120,4 +123,5 @@ function SignupFormPage() {
   );
 }
 
-export default SignupFormPage;
+
+export default SignupFormModal;

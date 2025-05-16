@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import ProfileButton from "./ProfileButton";
 import OpenModalButton from "../OpenModalButton";
 import LoginFormModal from "../LoginFormModal/LoginFormModal";
+import SignupFormModal from "../SignupFormModal/SignupFormModal";
 import "./Navigation.css";
 
 
@@ -36,7 +37,7 @@ function Navigation({ isLoaded }) {
   const sessionLinks = sessionUser ? (
     <li>
       {/* remove <div>Test</div> when fixed: */}
-      <div>Test User Logged In</div>
+      {/* <div>Test User Logged In</div> */}
       <ProfileButton user={sessionUser} />
     </li>
     // otherwise render Log In, Sign Up links/modal components
@@ -44,14 +45,18 @@ function Navigation({ isLoaded }) {
     <>
       <li>
         {/* remove <div>Test</div> when fixed: */}
-        <div>Test User Not Logged In</div>
+        {/* <div>Test User Not Logged In</div> */}
         <OpenModalButton
           buttonText="Log In"
           modalComponent={<LoginFormModal />}
         />
       </li>
       <li>
-        <NavLink to="/signup">Sign Up</NavLink>
+        {/* <NavLink to="/signup">Sign Up</NavLink> */}
+        <OpenModalButton
+          buttonText="Sign Up"
+          modalComponent={<SignupFormModal />}
+        />
       </li>
     </>
   );
