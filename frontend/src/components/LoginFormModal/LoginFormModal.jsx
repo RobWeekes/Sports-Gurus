@@ -1,32 +1,34 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useModal } from "../../context/Modal";
+// no longer needed after changing LoginFormPage to LoginFormModal
+// import { Navigate } from "react-router-dom";
 import * as sessionActions from "../../store/session";
 import "./LoginForm.css";
 
 
-function LoginFormPage() {
+function LoginFormModal() {
   const dispatch = useDispatch();
-  const sessionUser = useSelector((state) => state.session.user);
+  // const sessionUser = useSelector((state) => state.session.user);
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
-
-  // if user is already logged in when trying to access LoginFormPage, redirect them to the / path
-  if (sessionUser) return <Navigate to="/" replace={true} />;
-
+  const { closeModal } = useModal;
+  // no longer needed after changing LoginFormPage to LoginFormModal:
+  // // if user is already logged in when trying to access LoginFormPage, redirect them to the / path
+  // if (sessionUser) return <Navigate to="/" replace={true} />;
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors({});
-    return dispatch(sessionActions.login({ credential, password })).catch(
-      async (res) => {
+    return dispatch(sessionActions.login({ credential, password }))
+      .then(closeModal)
+      .catch(async (res) => {
         const data = await res.json();
         if (data?.errors) setErrors(data.errors);
-      }
-    );
-  };  // On submit of the form, dispatch the login thunk action with the form input values. Display errors if needed
+      });
+  };  // On submit of form, dispatch the login thunk action with the form input values. Display errors if needed
 
-  // Render a form with a controlled input for the user login credential (username or email) and the password
+  // Render a form with a controlled input for the user login credential (username or email) and password
   return (
     <>
       <h1>Log In</h1>
@@ -58,4 +60,4 @@ function LoginFormPage() {
 
 
 
-export default LoginFormPage;
+export default LoginFormModal;
