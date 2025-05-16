@@ -6,8 +6,8 @@ import { NavLink } from 'react-router-dom';
 import * as sessionActions from "../../store/session";
 import SportIcon from "../SportIcon/SportIcon";
 import "./ProfileButton.css"
-import OpenModalButton from "../OpenModalButton";
-import Greeting from "../Greeting/Greeting";
+// testing OpenModalButton: Greeting
+// import Greeting from "../Greeting/Greeting";
 
 
 function ProfileButton({ user }) {
@@ -50,24 +50,34 @@ function ProfileButton({ user }) {
 
   return (
     <>
-      <button onClick={toggleMenu} className="profile-button">
+      <button onClick={toggleMenu} className="profile-button" aria-label="User menu">
         <SportIcon sporticon={user.sportIcon || "usercircle"} size="1.5em" />
       </button>
 
       {/* TESTING GREETING MODAL */}
-      <Greeting />
-
+      {/* <Greeting /> */}
 
       <ul className={ulClassName} ref={ulRef}>
-        <li>{user.userName}</li>
-        <li>{user.firstName} {user.lastName}</li>
-        <li>{user.email}</li>
-        <li>
-          <NavLink to="/profile/settings">My Profile</NavLink>
-        </li>
-        <li>
-          <button onClick={logout}>Log Out</button>
-        </li>
+        <div className="user-info">
+          <div className="user-name">{user.userName}</div>
+          <div className="user-full-name">{user.firstName} {user.lastName}</div>
+          <div className="user-email">{user.email}</div>
+        </div>
+
+        <div className="menu-items">
+          <li>
+            <NavLink to="/profile/settings">My Profile</NavLink>
+          </li>
+          <li>
+            <NavLink to="/my-teams">My Teams</NavLink>
+          </li>
+          <li>
+            <NavLink to="/my-predictions">My Predictions</NavLink>
+          </li>
+          <li>
+            <button onClick={logout} className="logout-button">Sign Out</button>
+          </li>
+        </div>
       </ul>
 
     </>
