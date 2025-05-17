@@ -16,19 +16,33 @@ function Layout() {
 
   useEffect(() => {
     console.log("Layout useEffect running");
-    dispatch(sessionActions.restoreUser()).then(() => {
-      console.log("User restored, setting isLoaded to true");
+
+    // dispatch the action and set isLoaded to true afterward
+    const restoreUserPromise = dispatch(sessionActions.restoreUser());
+    console.log("restoreUserPromise:", restoreUserPromise);
+
+    // set isLoaded = true after a short delay to ensure Redux state is updated - this is a workaround for the promise resolution issue
+    setTimeout(() => {
+      console.log("Setting isLoaded to true after timeout");
       setIsLoaded(true);
-    })
-    .catch(err => {
-      console.error("Error restoring user in Layout:", err);
-      setIsLoaded(true); // still set isLoaded = true, even with an error
-    })  // troubleshooting - add finally to always set isLoaded to true
-    // .finally(() => {
-    //   console.log("Issue with restoreUser promise chain, setting isLoaded to true in finally block");
-    //   setIsLoaded(true);  // always set isLoaded to true
-    // })
+    }, 100);
+
   }, [dispatch]);
+
+    // Redux thunks don't automatically return the value from the inner async function. When calling dispatch(sessionActions.restoreUser()), the promise that gets returned might not be resolving properly:
+  //   dispatch(sessionActions.restoreUser()).then(() => {
+  //     console.log("User restored, setting isLoaded to true");
+  //     setIsLoaded(true);
+  //   })
+  //   .catch(err => {
+  //     console.error("Error restoring user in Layout:", err);
+  //     setIsLoaded(true); // still set isLoaded = true, even with an error
+  //   })  // troubleshooting - add finally to always set isLoaded to true
+  //   .finally(() => {
+  //     console.log("Issue with restoreUser promise chain, setting isLoaded to true in finally block");
+  //     setIsLoaded(true);  // always set isLoaded to true
+  //   })
+  // }, [dispatch]);
 
   console.log("Layout rendering with isLoaded:", isLoaded);
 

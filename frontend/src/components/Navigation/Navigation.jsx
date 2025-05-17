@@ -1,5 +1,4 @@
 import { NavLink } from "react-router-dom";
-  // and restore const sessionUser useSelector \/
 import { useSelector } from "react-redux";
 import ProfileButton from "./ProfileButton";
 import OpenModalButton from "../OpenModalButton";
@@ -8,30 +7,11 @@ import SignupFormModal from "../SignupFormModal/SignupFormModal";
 import "./Navigation.css";
 
 
-// making temporary edits for troublshooting
 function Navigation({ isLoaded }) {
-
-  // ******************************
-  // Comment this out after testing
-  // // Force a mock user for testing ProfileButton:
-  // const mockUser = {
-  //   id: 1,
-  //   userName: 'Demo-lition',
-  //   email: 'demo@user.io',
-  //   firstName: 'Demo',
-  //   lastName: 'User',
-  //   sportIcon: 'usercircle'
-  // };
-
-  // // Use the mock user instead of the selector
-  // const sessionUser = mockUser;
-  // Comment this out after testing
-  // ******************************
-
-  // and restore const sessionUser useSelector \/
   const sessionUser = useSelector(state => state.session.user);
   console.log("Navigation rendering with isLoaded:", isLoaded);
   console.log("sessionUser:", sessionUser);
+  console.log("Redux state:", useSelector(state => state));
 
   // if logged in ? render Profile button, Log Out button...
   const sessionLinks = sessionUser ? (
