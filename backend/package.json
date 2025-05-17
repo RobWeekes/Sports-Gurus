@@ -33,6 +33,7 @@
     "reset-hard": "./reset-hard.sh",
     "sequelize": "sequelize",
     "sequelize-cli": "sequelize-cli",
+    "prestart": "npx kill-port 8000",
     "start": "per-env",
     "start:development": "nodemon ./bin/www",
     "start:production": "node ./bin/www",
