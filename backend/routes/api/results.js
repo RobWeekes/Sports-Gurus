@@ -51,7 +51,9 @@ function buildGameWhere(date, team) {
 // GET /api/results
 router.get("/", async (req, res) => {
   try {
-    console.log("Checking for game results...");
+    console.log("-----Checking for game results-----");
+    console.log("API request received at /api/results");
+    console.log("Query parameters:", req.query);
 
     // check if there is any data in results table
     const allResults = await GameResult.findAll();
@@ -89,6 +91,13 @@ router.get("/", async (req, res) => {
     return res.status(500).json({ message: "Server error" });
   }
 });
+
+
+// simple test route
+router.get("/test", (req, res) => {
+  return res.json({ message: "Test route working" });
+});
+
 
 
 // Get All the Teams
