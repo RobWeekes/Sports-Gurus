@@ -20,27 +20,29 @@ function buildGameWhere(date, team) {
     };
   }
 
+  // partial query matching (matches parts of words, works in dev - SQLite)
   if (team) {
-    // this regular expression matches team name as a whole word
-    // will match team name at beginning, end, or between word boundaries
-    const teamPattern = `(^|\\s)${team}(\\s|$)`;
-    // word boundary matching, ignore case - Op.regexp operator is supported in MySQL and PostgreSQL, but not in SQLite (not in dev)
     where[Op.or] = [
-      sequelize.where(sequelize.fn('LOWER', sequelize.col('homeTeam')), {
-        [Op.regexp]: teamPattern.toLowerCase()
-      }),
-      sequelize.where(sequelize.fn('LOWER', sequelize.col('awayTeam')), {
-        [Op.regexp]: teamPattern.toLowerCase()
-      })
+      { homeTeam: { [Op.like]: `%${team}%` } },
+      { awayTeam: { [Op.like]: `%${team}%` } }
     ];
   }
-  // partial query matching (matches parts of words, works in dev - SQLite)
+
   // if (team) {
+  //   // this regular expression matches team name as a whole word
+  //   // will match team name at beginning, end, or between word boundaries
+  //   const teamPattern = `(^|\\s)${team}(\\s|$)`;
+  //   // word boundary matching, ignore case - Op.regexp operator is supported in MySQL and PostgreSQL, but not in SQLite (not in dev)
   //   where[Op.or] = [
-  //     { homeTeam: { [Op.like]: `%${team}%` } },
-  //     { awayTeam: { [Op.like]: `%${team}%` } }
+  //     sequelize.where(sequelize.fn('LOWER', sequelize.col('homeTeam')), {
+  //       [Op.regexp]: teamPattern.toLowerCase()
+  //     }),
+  //     sequelize.where(sequelize.fn('LOWER', sequelize.col('awayTeam')), {
+  //       [Op.regexp]: teamPattern.toLowerCase()
+  //     })
   //   ];
   // }
+
   return where;
 }
 
