@@ -33,7 +33,7 @@ router.post("/", validateLogin, async (req, res, next) => {
   const user = await User.unscoped().findOne({
     where: {
       [Op.or]: {
-        username: credential,
+        userName: credential,
         email: credential
       }
     }
