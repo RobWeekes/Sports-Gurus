@@ -4,7 +4,6 @@
 const express = require("express");
 const router = express.Router();
 
-
 // All the API routes will be served at URL"s starting with /api/
 const apiRouter = require("./api");
 
