@@ -137,6 +137,11 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         len: [60, 60],
       },
+    },
+    isAdmin: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
     }
   }, {
     sequelize,
@@ -144,7 +149,7 @@ module.exports = (sequelize, DataTypes) => {
     tableName: "users",
     defaultScope: {
       attributes: {
-        exclude: ["hashedPassword", "email", "createdAt", "updatedAt"]
+        exclude: ["hashedPassword", "email", "isAdmin", "createdAt", "updatedAt"]
       }
     }
     // scopes: {

@@ -2,49 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { Op } = require("sequelize");
 const { requireAuth } = require("../../utils/auth");
-const { GameResult, ScheduledGame, UserPick, sequelize } = require("../../db/models");
-
-
-// helper function to build "where" clause for ScheduledGame
-function buildGameWhere(date, team) {
-  const where = {};
-
-  if (date) {
-    const startDate = new Date(date);
-    const endDate = new Date(date);
-    endDate.setDate(endDate.getDate() + 1);
-
-    where.gameDay = {
-      [Op.gte]: startDate,
-      [Op.lt]: endDate
-    };
-  }
-
-  // partial query matching (matches parts of words, works in dev - SQLite)
-  if (team) {
-    where[Op.or] = [
-      { homeTeam: { [Op.like]: `%${team}%` } },
-      { awayTeam: { [Op.like]: `%${team}%` } }
-    ];
-  }
-
-  // if (team) {
-  //   // this regular expression matches team name as a whole word
-  //   // will match team name at beginning, end, or between word boundaries
-  //   const teamPattern = `(^|\\s)${team}(\\s|$)`;
-  //   // word boundary matching, ignore case - Op.regexp operator is supported in MySQL and PostgreSQL, but not in SQLite (not in dev)
-  //   where[Op.or] = [
-  //     sequelize.where(sequelize.fn('LOWER', sequelize.col('homeTeam')), {
-  //       [Op.regexp]: teamPattern.toLowerCase()
-  //     }),
-  //     sequelize.where(sequelize.fn('LOWER', sequelize.col('awayTeam')), {
-  //       [Op.regexp]: teamPattern.toLowerCase()
-  //     })
-  //   ];
-  // }
-
-  return where;
-}
+const { GameResult, ScheduledGame, UserPick } = require("../../db/models");
 
 
 // Get all Game Results Matching Query Params
@@ -55,35 +13,37 @@ router.get("/", async (req, res) => {
     console.log("API request received at /api/results");
     console.log("Query parameters:", req.query);
 
-    // check if there is any data in results table
-    const allResults = await GameResult.findAll();
-    console.log(`Total game results in database: ${allResults.length}`);
-
-    const allGames = await ScheduledGame.findAll();
-    console.log(`Total scheduled games in database: ${allGames.length}`);
-
-    if (allGames.length > 0) {
-      console.log("Sample game data:");
-      console.log(allGames[0].toJSON());
-    }
-
     const { date, team, status } = req.query;
     console.log("Query parameters:", { date, team, status });
     const where = {};
 
+    // build the "WHERE" object before querying db:
+
     if (status) {
       where.status = status;
-      console.log("Filtering by status:", status);
+    }
+    // this matches partial strings, case ignored
+    if (team) {
+      where[Op.or] = [
+        { homeTeam: { [Op.like]: `%${team}%` } },
+        { awayTeam: { [Op.like]: `%${team}%` } }
+      ];
+    }
+    // create a match range that covers the entire day
+    if (date) {
+      const startDate = new Date(date);
+      const endDate = new Date(date);
+      endDate.setDate(endDate.getDate() + 1);
+      where.gameDay = {
+        [Op.gte]: startDate,
+        [Op.lt]: endDate
+      };
     }
 
     const results = await GameResult.findAll({
       where,
-      include: [{
-        model: ScheduledGame,
-        where: date || team ? buildGameWhere(date, team) : {}
-      }],
-      order: [[ScheduledGame, "gameDay", "DESC"]]
-    });
+      order: [["gameDay", "DESC"]]
+    });   // view most recent games at the top
 
     return res.json({ results });
   } catch (error) {
@@ -91,6 +51,7 @@ router.get("/", async (req, res) => {
     return res.status(500).json({ message: "Server error" });
   }
 });
+
 
 
 // simple test route
@@ -144,7 +105,7 @@ router.get("/:gameId", async (req, res) => {
     return res.status(500).json({ message: "Server error" });
   }
 });
-//
+// TEST
 
 
 // ADMIN ONLY ROUTES:
@@ -269,7 +230,7 @@ async function updateUserPicks(gameId, result) {
     console.error("Error updating user picks:", error);
   }
 }
-//
+// TEST
 
 
 // Delete a Game Result

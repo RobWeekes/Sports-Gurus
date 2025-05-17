@@ -25,6 +25,22 @@ module.exports = {
         },
         onDelete: "CASCADE"
       },
+      league: {
+        type: Sequelize.STRING(6),
+        allowNull: false,
+      },
+      gameDay: {
+        type: Sequelize.DATE,
+        allowNull: false,
+      },
+      homeTeam: {
+        type: Sequelize.STRING(30),
+        allowNull: false,
+      },
+      awayTeam: {
+        type: Sequelize.STRING(30),
+        allowNull: false,
+      },
       favorite: {
         type: Sequelize.STRING(30),
         allowNull: false,

@@ -19,6 +19,31 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    league: {
+      type: DataTypes.STRING(6),
+      allowNull: false,
+      validate: {
+        len: [3, 6]
+      }
+    },
+    gameDay: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    homeTeam: {
+      type: DataTypes.STRING(30),
+      allowNull: false,
+      validate: {
+        len: [3, 30]
+      }
+    },
+    awayTeam: {
+      type: DataTypes.STRING(30),
+      allowNull: false,
+      validate: {
+        len: [3, 30]
+      }
+    },
     favorite: {
       type: DataTypes.STRING(30),
       allowNull: false,

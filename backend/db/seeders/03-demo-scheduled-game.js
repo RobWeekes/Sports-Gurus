@@ -14,26 +14,26 @@ module.exports = {
       {
         league: "NBA",
         gameDay: new Date("2025-05-06"),
-        homeTeam: "Los Angeles Lakers",
-        awayTeam: "LA Clippers",
+        homeTeam: "LOS ANGELES LAKERS",
+        awayTeam: "LA CLIPPERS",
       },
       {
         league: "NFL",
         gameDay: new Date("2025-09-10"),
-        homeTeam: "Kansas City Chiefs",
-        awayTeam: "Buffalo Bills",
+        homeTeam: "KANSAS CITY CHIEFS",
+        awayTeam: "BUFFALO BILLS",
       },
       {
         league: "NBA",
         gameDay: new Date("2025-10-22"),
-        homeTeam: "Atlanta Hawks",
-        awayTeam: "Boston Celtics",
+        homeTeam: "ATLANTA HAWKS",
+        awayTeam: "BOSTON CELTICS",
       },
       {
         league: "MLB",
         gameDay: new Date("2025-04-01"),
-        homeTeam: "New York Yankees",
-        awayTeam: "Boston Red Sox",
+        homeTeam: "NEW YORK YANKEES",
+        awayTeam: "BOSTON RED SOX",
       }
     ], { validate: true });
   },

@@ -13,6 +13,10 @@ module.exports = {
     return queryInterface.bulkInsert(options, [
       {
         game_id: 1,
+        league: "NBA",
+        gameDay: new Date("2025-05-06"),
+        homeTeam: "LOS ANGELES LAKERS",
+        awayTeam: "LA CLIPPERS",
         favorite: "LOS ANGELES LAKERS",
         underdog: "LA CLIPPERS",
         status: "COMPLETED",
@@ -26,6 +30,10 @@ module.exports = {
       },
       {
         game_id: 2,
+        league: "NFL",
+        gameDay: new Date("2025-09-10"),
+        homeTeam: "KANSAS CITY CHIEFS",
+        awayTeam: "BUFFALO BILLS",
         favorite: "KANSAS CITY CHIEFS",
         underdog: "BUFFALO BILLS",
         status: "COMPLETED",
@@ -39,6 +47,10 @@ module.exports = {
       },
       {
         game_id: 3,
+        league: "NBA",
+        gameDay: new Date("2025-10-22"),
+        homeTeam: "ATLANTA HAWKS",
+        awayTeam: "BOSTON CELTICS",
         favorite: "BOSTON CELTICS",
         underdog: "ATLANTA HAWKS",
         status: "COMPLETED",
@@ -52,6 +64,10 @@ module.exports = {
       },
       {
         game_id: 4,
+        league: "MLB",
+        gameDay: new Date("2025-04-01"),
+        homeTeam: "NEW YORK YANKEES",
+        awayTeam: "BOSTON RED SOX",
         favorite: "NEW YORK YANKEES",
         underdog: "BOSTON RED SOX",
         status: "COMPLETED",

@@ -23,10 +23,10 @@ module.exports = (sequelize, DataTypes) => {
 
   ScheduledGame.init({
     league: {
-      type: DataTypes.STRING(40),
+      type: DataTypes.STRING(6),
       allowNull: false,
       validate: {
-        len: [3, 40]
+        len: [3, 6]
       }
     },
     gameDay: {

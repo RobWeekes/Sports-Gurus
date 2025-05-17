@@ -17,7 +17,7 @@ module.exports = {
         allowNull: false,
       },
       league: {
-        type: Sequelize.STRING(40),
+        type: Sequelize.STRING(6),
         allowNull: false,
       },
       gameDay: {
