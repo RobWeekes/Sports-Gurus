@@ -3,12 +3,12 @@
 const router = require("express").Router();
 const sessionRouter = require("./session.js");
 const usersRouter = require("./users.js");
-
 // imports used for session/authorization functions:
 const { restoreUser } = require("../../utils/auth.js");
-const { setTokenCookie } = require("../../utils/auth.js");
-const { User } = require("../../db/models");
-const { requireAuth } = require("../../utils/auth.js");
+// these imports used for test routes, inactive:
+// const { setTokenCookie } = require("../../utils/auth.js");
+// const { User } = require("../../db/models");
+// const { requireAuth } = require("../../utils/auth.js");
 
 // All the URLs of routes in the api router will be prefixed with /api
 
@@ -16,10 +16,10 @@ const { requireAuth } = require("../../utils/auth.js");
 router.use(restoreUser);
 
 // temporarily log all incoming requests for debugging
-router.use((req, res, next) => {
-  console.log(`API Request: ${req.method} ${req.path}`);
-  next();
-});
+// router.use((req, res, next) => {
+//   console.log(`API Request: ${req.method} ${req.path}`);
+//   next();
+// });
 
 router.use("/session", sessionRouter);
 
