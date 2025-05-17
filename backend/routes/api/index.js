@@ -4,10 +4,14 @@ const router = require("express").Router();
 const sessionRouter = require("./session.js");
 const usersRouter = require("./users.js");
 const pickpagesRouter = require("./pickpages.js");
+const gamesRouter = require("./games.js");
+// const resultsRouter = require("./results.js");
+// const picksRouter = require("./picks.js");
 
 
 // imports used for session/authorization functions:
 const { restoreUser } = require("../../utils/auth.js");
+
 // these imports used for test routes, inactive:
 // const { setTokenCookie } = require("../../utils/auth.js");
 // const { User } = require("../../db/models");
@@ -27,6 +31,9 @@ router.use(restoreUser);
 router.use("/session", sessionRouter);
 router.use("/users", usersRouter);
 router.use("/pickpages", pickpagesRouter);
+router.use("/games", gamesRouter);
+// router.use("/results", resultsRouter);
+// router.use("/picks", picksRouter);
 
 
 router.post("/test", (req, res) => {
