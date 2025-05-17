@@ -3,6 +3,9 @@
 const router = require("express").Router();
 const sessionRouter = require("./session.js");
 const usersRouter = require("./users.js");
+const pickpagesRouter = require("./pickpages.js");
+
+
 // imports used for session/authorization functions:
 const { restoreUser } = require("../../utils/auth.js");
 // these imports used for test routes, inactive:
@@ -22,8 +25,9 @@ router.use(restoreUser);
 // });
 
 router.use("/session", sessionRouter);
-
 router.use("/users", usersRouter);
+router.use("/pickpages", pickpagesRouter);
+
 
 router.post("/test", (req, res) => {
   res.json({ requestBody: req.body });

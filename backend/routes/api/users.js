@@ -70,7 +70,63 @@ router.post("/", validateSignup, async (req, res) => {
 });
 
 
-// Update Profile
+// Get a Specific User"s Public Profile
+// GET /api/users/:userId
+router.get("/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const user = await User.findByPk(userId, {
+      attributes: ["id", "userName", "firstName", "lastName", "createdAt"],
+      include: [{
+        model: UserProfile,
+        attributes: ["aboutMe", "sportIcon"]
+      }]
+    });
+
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    return res.json({ user });
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+});
+// WORKING
+
+
+// Get a User"s Prediction Statistics
+// GET /api/users/:userId/stats
+router.get("/:userId/stats", requireAuth, async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    // ensure user can only access their own stats or make this public
+    if (req.user.id !== parseInt(userId)) {
+      return res.status(403).json({ message: "Forbidden" });
+    }
+
+    // get total picks, correct picks, etc.
+    const totalPicks = await UserPick.count({ where: { user_id: userId } });
+    const correctPicks = await UserPick.count({
+      where: { user_id: userId, result: "WIN" }
+    });
+
+    return res.json({
+      stats: {
+        totalPicks,
+        correctPicks,
+        accuracy: totalPicks > 0 ? (correctPicks / totalPicks) * 100 : 0
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching user stats:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+});
+// ERROR {"message": "Server error"}
+
+
+// Update User"s Profile
 // PUT /api/users/:userId/profile
 router.put("/:userId/profile", requireAuth, async (req, res) => {
   const { userId } = req.params;
@@ -106,11 +162,11 @@ router.put("/:userId/profile", requireAuth, async (req, res) => {
     // get the updated user with profile
     const user = await User.findByPk(userId, {
       attributes: {
-        include: ['email', 'createdAt', 'updatedAt']
+        include: ["email", "createdAt", "updatedAt"]
       },
       include: [{
         model: UserProfile,
-        attributes: ['aboutMe', 'sportIcon']
+        attributes: ["aboutMe", "sportIcon"]
       }]
     });
 
@@ -130,6 +186,8 @@ router.put("/:userId/profile", requireAuth, async (req, res) => {
     return res.status(500).json({ message: "Server error" });
   }
 });
+// WORKING
+
 
 
 
