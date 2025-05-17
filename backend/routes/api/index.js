@@ -5,7 +5,7 @@ const sessionRouter = require("./session.js");
 const usersRouter = require("./users.js");
 const pickpagesRouter = require("./pickpages.js");
 const gamesRouter = require("./games.js");
-// const resultsRouter = require("./results.js");
+const resultsRouter = require("./results.js");
 // const picksRouter = require("./picks.js");
 
 
@@ -32,7 +32,7 @@ router.use("/session", sessionRouter);
 router.use("/users", usersRouter);
 router.use("/pickpages", pickpagesRouter);
 router.use("/games", gamesRouter);
-// router.use("/results", resultsRouter);
+router.use("/results", resultsRouter);
 // router.use("/picks", picksRouter);
 
 
