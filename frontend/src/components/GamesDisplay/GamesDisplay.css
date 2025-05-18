@@ -1,0 +1,147 @@
+.games-display {
+  padding: var(--space-md);
+}
+
+.filter-controls {
+  display: flex;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-xl);
+  padding: var(--space-md);
+  background-color: var(--light-blue);
+  border-radius: var(--radius-md);
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.filter-group label {
+  font-weight: 500;
+  color: var(--primary-navy);
+}
+
+.filter-group select,
+.filter-group input {
+  padding: var(--space-sm);
+  border: 1px solid var(--medium-gray);
+  border-radius: var(--radius-sm);
+  background-color: var(--white);
+}
+
+.loading-indicator,
+.error-message,
+.no-games-message {
+  text-align: center;
+  padding: var(--space-xl);
+  color: var(--dark-gray);
+}
+
+.error-message {
+  color: var(--primary-red);
+}
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-lg);
+}
+
+.game-card {
+  background-color: var(--white);
+  border-radius: var(--radius-md);
+  box-shadow: 0 2px 8px var(--shadow-color);
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transition-fast);
+}
+
+.game-card:hover {
+  transform: translateY(-3px);
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--light-gray);
+}
+
+.game-league {
+  font-weight: bold;
+  color: var(--primary-navy);
+  background-color: var(--light-blue);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+}
+
+.game-date {
+  font-size: var(--font-small);
+  color: var(--dark-gray);
+}
+
+.game-teams {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-md);
+}
+
+.team {
+  font-weight: bold;
+  font-size: var(--font-medium);
+  flex: 1;
+}
+
+.away-team {
+  text-align: left;
+}
+
+.home-team {
+  text-align: right;
+}
+
+.vs {
+  margin: 0 var(--space-sm);
+  color: var(--dark-gray);
+}
+
+.game-actions {
+  margin-top: auto;
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--light-gray);
+}
+
+.make-pick-button {
+  width: 100%;
+  padding: var(--space-sm);
+  background-color: var(--primary-navy);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.make-pick-button:hover {
+  background-color: var(--dark-blue);
+}
+
+@media (max-width: 768px) {
+  .filter-controls {
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .filter-group {
+    width: 100%;
+  }
+
+  .filter-group select,
+  .filter-group input {
+    flex: 1;
+  }
+}
