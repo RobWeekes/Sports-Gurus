@@ -3,10 +3,13 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
-// import LoginFormPage from "./components/LoginFormPage/LoginFormPage";
-// import SignupFormPage from "./components/SignupFormModal/SignupFormModal";
 import Navigation from "./components/Navigation/Navigation";
 import ProfileSettings from "./components/ProfileSettings/ProfileSettings";
+import GamesDisplay from "./components/Games/GamesDisplay";
+import PickPagesDisplay from "./components/PickPages/PickPagesDisplay";
+import ResultsDisplay from "./components/Results/ResultsDisplay";
+import HomePage from "./components/HomePage/HomePage";
+import Footer from "./components/Footer/Footer";
 import * as sessionActions from "./store/session";
 
 
@@ -29,7 +32,19 @@ function Layout() {
 
   }, [dispatch]);
 
-    // Redux thunks don't automatically return the value from the inner async function. When calling dispatch(sessionActions.restoreUser()), the promise that gets returned might not be resolving properly:
+  // simpler useEffect:
+  // useEffect(() => {
+  //   dispatch(sessionActions.restoreUser())
+  //     .then(() => setIsLoaded(true))
+  //     .catch(() => setIsLoaded(true));
+  // }, [dispatch]);
+
+
+
+
+
+
+  // Redux thunks don"t automatically return the value from the inner async function. When calling dispatch(sessionActions.restoreUser()), the promise that gets returned might not be resolving properly:
   //   dispatch(sessionActions.restoreUser()).then(() => {
   //     console.log("User restored, setting isLoaded to true");
   //     setIsLoaded(true);
@@ -47,12 +62,35 @@ function Layout() {
   console.log("Layout rendering with isLoaded:", isLoaded);
 
   return (
-    <>
-      {/* render Nav bar first with isLoaded context */}
-      <Navigation isLoaded={isLoaded} />
-      {isLoaded && <Outlet />}
-    </>
-  );  // after restoreUser loads state, render Outlet: children
+    <div className="app-container">
+      <div className="nav-container">
+        {/* render Nav bar first with isLoaded context */}
+        <Navigation isLoaded={isLoaded} />
+      </div>
+
+      <div className="main-content">
+        <div className="content-area">
+          {isLoaded && <Outlet />}
+        </div>
+
+        {/* after restoreUser loads state, render Outlet: children */}
+        <div className="sidebar">
+          {isLoaded && (
+            <>
+              <h2 className="section-title">Quick Links</h2>
+              <ul className="sidebar-links">
+                <li><a href="/games">Today&apos;s Games</a></li>
+                <li><a href="/pickpages">My Pick Pages</a></li>
+                <li><a href="/results">Latest Results</a></li>
+              </ul>
+            </>
+          )}
+        </div>
+      </div>
+
+      <Footer />
+    </div>
+  );
 }
 
 const router = createBrowserRouter([
@@ -61,22 +99,24 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <h1>Welcome!</h1>
+        element: <HomePage />
       },
-      // changing LoginFormPage to LoginFormModal
-      // {
-      //   path: "/login",
-      //   element: <LoginFormPage />
-      // },
-      // changing SignupFormPage to SignupFormModal
-      // {
-      //   path: "/signup",
-      //   element: <SignupFormPage />
-      // },
       {
         path: "/profile/settings",
         element: <ProfileSettings />
       },
+      {
+        path: "/games",
+        element: <GamesDisplay />
+      },
+      {
+        path: "/pickpages",
+        element: <PickPagesDisplay />
+      },
+      {
+        path: "/results",
+        element: <ResultsDisplay />
+      }
     ]
   }
 ]);

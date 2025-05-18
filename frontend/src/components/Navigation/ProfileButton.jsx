@@ -73,13 +73,10 @@ function ProfileButton({ user }) {
 
             <div className="menu-items">
               <li>
-                <NavLink to="/profile/settings">My Profile</NavLink>
+                <NavLink to="/profile/settings" onClick={closeMenu}>My Profile</NavLink>
               </li>
               <li>
-                <NavLink to="/my-teams">My Teams</NavLink>
-              </li>
-              <li>
-                <NavLink to="/my-predictions">My Predictions</NavLink>
+                <NavLink to="/pickpages" onClick={closeMenu}>My Picks</NavLink>
               </li>
               <li>
                 <button onClick={logout} className="logout-button">Sign Out</button>

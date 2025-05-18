@@ -22,21 +22,21 @@ async function makeAdmin() {
     const tableName = 'users';
 
     // Check if user with ID 2 exists
-    const [users] = await sequelize.query(`SELECT * FROM "${tableName}" WHERE id = 3`);
+    const [users] = await sequelize.query(`SELECT * FROM "${tableName}" WHERE id = 4`);
 
     if (users.length === 0) {
-      console.error(`User with ID 3 not found in ${tableName}!`);
+      console.error(`User with ID 4 not found in ${tableName}!`);
       return;
     }
 
     console.log(`Found user in ${tableName}:`, users[0]);
 
     // Update the user to be an admin
-    await sequelize.query(`UPDATE "${tableName}" SET "isAdmin" = 1 WHERE id = 3`);
-    console.log(`User with ID 3 in ${tableName} is now an admin!`);
+    await sequelize.query(`UPDATE "${tableName}" SET "isAdmin" = 1 WHERE id = 4`);
+    console.log(`User with ID 4 in ${tableName} is now an admin!`);
 
     // Verify the update
-    const [updatedUsers] = await sequelize.query(`SELECT * FROM "${tableName}" WHERE id = 3`);
+    const [updatedUsers] = await sequelize.query(`SELECT * FROM "${tableName}" WHERE id = 4`);
     console.log(`Updated user in ${tableName}:`, updatedUsers[0]);
 
     // Close the connection
@@ -114,5 +114,5 @@ makeAdmin();
 
 // OR run the script with a user ID as an argument:
 
-// node utils/make-admin.js 3
-// Makes user with ID 3 an admin
+// node utils/make-admin.js 4
+// Makes user with ID 4 an admin

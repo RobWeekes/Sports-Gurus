@@ -87,7 +87,7 @@ module.exports = {
         awayTeam: "DETROIT RED WINGS",
         favorite: "DETROIT RED WINGS",
         underdog: "TORONTO MAPLE LEAFS",
-        status: "",
+        status: "TBD",
         favoriteScore: 0,
         underdogScore: 0,
         totalScore: 0,

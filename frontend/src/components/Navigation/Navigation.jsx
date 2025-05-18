@@ -1,9 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ProfileButton from "./ProfileButton";
-// import OpenModalButton from "../OpenModalButton";
-// import LoginFormModal from "../LoginFormModal/LoginFormModal";
-// import SignupFormModal from "../SignupFormModal/SignupFormModal";
 import "./Navigation.css";
 
 
@@ -14,18 +11,37 @@ function Navigation({ isLoaded }) {
   console.log("sessionUser:", sessionUser);
   console.log("Redux state:", useSelector(state => state));
 
+
   return (
-    <ul>
-      <li>
-        <NavLink to="/">Home</NavLink>
-      </li>
-      {/* after user session has loaded, render additional elements */}
-      {isLoaded && (
+    <div className="nav-content">
+      <div className="nav-logo">
+        <NavLink to="/">Sports Gurus</NavLink>
+      </div>
+
+      <ul className="nav-links">
         <li>
-          <ProfileButton user={sessionUser} />
+          <NavLink to="/" end>Home</NavLink>
         </li>
+        <li>
+          <NavLink to="/games">Games</NavLink>
+        </li>
+        <li>
+          <NavLink to="/results">Results</NavLink>
+        </li>
+        {/* after user session has loaded, render additional elements */}
+        {isLoaded && sessionUser && (
+          <li>
+            <NavLink to="/pickpages">My Picks</NavLink>
+          </li>
+        )}
+      </ul>
+
+      {isLoaded && (
+        <div className="profile-container">
+          <ProfileButton user={sessionUser} />
+        </div>
       )}
-    </ul>
+    </div>
   );
 }
 
