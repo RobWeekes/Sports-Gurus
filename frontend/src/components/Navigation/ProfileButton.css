@@ -1,114 +1,279 @@
+/* ProfileButton styling */
+
+/* TO DO:
+remove gradient background for the user info section
+change font back to before, should make chevrons look as before
+the whole profile button is turning navy blue */
+
 .profile-button {
-  background: none;
-  border: none;
+  background: rgba(255, 255, 255, 0.15);
+  /* subtle background */
+  border: 1px solid var(--primary-red);
+  /* subtle border */
   cursor: pointer;
-  color: var(--primary-navy);
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: var(--white);
-  transition: background-color var(--transition-fast);
+  padding: 8px;
+  border-radius: 8%;
+  /* 50% for round border */
+  transition: all var(--transition-fast);
+  position: relative;
+  /* add a subtle shadow to make it stand out? */
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
 }
 
 .profile-button:hover {
-  background-color: var(--medium-blue);
+  transform: scale(1.05);
+  background-color: rgba(12, 35, 76, 0.05);
+  /* highlight on hover */
+  border-color: var(--primary-red);
+  /* more visible border on hover */
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+  /* Enhanced shadow on hover */
 }
 
+/* when clicked */
+.profile-button:active {
+  transform: scale(0.98);
+}
+
+/* the SVG React icon inside the button */
+.profile-button svg {
+  color: var(--primary-navy);
+  /* standard navy for the icon */
+  opacity: 1.0;
+}
+
+.profile-button:hover svg {
+  color: var(--primary-navy);
+  /* optional: change color on hover */
+}
+
+/* dropdown menu styling */
 .profile-dropdown {
   position: absolute;
-  top: 45px;
-  right: 0;
-  width: 250px;
+  right: 10px;
+  top: 60px;
   background-color: var(--white);
   border-radius: var(--radius-md);
-  box-shadow: 0 2px 10px var(--shadow-color);
+  /* sharp corners */
+  box-shadow: 0 4px 12px var(--shadow-color);
+  width: 250px;
+  padding: 0;
   overflow: hidden;
-  z-index: 200;
+  z-index: 100;
+  transition: all var(--transition-medium);
+  border-top: 3px solid var(--primary-red);
+  color: var(--dark-gray);
+  /* sports-style border */
+  border-left: 1px solid var(--medium-gray);
+  border-right: 1px solid var(--medium-gray);
+  border-bottom: 2px solid var(--primary-navy);
 }
 
 .profile-dropdown.hidden {
-  display: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
 }
 
-.user-info {
-  padding: var(--space-md);
-  background-color: var(--light-blue);
-  border-bottom: 1px solid var(--medium-blue);
+/* User info section */
+.profile-dropdown .user-info {
+  padding: 16px;
+  border-bottom: 2px solid var(--medium-gray);
+  background: linear-gradient(to bottom, #f8f8f8, #f2f2f2);
+  position: relative;
 }
 
-.user-name {
-  font-weight: bold;
-  font-size: var(--font-medium);
+/* sports-style header accent */
+.profile-dropdown .user-info::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background-color: var(--primary-red);
+}
+
+.profile-dropdown .user-info .user-name {
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 4px;
   color: var(--primary-navy);
+  letter-spacing: 0.5px;
+  /* sports-style text shadow */
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
-.user-full-name {
-  font-size: var(--font-small);
-  margin-top: var(--space-xs);
+.profile-dropdown .user-info .user-full-name,
+.profile-dropdown .user-info .user-email {
+  font-size: 14px;
+  color: #555;
+  margin: 4px 0;
 }
 
-.user-email {
-  font-size: var(--font-small);
-  color: var(--dark-gray);
-  margin-top: var(--space-xs);
-  word-break: break-all;
-}
-
-.menu-items {
-  padding: var(--space-sm) 0;
-}
-
-.menu-items li {
+/* menu items */
+.profile-dropdown .menu-items {
   list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-.menu-items li a,
-.menu-items li button {
+.profile-dropdown .menu-items li {
+  padding: 0;
+  margin: 0;
+  border-bottom: 1px solid #f0f0f0;
+  position: relative;
+  /* position the arrow */
+}
+
+.profile-dropdown .menu-items li:last-child {
+  border-bottom: none;
+}
+
+/* NavLink and button elements */
+.profile-dropdown .menu-items a,
+.profile-dropdown .menu-items button {
   display: block;
-  padding: var(--space-sm) var(--space-md);
+  padding: 12px 16px;
   text-decoration: none;
-  color: var(--dark-gray);
-  font-size: var(--font-medium);
+  color: var(--primary-navy);
+  font-size: 14px;
+  font-weight: 600;
   text-align: left;
   width: 100%;
   background: none;
   border: none;
   cursor: pointer;
-  transition: background-color var(--transition-fast);
+  transition: all var(--transition-fast);
+  /* sports-style slight uppercase */
+  text-transform: capitalize;
 }
 
-.menu-items li a:hover,
-.menu-items li button:hover {
+/* chevron arrow with horiz. stretching */
+.profile-dropdown .menu-items li::after {
+  content: '›';
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%) scaleX(1.2);
+  /* stretch horizontally */
+  opacity: 0;
+  transition: all var(--transition-fast);
+  color: var(--primary-red);
+  font-size: 24px;
+  font-weight: bold;
+  pointer-events: none;
+  /* make sure it doesn't interfere with clicks */
+  /* ensure sharp rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* hover states for the links/buttons */
+.profile-dropdown .menu-items li:hover a,
+.profile-dropdown .menu-items li:hover button {
+  padding-left: 20px;
+  color: var(--primary-red);
+  /* sports-style left border on hover */
+  border-left: 3px solid var(--primary-red);
+}
+
+/* apply background to the li on hover */
+.profile-dropdown .menu-items li:hover {
   background-color: var(--light-gray);
-  color: var(--primary-navy);
 }
 
-.logout-button {
-  color: var(--primary-red) !important;
-  font-weight: 500;
+/* arrow animation on hover */
+.profile-dropdown .menu-items li:hover::after {
+  opacity: 1;
+  right: 12px;
+}
+
+/* sports-style button */
+.profile-dropdown .menu-items button.logout-button {
+  color: var(--primary-navy);
+  font-weight: 600;
+}
+
+.profile-dropdown .menu-items li:hover button.logout-button {
+  color: var(--primary-red);
+}
+
+/* sports-style last item highlight */
+.profile-dropdown .menu-items li:last-child {
+  background-color: #f9f9f9;
+  border-top: 1px solid var(--medium-gray);
 }
 
 /* styles for non-logged in users */
 .profile-dropdown li {
   list-style: none;
+  padding: 0;
+  margin: 0;
+  border-bottom: 1px solid #f0f0f0;
+  position: relative;
+  /* position the arrow */
+}
+
+.profile-dropdown li:last-child {
+  border-bottom: none;
 }
 
 .profile-dropdown li button {
   display: block;
-  width: 100%;
-  padding: var(--space-md);
+  padding: 12px 16px;
+  text-decoration: none;
+  color: var(--primary-navy);
+  font-size: 14px;
+  font-weight: 600;
   text-align: left;
+  width: 100%;
   background: none;
   border: none;
   cursor: pointer;
-  color: var(--primary-navy);
-  font-size: var(--font-medium);
-  transition: background-color var(--transition-fast);
+  transition: all var(--transition-fast);
+  /* sports-style slight uppercase */
+  text-transform: capitalize;
 }
 
-.profile-dropdown li button:hover {
+/* chevron arrow with horiz. stretching for non-logged in users */
+.profile-dropdown li::after {
+  content: '›';
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%) scaleX(1.0);
+  /* stretch horizontally */
+  opacity: 0;
+  transition: all var(--transition-fast);
+  color: var(--primary-red);
+  font-size: 20px;
+  font-weight: bold;
+  pointer-events: none;
+  /* make sure it doesn't interfere with clicks */
+  /* ensure sharp rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* hover states for the buttons for non-logged in users */
+.profile-dropdown li:hover button {
+  padding-left: 20px;
+  color: var(--primary-red);
+  /* sports-style left border on hover */
+  border-left: 3px solid var(--primary-red);
+}
+
+/* apply background to the li on hover for non-logged in users */
+.profile-dropdown li:hover {
   background-color: var(--light-gray);
+}
+
+/* arrow animation on hover for non-logged in users */
+.profile-dropdown li:hover::after {
+  opacity: 1;
+  right: 12px;
 }

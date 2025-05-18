@@ -8,7 +8,10 @@
   margin-bottom: var(--space-xl);
   padding: var(--space-md);
   background-color: var(--light-blue);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
+  border-top: 2px solid var(--primary-red);
+  border-bottom: 2px solid var(--primary-navy);
+  box-shadow: 0 2px 6px var(--shadow-color);
 }
 
 .filter-group {
@@ -18,16 +21,20 @@
 }
 
 .filter-group label {
-  font-weight: 500;
+  font-weight: 600;
   color: var(--primary-navy);
+  text-transform: uppercase;
+  font-size: var(--font-small);
+  letter-spacing: 0.5px;
 }
 
 .filter-group select,
 .filter-group input {
   padding: var(--space-sm);
-  border: 1px solid var(--medium-gray);
+  border: 1px solid var(--medium-blue);
   border-radius: var(--radius-sm);
   background-color: var(--white);
+  font-weight: 500;
 }
 
 .loading-indicator,
@@ -36,6 +43,7 @@
   text-align: center;
   padding: var(--space-xl);
   color: var(--dark-gray);
+  font-weight: 500;
 }
 
 .error-message {
@@ -44,17 +52,39 @@
 
 .results-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: var(--space-lg);
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: var(--space-md);
 }
 
 .result-card {
   background-color: var(--white);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   box-shadow: 0 2px 8px var(--shadow-color);
   padding: var(--space-md);
   display: flex;
   flex-direction: column;
+  border-top: 1px solid var(--primary-red);
+  border-bottom: 1px solid var(--primary-navy);
+  border-left: 1px solid var(--medium-gray);
+  border-right: 1px solid var(--medium-gray);
+  position: relative;
+  overflow: hidden;
+}
+
+.result-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(to right, var(--primary-red), var(--primary-navy));
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.result-card:hover::before {
+  opacity: 1;
 }
 
 .result-header {
@@ -69,26 +99,33 @@
   font-weight: bold;
   padding: 2px 8px;
   border-radius: var(--radius-sm);
+  text-transform: uppercase;
+  font-size: var(--font-small);
+  letter-spacing: 0.5px;
 }
 
 .result-status.final {
   background-color: #e6f7e6;
   color: #2e7d32;
+  border: 1px solid #c8e6c9;
 }
 
 .result-status.game-started {
   background-color: #fff8e1;
   color: #f57c00;
+  border: 1px solid #ffe0b2;
 }
 
 .result-status.tbd {
   background-color: var(--light-gray);
   color: var(--dark-gray);
+  border: 1px solid var(--medium-gray);
 }
 
 .result-date {
   font-size: var(--font-small);
   color: var(--dark-gray);
+  font-weight: 500;
 }
 
 .result-teams {
@@ -96,15 +133,20 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: var(--space-md);
+  padding: var(--space-sm);
+  background-color: var(--light-blue);
+  border-radius: var(--radius-sm);
 }
 
 .team {
-  font-weight: bold;
+  font-weight: 700;
   font-size: var(--font-medium);
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .away-team {
@@ -118,23 +160,37 @@
 
 .team.favorite {
   color: var(--primary-navy);
+  position: relative;
+}
+
+.team.favorite::after {
+  content: '★';
+  font-size: var(--font-small);
+  color: var(--primary-red);
+  margin: 0 var(--space-xs);
 }
 
 .team-score {
   font-size: var(--font-large);
   font-weight: bold;
   margin: 0 var(--space-sm);
+  color: var(--primary-red);
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1);
 }
 
 .vs {
   margin: 0 var(--space-sm);
-  color: var(--dark-gray);
+  color: var(--primary-red);
+  font-weight: bold;
+  font-size: var(--font-small);
 }
 
 .result-details {
   margin-top: var(--space-md);
-  padding-top: var(--space-md);
-  border-top: 1px solid var(--light-gray);
+  padding: var(--space-md);
+  border-radius: var(--radius-sm);
+  background-color: var(--light-gray);
+  border: 1px solid var(--medium-gray);
 }
 
 .detail-item {
@@ -144,12 +200,16 @@
 }
 
 .detail-label {
-  font-weight: 500;
+  font-weight: 600;
   color: var(--dark-gray);
+  text-transform: uppercase;
+  font-size: var(--font-small);
+  letter-spacing: 0.5px;
 }
 
 .detail-value {
-  font-weight: 500;
+  font-weight: 600;
+  color: var(--primary-navy);
 }
 
 @media (max-width: 768px) {

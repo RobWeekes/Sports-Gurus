@@ -8,7 +8,10 @@
   margin-bottom: var(--space-xl);
   padding: var(--space-md);
   background-color: var(--light-blue);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
+  border-top: 2px solid var(--primary-red);
+  border-bottom: 2px solid var(--primary-navy);
+  box-shadow: 0 2px 6px var(--shadow-color);
 }
 
 .filter-group {
@@ -18,16 +21,20 @@
 }
 
 .filter-group label {
-  font-weight: 500;
+  font-weight: 600;
   color: var(--primary-navy);
+  text-transform: uppercase;
+  font-size: var(--font-small);
+  letter-spacing: 0.5px;
 }
 
 .filter-group select,
 .filter-group input {
   padding: var(--space-sm);
-  border: 1px solid var(--medium-gray);
+  border: 1px solid var(--medium-blue);
   border-radius: var(--radius-sm);
   background-color: var(--white);
+  font-weight: 500;
 }
 
 .loading-indicator,
@@ -36,6 +43,7 @@
   text-align: center;
   padding: var(--space-xl);
   color: var(--dark-gray);
+  font-weight: 500;
 }
 
 .error-message {
@@ -44,22 +52,45 @@
 
 .games-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: var(--space-lg);
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: var(--space-md);
 }
 
 .game-card {
   background-color: var(--white);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   box-shadow: 0 2px 8px var(--shadow-color);
   padding: var(--space-md);
   display: flex;
   flex-direction: column;
   transition: transform var(--transition-fast);
+  border-top: 1px solid var(--primary-red);
+  border-bottom: 1px solid var(--primary-navy);
+  border-left: 1px solid var(--medium-gray);
+  border-right: 1px solid var(--medium-gray);
+  position: relative;
+  overflow: hidden;
+}
+
+.game-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(to right, var(--primary-red), var(--primary-navy));
+  opacity: 0;
+  transition: opacity var(--transition-fast);
 }
 
 .game-card:hover {
   transform: translateY(-3px);
+  box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.game-card:hover::before {
+  opacity: 1;
 }
 
 .game-header {
@@ -72,15 +103,19 @@
 
 .game-league {
   font-weight: bold;
-  color: var(--primary-navy);
-  background-color: var(--light-blue);
+  color: var(--white);
+  background-color: var(--primary-navy);
   padding: 2px 8px;
   border-radius: var(--radius-sm);
+  text-transform: uppercase;
+  font-size: var(--font-small);
+  letter-spacing: 0.5px;
 }
 
 .game-date {
   font-size: var(--font-small);
   color: var(--dark-gray);
+  font-weight: 500;
 }
 
 .game-teams {
@@ -88,12 +123,18 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: var(--space-md);
+  padding: var(--space-sm);
+  background-color: var(--light-blue);
+  border-radius: var(--radius-sm);
 }
 
 .team {
-  font-weight: bold;
+  font-weight: 700;
   font-size: var(--font-medium);
   flex: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--primary-navy);
 }
 
 .away-team {
@@ -106,7 +147,9 @@
 
 .vs {
   margin: 0 var(--space-sm);
-  color: var(--dark-gray);
+  color: var(--primary-red);
+  font-weight: bold;
+  font-size: var(--font-small);
 }
 
 .game-actions {
@@ -124,10 +167,30 @@
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: background-color var(--transition-fast);
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: var(--font-small);
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+}
+
+.make-pick-button::after {
+  content: "›";
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  transition: right var(--transition-fast);
 }
 
 .make-pick-button:hover {
-  background-color: var(--dark-blue);
+  background-color: var(--primary-red);
+}
+
+.make-pick-button:hover::after {
+  right: 10px;
 }
 
 @media (max-width: 768px) {
