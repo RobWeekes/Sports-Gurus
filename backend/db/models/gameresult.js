@@ -65,7 +65,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: "TBD",
       validate: {
-        isIn: [["TBD", "GAME STARTED", "COMPLETED", "CANCELED", "POSTPONED", "RESCHEDULED"]]
+        isIn: [["TBD", "GAME STARTED", "FINAL", "CANCELED", "POSTPONED", "RESCHEDULED"]]
       }
     },
     favoriteScore: {

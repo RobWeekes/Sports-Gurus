@@ -34,7 +34,13 @@ module.exports = {
         gameDay: new Date("2025-04-01"),
         homeTeam: "NEW YORK YANKEES",
         awayTeam: "BOSTON RED SOX",
-      }
+      },
+      {
+        league: "NHL",
+        gameDay: new Date("2025-04-10"),
+        homeTeam: "TORONTO MAPLE LEAFS",
+        awayTeam: "DETROIT RED WINGS",
+      },
     ], { validate: true });
   },
 

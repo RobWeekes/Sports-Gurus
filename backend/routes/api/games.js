@@ -1,12 +1,12 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { requireAuth } = require('../../utils/auth');
-const { ScheduledGame, GameResult } = require('../../db/models');
+const { requireAuth } = require("../../utils/auth");
+const { ScheduledGame, GameResult } = require("../../db/models");
 
 
 // Get all Scheduled Games
 // GET /api/games
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const { league, date, team } = req.query;
     const where = {};
@@ -37,20 +37,20 @@ router.get('/', async (req, res) => {
     const games = await ScheduledGame.findAll({
       where,
       include: [GameResult],
-      order: [['gameDay', 'ASC']]
+      order: [["gameDay", "ASC"]]
     });
 
     return res.json({ games });
   } catch (error) {
-    console.error('Error fetching games:', error);
-    return res.status(500).json({ message: 'Server error' });
+    console.error("Error fetching games:", error);
+    return res.status(500).json({ message: "Server error" });
   }
 });
 // WORKING
 
 
 // GET /api/games/:gameId - Get a specific game by ID
-router.get('/:gameId', async (req, res) => {
+router.get("/:gameId", async (req, res) => {
   try {
     const { gameId } = req.params;
 
@@ -58,12 +58,12 @@ router.get('/:gameId', async (req, res) => {
       include: [GameResult]
     });
 
-    if (!game) return res.status(404).json({ message: 'Game not found' });
+    if (!game) return res.status(404).json({ message: "Game not found" });
 
     return res.json({ game });
   } catch (error) {
-    console.error('Error fetching game:', error);
-    return res.status(500).json({ message: 'Server error' });
+    console.error("Error fetching game:", error);
+    return res.status(500).json({ message: "Server error" });
   }
 });
 // WORKING
@@ -75,10 +75,10 @@ router.get('/:gameId', async (req, res) => {
 
 // Create a New Scheduled Game (ADMIN)
 // POST /api/games
-router.post('/', requireAuth, async (req, res) => {
+router.post("/", requireAuth, async (req, res) => {
   // check if user is admin
   if (!req.user.isAdmin) {
-    return res.status(403).json({ message: 'Forbidden' });
+    return res.status(403).json({ message: "Forbidden" });
   }
 
   try {
@@ -87,16 +87,17 @@ router.post('/', requireAuth, async (req, res) => {
     // validate input
     if (!league || !gameDay || !homeTeam || !awayTeam) {
       return res.status(400).json({
-        message: 'Bad request',
+        message: "Bad request",
         errors: {
-          league: !league ? 'League is required' : undefined,
-          gameDay: !gameDay ? 'Game day is required' : undefined,
-          homeTeam: !homeTeam ? 'Home team is required' : undefined,
-          awayTeam: !awayTeam ? 'Away team is required' : undefined
+          league: !league ? "League is required" : undefined,
+          gameDay: !gameDay ? "Game day is required" : undefined,
+          homeTeam: !homeTeam ? "Home team is required" : undefined,
+          awayTeam: !awayTeam ? "Away team is required" : undefined
         }
       });
     }
 
+    // create new game
     const newGame = await ScheduledGame.create({
       league,
       gameDay,
@@ -106,8 +107,8 @@ router.post('/', requireAuth, async (req, res) => {
 
     return res.status(201).json({ game: newGame });
   } catch (error) {
-    console.error('Error creating game:', error);
-    return res.status(500).json({ message: 'Server error' });
+    console.error("Error creating game:", error);
+    return res.status(500).json({ message: "Server error" });
   }
 });
 // MAYBE WORKING ? NEED "isAdmin" column for users table (boolean)
@@ -115,10 +116,10 @@ router.post('/', requireAuth, async (req, res) => {
 
 // Update a Scheduled Game (ADMIN)
 // PUT /api/games/:gameId
-router.put('/:gameId', requireAuth, async (req, res) => {
+router.put("/:gameId", requireAuth, async (req, res) => {
   // check if user is admin
   if (!req.user.isAdmin) {
-    return res.status(403).json({ message: 'Forbidden' });
+    return res.status(403).json({ message: "Forbidden" });
   }
 
   try {
@@ -127,7 +128,7 @@ router.put('/:gameId', requireAuth, async (req, res) => {
 
     const game = await ScheduledGame.findByPk(gameId);
 
-    if (!game) return res.status(404).json({ message: 'Game not found' });
+    if (!game) return res.status(404).json({ message: "Game not found" });
 
     // update game details
     if (league) game.league = league;
@@ -139,8 +140,8 @@ router.put('/:gameId', requireAuth, async (req, res) => {
 
     return res.json({ game });
   } catch (error) {
-    console.error('Error updating game:', error);
-    return res.status(500).json({ message: 'Server error' });
+    console.error("Error updating game:", error);
+    return res.status(500).json({ message: "Server error" });
   }
 });
 // MAYBE WORKING ? NEED "isAdmin" column
@@ -148,10 +149,10 @@ router.put('/:gameId', requireAuth, async (req, res) => {
 
 // Delete a Scheduled Game (ADMIN)
 // DELETE /api/games/:gameId
-router.delete('/:gameId', requireAuth, async (req, res) => {
+router.delete("/:gameId", requireAuth, async (req, res) => {
   // check if user is admin
   if (!req.user.isAdmin) {
-    return res.status(403).json({ message: 'Forbidden' });
+    return res.status(403).json({ message: "Forbidden" });
   }
 
   try {
@@ -159,14 +160,14 @@ router.delete('/:gameId', requireAuth, async (req, res) => {
 
     const game = await ScheduledGame.findByPk(gameId);
 
-    if (!game) return res.status(404).json({ message: 'Game not found' });
+    if (!game) return res.status(404).json({ message: "Game not found" });
 
     await game.destroy();
 
-    return res.json({ message: 'Game deleted successfully' });
+    return res.json({ message: "Game deleted successfully" });
   } catch (error) {
-    console.error('Error deleting game:', error);
-    return res.status(500).json({ message: 'Server error' });
+    console.error("Error deleting game:", error);
+    return res.status(500).json({ message: "Server error" });
   }
 });
 // MAYBE WORKING ? NEED "isAdmin" column

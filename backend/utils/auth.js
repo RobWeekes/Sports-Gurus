@@ -16,6 +16,7 @@ const setTokenCookie = (res, user) => {
     lastName: user.lastName,
     email: user.email,
     userName: user.userName,
+    isAdmin: user.isAdmin
   };
   const token = jwt.sign(
     { data: safeUser },
@@ -50,9 +51,9 @@ const restoreUser = (req, res, next) => {
 
     try {
       const { id } = jwtPayload.data;
-      req.user = await User.findByPk(id, {
+      req.user = await User.unscoped().findByPk(id, {
         attributes: {
-          include: ["email", "createdAt", "updatedAt"]
+          include: ["email", "isAdmin", "createdAt", "updatedAt"]
         }
       });
     } catch (e) {
@@ -79,8 +80,37 @@ const requireAuth = function (req, _res, next) {
 }
 
 
+// just added below:
 
-module.exports = { setTokenCookie, restoreUser, requireAuth };
+// If the current user is not an admin, return an error
+const requireAdmin = function (req, _res, next) {
+  if (req.user && req.user.isAdmin) return next();
+
+  const err = new Error('Admin access required');
+  err.title = 'Admin access required';
+  err.errors = { message: 'You must be an admin to access this resource' };
+  err.status = 403;
+  return next(err);
+};
+
+// Direct database check for admin status (backup method)
+const checkAdmin = async function (userId) {
+  try {
+    const user = await User.findByPk(userId);
+    return user && user.isAdmin === 1;
+  } catch (error) {
+    console.error(`Error checking admin status for user ${userId}:`, error);
+    return false;
+  }
+};
+
+module.exports = {
+  setTokenCookie,
+  restoreUser,
+  requireAuth,
+  requireAdmin,
+  checkAdmin
+};
 
 // *setTokenCookie - setting the JWT cookie after a user is logged in or signed up. It takes in the response and the session user and generates a JWT using the imported secret. It is set to expire in however many seconds you set on the JWT_EXPIRES_IN key in the .env file. The payload of the JWT will be the user"s id, userName, and email attributes. Do NOT add the user"s hashedPassword attribute to the payload. After the JWT is created, it"s set to an HTTP-only cookie on the response as a token cookie.
 

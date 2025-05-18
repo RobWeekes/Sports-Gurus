@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const { Op } = require("sequelize");
-const { requireAuth } = require("../../utils/auth");
-const { GameResult, ScheduledGame, UserPick } = require("../../db/models");
+const { requireAuth, requireAdmin } = require("../../utils/auth");
+const { GameResult, ScheduledGame, UserPick, sequelize } = require("../../db/models");
 
 
 // Get all Game Results Matching Query Params
@@ -19,16 +19,22 @@ router.get("/", async (req, res) => {
 
     // build the "WHERE" object before querying db:
 
-    if (status) {
-      where.status = status;
+    if (status) {   // case ignored with sequelize "LOWER" method
+      where.status = sequelize.where(sequelize.fn("LOWER", sequelize.col("status")), status.toLowerCase());
     }
-    // this matches partial strings, case ignored
+
+    // this matches partial strings, ignore case
     if (team) {
       where[Op.or] = [
-        { homeTeam: { [Op.like]: `%${team}%` } },
-        { awayTeam: { [Op.like]: `%${team}%` } }
+        sequelize.where(sequelize.fn("LOWER", sequelize.col("homeTeam")), {
+          [Op.like]: `%${team.toLowerCase()}%`
+        }),
+        sequelize.where(sequelize.fn("LOWER", sequelize.col("awayTeam")), {
+          [Op.like]: `%${team.toLowerCase()}%`
+        })
       ];
     }
+
     // create a match range that covers the entire day
     if (date) {
       const startDate = new Date(date);
@@ -54,10 +60,10 @@ router.get("/", async (req, res) => {
 
 
 
-// simple test route
-router.get("/test", (req, res) => {
-  return res.json({ message: "Test route working" });
-});
+// // simple test route
+// router.get("/test", (req, res) => {
+//   return res.json({ message: "Test route working" });
+// });
 
 
 
@@ -66,7 +72,7 @@ router.get("/test", (req, res) => {
 router.get("/teams", async (req, res) => {
   try {
     const games = await ScheduledGame.findAll({
-      attributes: ['homeTeam', 'awayTeam']
+      attributes: ["homeTeam", "awayTeam"]
     });
 
     // create a set & extract unique team names
@@ -113,13 +119,13 @@ router.get("/:gameId", async (req, res) => {
 // *TO DO: Add "isAdmin" column to users table (boolean)
 
 
-// POST /api/results - Create or update a game result
-router.post("/", requireAuth, async (req, res) => {
-  // check if user is admin
-  if (!req.user.isAdmin) {
-    return res.status(403).json({ message: "Forbidden" });
-  }
-
+// Create or Update a Game Result
+// POST /api/results
+router.post("/", requireAuth, requireAdmin, async (req, res) => {
+  // // check if user is admin
+  // if (!req.user.isAdmin) {
+  //   return res.status(403).json({ message: "Forbidden" });
+  // }
   try {
     const {
       game_id, favorite, underdog, status,
@@ -175,7 +181,51 @@ router.post("/", requireAuth, async (req, res) => {
       });
     }
 
-    // if game is final, update all user picks for this game
+    // helper function to update user picks based on game result
+    async function updateUserPicks(gameId, result) {
+      try {
+        const picks = await UserPick.findAll({ where: { game_id: gameId } });
+
+        for (const pick of picks) {
+          let pickResult = "LOSS";
+
+          // determine if pick was correct based on prediction type
+          if (pick.predictionType === "winner") {
+            // Winner pick
+            if (
+              (pick.prediction === result.favorite && result.favoriteScore > result.underdogScore) ||
+              (pick.prediction === result.underdog && result.underdogScore > result.favoriteScore)
+            ) {
+              pickResult = "WIN";
+            }
+          } else if (pick.predictionType === "spread") {
+            // Spread pick
+            if (
+              (pick.prediction === result.favorite && result.coversSpread === "YES") ||
+              (pick.prediction === result.underdog && result.coversSpread === "NO")
+            ) {
+              pickResult = "WIN";
+            }
+          } else if (pick.predictionType === "total") {
+            // Over/Under pick
+            if (
+              (pick.prediction === "OVER" && result.overUnder === "OVER") ||
+              (pick.prediction === "UNDER" && result.overUnder === "UNDER")
+            ) {
+              pickResult = "WIN";
+            }
+          }
+
+          // update pick result
+          pick.result = pickResult;
+          await pick.save();
+        }
+      } catch (error) {
+        console.error("Error updating user picks:", error);
+      }
+    }
+
+    // if game is final (over), update all user picks for this game
     if (status === "FINAL") {
       await updateUserPicks(game_id, result);
     }
@@ -186,61 +236,17 @@ router.post("/", requireAuth, async (req, res) => {
     return res.status(500).json({ message: "Server error" });
   }
 });
-
-// helper function to update user picks based on game result
-async function updateUserPicks(gameId, result) {
-  try {
-    const picks = await UserPick.findAll({ where: { game_id: gameId } });
-
-    for (const pick of picks) {
-      let pickResult = "LOSS";
-
-      // determine if pick was correct based on prediction type
-      if (pick.predictionType === "winner") {
-        // Winner pick
-        if (
-          (pick.prediction === result.favorite && result.favoriteScore > result.underdogScore) ||
-          (pick.prediction === result.underdog && result.underdogScore > result.favoriteScore)
-        ) {
-          pickResult = "WIN";
-        }
-      } else if (pick.predictionType === "spread") {
-        // Spread pick
-        if (
-          (pick.prediction === result.favorite && result.coversSpread === "YES") ||
-          (pick.prediction === result.underdog && result.coversSpread === "NO")
-        ) {
-          pickResult = "WIN";
-        }
-      } else if (pick.predictionType === "total") {
-        // Over/Under pick
-        if (
-          (pick.prediction === "OVER" && result.overUnder === "OVER") ||
-          (pick.prediction === "UNDER" && result.overUnder === "UNDER")
-        ) {
-          pickResult = "WIN";
-        }
-      }
-
-      // update pick result
-      pick.result = pickResult;
-      await pick.save();
-    }
-  } catch (error) {
-    console.error("Error updating user picks:", error);
-  }
-}
 // TEST
+
 
 
 // Delete a Game Result
 // DELETE /api/results/:gameId
-router.delete("/:gameId", requireAuth, async (req, res) => {
+router.delete("/:gameId", requireAuth, requireAdmin, async (req, res) => {
   // check if user is admin
-  if (!req.user.isAdmin) {
-    return res.status(403).json({ message: "Forbidden" });
-  }
-
+  // if (!req.user.isAdmin) {
+  //   return res.status(403).json({ message: "Forbidden" });
+  // }
   try {
     const { gameId } = req.params;
 
