@@ -3,9 +3,9 @@
 /* TO DO: remove gradient background for the user info section */
 
 .profile-button {
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--light-gray);
   /* subtle background */
-  border: 1px solid var(--primary-red);
+  border: 2px solid var(--medium-blue);
   /* subtle border */
   cursor: pointer;
   display: flex;
@@ -22,9 +22,9 @@
 
 .profile-button:hover {
   transform: scale(1.05);
-  background-color: rgba(12, 35, 76, 0.05);
+  background-color: var(--light-blue);
   /* highlight on hover */
-  border-color: var(--primary-red);
+  border-color: var(--primary-navy);
   /* more visible border on hover */
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
   /* enhanced shadow on hover */

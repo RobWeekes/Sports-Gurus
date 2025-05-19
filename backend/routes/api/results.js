@@ -13,8 +13,8 @@ router.get("/", async (req, res) => {
     console.log("API request received at /api/results");
     console.log("Query parameters:", req.query);
 
-    const { date, team, status } = req.query;
-    console.log("Query parameters:", { date, team, status });
+    const { date, team, status, league } = req.query;
+    console.log("Query parameters:", { date, team, status, league });
     const where = {};
 
     // build the "WHERE" object before querying db:
@@ -46,8 +46,17 @@ router.get("/", async (req, res) => {
       };
     }
 
+    // add league filter
+    if (league) {
+      where.league = league;
+    }
+
     const results = await GameResult.findAll({
       where,
+      include: [{
+        model: ScheduledGame,
+        where: league ? { league } : {}
+      }],
       order: [["gameDay", "DESC"]]
     });   // view most recent games at the top
 
@@ -57,22 +66,44 @@ router.get("/", async (req, res) => {
     return res.status(500).json({ message: "Server error" });
   }
 });
+// TEST
 
 
+// Get All Leagues
+// GET /api/results/leagues
+router.get("/leagues", async (req, res) => {
+  try {
+    const games = await ScheduledGame.findAll({
+      attributes: ['league'],
+      group: ['league']
+    });
 
-// // simple test route
-// router.get("/test", (req, res) => {
-//   return res.json({ message: "Test route working" });
-// });
+    // extract unique league names
+    const leagues = games.map(game => game.league);
 
+    return res.json({ leagues: leagues.sort() });
+  } catch (error) {
+    console.error("Error fetching leagues:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+});
+// TEST
 
 
 // Get All the Teams
 // GET /api/results/teams
 router.get("/teams", async (req, res) => {
   try {
+    const { league } = req.query;
+    const where = {};
+
+    if (league) {
+      where.league = league;
+    }
+
     const games = await ScheduledGame.findAll({
-      attributes: ["homeTeam", "awayTeam"]
+      attributes: ["homeTeam", "awayTeam"],
+      where
     });
 
     // create a set & extract unique team names
@@ -88,7 +119,7 @@ router.get("/teams", async (req, res) => {
     return res.status(500).json({ message: "Server error" });
   }
 });
-// WORKING
+// TEST
 
 
 
@@ -112,6 +143,7 @@ router.get("/:gameId", async (req, res) => {
   }
 });
 // TEST
+
 
 
 // ADMIN ONLY ROUTES:
@@ -269,6 +301,12 @@ router.delete("/:gameId", requireAuth, requireAdmin, async (req, res) => {
   }
 });
 // WORKING
+
+
+// // simple test route
+// router.get("/test", (req, res) => {
+//   return res.json({ message: "Test route working" });
+// });
 
 
 

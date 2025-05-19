@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { csrfFetch } from "../../store/csrf";
 import "./ResultsDisplay.css";
 
-
 function ResultsDisplay() {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -73,7 +72,6 @@ function ResultsDisplay() {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
-
   return (
     <div className="results-display">
       <h1 className="section-title">Game Results</h1>
@@ -130,58 +128,29 @@ function ResultsDisplay() {
           No results found for the selected filters.
         </div>
       ) : (
-        <div className="results-grid">
+        <div className="results-container">
           {results.map(result => (
             <div key={result.id} className="result-card">
-              <div className="result-header">
-                <span className={`result-status ${result.status.toLowerCase().replace(/\s+/g, "-")}`}>
+              <div className="team-info home-team">
+                <div className="team-name">{result.homeTeam}</div>
+                <div className="game-date">{formatDate(result.gameDay)}</div>
+              </div>
+
+              <div className="score-display">
+                <div className="score">
+                  <span>{result.favoriteScore}</span>
+                  <span>-</span>
+                  <span>{result.underdogScore}</span>
+                </div>
+                <div className={`game-status ${result.status === 'FINAL' ? 'final-status' : ''}`}>
                   {result.status}
-                </span>
-                <span className="result-date">
-                  {result.ScheduledGame && formatDate(result.ScheduledGame.gameDay)}
-                </span>
-              </div>
-
-              <div className="result-teams">
-                <div className={`team ${result.favorite === result.ScheduledGame?.homeTeam ? "home-team favorite" : "home-team"}`}>
-                  {result.ScheduledGame?.homeTeam}
-                  {result.status === "FINAL" && (
-                    <span className="team-score">
-                      {result.favorite === result.ScheduledGame?.homeTeam ? result.favoriteScore : result.underdogScore}
-                    </span>
-                  )}
-                </div>
-
-                <div className="vs">vs</div>
-
-                <div className={`team ${result.favorite === result.ScheduledGame?.awayTeam ? "away-team favorite" : "away-team"}`}>
-                  {result.ScheduledGame?.awayTeam}
-                  {result.status === "FINAL" && (
-                    <span className="team-score">
-                      {result.favorite === result.ScheduledGame?.awayTeam ? result.favoriteScore : result.underdogScore}
-                    </span>
-                  )}
                 </div>
               </div>
 
-              {result.status === "FINAL" && (
-                <div className="result-details">
-                  <div className="detail-item">
-                    <span className="detail-label">Total:</span>
-                    <span className="detail-value">{result.totalScore} ({result.overUnder} {result.totalLine})</span>
-                  </div>
-
-                  <div className="detail-item">
-                    <span className="detail-label">Spread:</span>
-                    <span className="detail-value">{result.favorite} {result.pointSpread}</span>
-                  </div>
-
-                  <div className="detail-item">
-                    <span className="detail-label">Covers:</span>
-                    <span className="detail-value">{result.coversSpread}</span>
-                  </div>
-                </div>
-              )}
+              <div className="team-info away-team">
+                <div className="team-name">{result.awayTeam}</div>
+                <div className="spread">{result.pointSpread > 0 ? `+${result.pointSpread}` : result.pointSpread}</div>
+              </div>
             </div>
           ))}
         </div>
@@ -189,7 +158,6 @@ function ResultsDisplay() {
     </div>
   );
 }
-
 
 
 export default ResultsDisplay;

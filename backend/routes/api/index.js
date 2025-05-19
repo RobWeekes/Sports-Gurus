@@ -6,7 +6,7 @@ const usersRouter = require("./users.js");
 const pickpagesRouter = require("./pickpages.js");
 const gamesRouter = require("./games.js");
 const resultsRouter = require("./results.js");
-// const picksRouter = require("./picks.js");
+const picksRouter = require("./picks.js");
 
 // imports used for session/authorization functions:
 const { restoreUser } = require("../../utils/auth.js");
@@ -32,7 +32,7 @@ router.use("/users", usersRouter);
 router.use("/pickpages", pickpagesRouter);
 router.use("/games", gamesRouter);
 router.use("/results", resultsRouter);
-// router.use("/picks", picksRouter);
+router.use("/picks", picksRouter);
 
 
 router.post("/test", (req, res) => {

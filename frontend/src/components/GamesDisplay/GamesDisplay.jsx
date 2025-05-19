@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { csrfFetch } from "../../store/csrf";
+import OpenModalButton from "../OpenModalButton";
+import PredictionModal from "../PredictionModal/PredictionModal";
 import "./GamesDisplay.css";
 
 
@@ -116,7 +118,11 @@ function GamesDisplay() {
 
               {sessionUser && (
                 <div className="game-actions">
-                  <button className="make-pick-button">Make Prediction</button>
+                  <OpenModalButton
+                    buttonText="Make Prediction"
+                    modalComponent={<PredictionModal game={game} />}
+                    className="make-pick-button"
+                  />
                 </div>
               )}
             </div>
@@ -126,6 +132,7 @@ function GamesDisplay() {
     </div>
   );
 }
+
 
 
 export default GamesDisplay;
