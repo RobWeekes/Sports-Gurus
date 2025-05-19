@@ -41,7 +41,7 @@ function HomePage() {
 
           <div className="feature-card">
             <h3>Compete with Friends</h3>
-            <p>Share your pick pages and compete with friends to see who's the ultimate sports guru.</p>
+            <p>Share your pick pages and compete with friends to see who&apos;s the ultimate sports guru.</p>
           </div>
         </div>
       </section>
@@ -58,8 +58,8 @@ function HomePage() {
             </div>
 
             <div className="dashboard-card">
-              <h3>Today's Games</h3>
-              <p>Check out today's lineup and make your predictions</p>
+              <h3>Today&apos;s Games</h3>
+              <p>Check out today&apos;s lineup and make your predictions</p>
               <Link to="/games" className="dashboard-link">View Games</Link>
             </div>
 

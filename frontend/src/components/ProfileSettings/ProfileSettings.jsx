@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import * as sessionActions from "../../store/session";
 import ProfileIconSelector from "../SportIcon/ProfileIconSelector"; //
-import SportIcon from "../SportIcon/SportIcon";
-import { updateProfile } from "../../store/session";
+// import SportIcon from "../SportIcon/SportIcon";
+// import { updateProfile } from "../../store/session";
 import "./ProfileSettings.css";
 
 

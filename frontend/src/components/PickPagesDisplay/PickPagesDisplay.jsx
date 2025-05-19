@@ -146,7 +146,7 @@ function PickPagesDisplay() {
         <div className="error-message">{error}</div>
       ) : pickPages.length === 0 ? (
         <div className="no-pages-message">
-          <p>You haven"t created any pick pages yet.</p>
+          <p>You haven&apos;t created any pick pages yet.</p>
           {!showCreateForm && (
             <button
               className="create-button"
