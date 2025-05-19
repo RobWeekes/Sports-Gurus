@@ -90,6 +90,26 @@
   cursor: not-allowed;
 }
 
+.cancel-button {
+  background-color: var(--primary-red);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-medium);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.cancel-button:hover:not(:disabled) {
+  background-color: var(--primary-red);
+}
+
+.cancel-button:disabled {
+  background-color: var(--medium-gray);
+  cursor: not-allowed;
+}
+
 .account-info {
   background-color: var(--white);
   border-radius: var(--radius-md);
@@ -125,7 +145,7 @@
   font-weight: 500;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   .info-item {
     flex-direction: column;
   }
@@ -135,100 +155,3 @@
     margin-bottom: var(--space-xs);
   }
 }
-
-
-
-
-/* Old version \/ */
-
-/* .profile-page {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.profile-message {
-  background-color: #d4edda;
-  color: #155724;
-  padding: 10px;
-  border-radius: 4px;
-  margin-bottom: 20px;
-}
-
-.profile-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 30px;
-}
-
-.user-icon {
-  margin-right: 20px;
-}
-
-.user-info h2 {
-  margin-bottom: 5px;
-}
-
-.user-info p {
-  margin: 5px 0;
-  color: #666;
-}
-
-.about-section {
-  margin-bottom: 30px;
-}
-
-.form-group {
-  margin-bottom: 20px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
-}
-
-textarea {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  resize: vertical;
-}
-
-.char-count {
-  text-align: right;
-  color: #666;
-  font-size: 0.8rem;
-  margin-top: 5px;
-}
-
-.button-group {
-  display: flex;
-  gap: 10px;
-}
-
-.save-button,
-.cancel-button,
-.edit-button {
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.save-button {
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-}
-
-.cancel-button {
-  background-color: #f8f9fa;
-  border: 1px solid #ddd;
-}
-
-.edit-button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-} */

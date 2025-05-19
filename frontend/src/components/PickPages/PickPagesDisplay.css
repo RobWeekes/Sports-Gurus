@@ -120,8 +120,8 @@
 }
 
 .cancel-button {
-  background-color: var(--medium-gray);
-  color: var(--dark-gray);
+  background-color: var(--medium-red);
+  color: var(--white);
   border: none;
   border-radius: var(--radius-sm);
   padding: var(--space-sm) var(--space-lg);
@@ -315,7 +315,7 @@
   right: 10px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   .pick-pages-header {
     flex-direction: column;
     align-items: flex-start;

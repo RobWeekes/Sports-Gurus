@@ -91,12 +91,6 @@ function PickPageDetail() {
   return (
     <div className="pick-page-detail">
       <div className="page-header">
-        <button
-          className="back-button"
-          onClick={() => navigate("/pickpages")}
-        >
-          Back to My Pages
-        </button>
         <h1 className="page-title">{pickPage.pageName}</h1>
         <p className="page-date">
           Created: {formatDate(pickPage.createdAt)}
@@ -128,6 +122,12 @@ function PickPageDetail() {
       {pickPage.UserPicks?.length > 0 ? (
         <div className="picks-list">
           <h2 className="section-title">Your Picks</h2>
+            <button
+              className="back-button"
+              onClick={() => navigate("/pickpages")}
+            >
+              Back to My Pages
+            </button>
           <table className="picks-table">
             <thead>
               <tr>

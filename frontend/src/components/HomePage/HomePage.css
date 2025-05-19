@@ -37,7 +37,7 @@
   font-size: var(--font-large);
   color: var(--dark-gray);
   max-width: 600px;
-  margin: 0 auto var(--space-lg);
+  margin: 0 auto var(--space-sm);
 }
 
 h1 {
@@ -93,12 +93,15 @@ h1 {
 }
 
 .feature-card {
+  border: 2px solid;
+  border-color: var(--primary-navy) var(--primary-red) var(--primary-red) var(--primary-navy);
   background-color: var(--white);
   border-radius: var(--radius-md);
   padding: var(--space-lg);
   box-shadow: 0 2px 8px var(--shadow-color);
   transition: transform var(--transition-fast);
 }
+
 
 .feature-card:hover {
   transform: translateY(-5px);
@@ -126,6 +129,8 @@ h1 {
 }
 
 .dashboard-card {
+  border: 2px solid;
+  border-color: var(--primary-navy) var(--primary-red) var(--primary-red) var(--primary-navy);
   background-color: var(--white);
   border-radius: var(--radius-md);
   padding: var(--space-lg);
@@ -162,7 +167,7 @@ h1 {
   background-color: var(--medium-blue);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   .cta-buttons {
     flex-direction: column;
     align-items: center;
