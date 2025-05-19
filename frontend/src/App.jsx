@@ -1,14 +1,16 @@
-import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import * as sessionActions from './store/session';
-import Navigation from './components/Navigation/Navigation';
-import HomePage from './components/HomePage/HomePage';
-import ProfileSettings from './components/ProfileSettings/ProfileSettings';
-import GamesDisplay from './components/Games/GamesDisplay';
-import ResultsDisplay from './components/Results/ResultsDisplay';
-import PickPagesDisplay from './components/PickPages/PickPagesDisplay';
-import Footer from './components/Footer/Footer';
+import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import * as sessionActions from "./store/session";
+import Navigation from "./components/Navigation/Navigation";
+import HomePage from "./components/HomePage/HomePage";
+import ProfileSettings from "./components/ProfileSettings/ProfileSettings";
+import GamesDisplay from "./components/GamesDisplay/GamesDisplay";
+import ResultsDisplay from "./components/ResultsDisplay/ResultsDisplay";
+import PickPagesDisplay from "./components/PickPages/PickPagesDisplay";
+import PickPageDetail from "./components/PickPages/PickPageDetail"
+import Footer from "./components/Footer/Footer";
+
 
 function App() {
   const dispatch = useDispatch();
@@ -18,7 +20,7 @@ function App() {
     dispatch(sessionActions.restoreUser())
       .then(() => setIsLoaded(true))
       .catch((error) => {
-        console.error('Error restoring user session:', error);
+        console.error("Error restoring user session:", error);
         setIsLoaded(true);
       });
   }, [dispatch]);
@@ -34,6 +36,7 @@ function App() {
             <Route path="/games" element={<GamesDisplay />} />
             <Route path="/results" element={<ResultsDisplay />} />
             <Route path="/pickpages" element={<PickPagesDisplay />} />
+            <Route path="/pickpages/:pageId" element={<PickPageDetail />} />
           </Routes>
         )}
       </main>
@@ -41,5 +44,6 @@ function App() {
     </BrowserRouter>
   );
 }
+
 
 export default App;

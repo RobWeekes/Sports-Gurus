@@ -3,7 +3,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
-import App from "./AppOLD";
+import App from "./App";
 // using Provider from Redux to provide the Redux store
 import configureStore from "./store";
 // use this before rendering

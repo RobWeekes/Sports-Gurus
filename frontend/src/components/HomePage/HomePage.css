@@ -5,10 +5,25 @@
 }
 
 .hero-section {
+  background-image: url('https://res.cloudinary.com/ddb0y4vlh/image/upload/v1747667589/SportsGurus_bsiizd.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 400px; /* Adjust the height as needed */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: white; /* Text color that contrasts with your image */
+  position: relative;
+}
+
+.hero-section {
   text-align: center;
   padding: var(--space-xxl) 0;
   background-color: var(--light-blue);
-  border-radius: var(--radius-lg);
+  /* border-radius: var(--radius-lg); */
   margin-bottom: var(--space-xl);
 }
 
@@ -23,6 +38,10 @@
   color: var(--dark-gray);
   max-width: 600px;
   margin: 0 auto var(--space-lg);
+}
+
+h1 {
+  text-align: left;
 }
 
 .cta-buttons {

@@ -4,12 +4,15 @@
   align-items: center;
   padding: var(--space-md) var(--space-lg);
   background-color: var(--light-blue);
+  /* border-bottom: var(--primary-navy); */
 }
 
 .nav-logo {
   font-size: var(--font-xl);
   font-weight: bold;
   color: var(--primary-navy);
+  position: relative;
+  padding-left: 10%;
 }
 
 .nav-logo a {

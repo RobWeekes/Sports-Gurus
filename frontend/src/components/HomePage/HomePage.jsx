@@ -9,8 +9,6 @@ function HomePage() {
   return (
     <div className="home-page">
       <section className="hero-section">
-        <h1>Welcome to Sports Gurus</h1>
-        <p>Your ultimate platform for sports predictions and analysis</p>
 
         {!sessionUser && (
           <div className="cta-buttons">
@@ -20,8 +18,11 @@ function HomePage() {
         )}
       </section>
 
+      <h1>Welcome to Sports Gurus</h1>
+      <h2>Your ultimate platform for sports predictions and analysis</h2>
+
       <section className="features-section">
-        <h2 className="section-title">What We Offer</h2>
+        <h3 className="section-title">What We Offer</h3>
 
         <div className="features-grid">
           <div className="feature-card">

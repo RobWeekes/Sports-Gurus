@@ -8,7 +8,6 @@ const gamesRouter = require("./games.js");
 const resultsRouter = require("./results.js");
 // const picksRouter = require("./picks.js");
 
-
 // imports used for session/authorization functions:
 const { restoreUser } = require("../../utils/auth.js");
 

@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { requireAuth } = require("../../utils/auth");
 const { UserPickPage, UserPick, ScheduledGame } = require("../../db/models");
+const { Op } = require("sequelize");
 
 
 // Get all Pick Pages for Current User
@@ -22,31 +23,35 @@ router.get("/", requireAuth, async (req, res) => {
 // WORKING
 
 
-// Create a New Pick Page
-// POST /api/pickpages
-router.post("/", requireAuth, async (req, res) => {
+// Get all Pick Pages for a Specific User
+// GET /api/pickpages/user/:userId
+router.get("/user/:userId", async (req, res) => {
   try {
-    const { pageName } = req.body;
+    const { userId } = req.params;
 
-    if (!pageName) {
-      return res.status(400).json({
-        message: "Bad request",
-        errors: { pageName: "Page name is required" }
-      });
+    // validate that userId is a number
+    if (isNaN(parseInt(userId))) {
+      return res.status(400).json({ message: "User ID must be a number" });
     }
 
-    const newPage = await UserPickPage.create({
-      user_id: req.user.id,
-      pageName
+    const pickPages = await UserPickPage.findAll({
+      where: { user_id: userId },
+      order: [["createdAt", "DESC"]],
+      include: [
+        {
+          model: UserPick,
+          attributes: ["id", "predictionType", "prediction", "result"]
+        }
+      ]
     });
 
-    return res.status(201).json({ pickPage: newPage });
+    return res.json({ pickPages });
   } catch (error) {
-    console.error("Error creating pick page:", error);
+    console.error("Error fetching pick pages:", error);
     return res.status(500).json({ message: "Server error" });
   }
 });
-// WORKING
+// WORKING - requireAuth ?
 
 
 // Get a Specific Pick Page
@@ -58,16 +63,23 @@ router.get("/:pageId", requireAuth, async (req, res) => {
     const pickPage = await UserPickPage.findByPk(pageId, {
       include: [{
         model: UserPick,
-        include: [ScheduledGame]
+        attributes: ["id", "game_id", "predictionType", "prediction", "result"]
       }]
-    });
+    }); // not showing game results - let user request them separately
+
+    // const pickPage = await UserPickPage.findByPk(pageId, {
+    //   include: [{
+    //     model: UserPick,
+    //     include: [ScheduledGame]
+    //   }]
+    // });    // INCLUDES ALL PICK & GAME DATA
 
     if (!pickPage) return res.status(404).json({ message: "Pick page not found" });
 
-    // Ensure user can only access their own pick pages
-    if (pickPage.user_id !== req.user.id) {
-      return res.status(403).json({ message: "Forbidden" });
-    }
+    // user can only access their own pick pages?
+    // if (pickPage.user_id !== req.user.id) {
+    //   return res.status(403).json({ message: "Forbidden" });
+    // }
 
     return res.json({ pickPage });
   } catch (error) {
@@ -76,6 +88,50 @@ router.get("/:pageId", requireAuth, async (req, res) => {
   }
 });
 // WORKING
+
+
+// Create a New Pick Page
+// POST /api/pickpages
+router.post("/", requireAuth, async (req, res) => {
+  try {
+    const { pageName } = req.body;
+    const userId = req.user.id;
+
+    if (!pageName) {
+      return res.status(400).json({
+        message: "Bad request",
+        errors: { pageName: "Page name is required" }
+      });
+    }
+
+    // check if user already has a page with this name
+    const existingPage = await UserPickPage.findOne({
+      where: {
+        user_id: userId,
+        pageName
+      }
+    });
+
+    if (existingPage) {
+      return res.status(400).json({
+        message: "Bad request",
+        errors: { pageName: "You already have a pick page with this name" }
+      });
+    }
+
+    const newPage = await UserPickPage.create({
+      user_id: userId,
+      pageName
+    });
+
+    return res.status(201).json({ pickPage: newPage });
+  } catch (error) {
+    console.error("Error creating pick page:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+});
+// WORKING
+
 
 
 // Update a Pick Page by Page ID
@@ -94,7 +150,23 @@ router.put("/:pageId", requireAuth, async (req, res) => {
       return res.status(403).json({ message: "Forbidden" });
     }
 
-    // only changing the name of pick page, so far
+    // check if user already has a page with this name
+    const existingPage = await UserPickPage.findOne({
+      where: {
+        user_id: req.user.id,
+        pageName,
+        id: { [Op.ne]: pageId }
+      }    // (Op."not equals") exclude the current page
+    });
+
+    if (existingPage) {
+      return res.status(400).json({
+        message: "Bad request",
+        errors: { pageName: "You already have a pick page with this name" }
+      });
+    }
+
+    // only changing the name of pick page - so far
     pickPage.pageName = pageName;
     await pickPage.save();
 
@@ -104,7 +176,7 @@ router.put("/:pageId", requireAuth, async (req, res) => {
     return res.status(500).json({ message: "Server error" });
   }
 });
-// WORKING
+// WORKING test
 
 
 // Delete a Pick Page
@@ -117,7 +189,7 @@ router.delete("/:pageId", requireAuth, async (req, res) => {
 
     if (!pickPage) return res.status(404).json({ message: "Pick page not found" });
 
-    // Ensure user can only delete their own pick pages
+    // ensure user can only delete their own pick pages
     if (pickPage.user_id !== req.user.id) {
       return res.status(403).json({ message: "Forbidden" });
     }

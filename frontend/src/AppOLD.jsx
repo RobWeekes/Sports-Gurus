@@ -6,7 +6,7 @@ import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import Navigation from "./components/Navigation/Navigation";
 import ProfileSettings from "./components/ProfileSettings/ProfileSettings";
 import GamesDisplay from "./components/GamesDisplay/GamesDisplay";
-import PickPagesDisplay from "./components/PickPagesDisplay/PickPagesDisplay";
+import PickPagesDisplay from "./components/PickPages/PickPagesDisplay";
 import ResultsDisplay from "./components/ResultsDisplay/ResultsDisplay";
 import HomePage from "./components/HomePage/HomePage";
 import Footer from "./components/Footer/Footer";
