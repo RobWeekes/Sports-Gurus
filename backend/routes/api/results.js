@@ -16,48 +16,59 @@ router.get("/", async (req, res) => {
     const { date, team, status, league } = req.query;
     console.log("Query parameters:", { date, team, status, league });
     const where = {};
+    const scheduleWhere = {};
 
     // build the "WHERE" object before querying db:
 
     if (status) {   // case ignored with sequelize "LOWER" method
-      where.status = sequelize.where(sequelize.fn("LOWER", sequelize.col("status")), status.toLowerCase());
+      where.status = sequelize.where(sequelize.fn("LOWER", sequelize.col("GameResult.status")), status.toLowerCase());
     }
 
-    // this matches partial strings, ignore case
+    // Add league filter to the ScheduledGame model's where clause
+    if (league) {
+      scheduleWhere.league = league;
+    }
+
+    // create a match range that covers the entire day - MOVE THIS TO scheduleWhere
+    if (date) {
+      const startDate = new Date(date);
+      startDate.setHours(0, 0, 0, 0);
+
+      const endDate = new Date(date);
+      endDate.setHours(23, 59, 59, 999);
+
+      scheduleWhere.gameDay = {
+        [Op.gte]: startDate,
+        [Op.lte]: endDate
+      };
+
+      console.log("Date filter:", {
+        date,
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString()
+      });
+    }
+
+    // this matches partial strings, ignore case - now properly qualified with table name
     if (team) {
-      where[Op.or] = [
-        sequelize.where(sequelize.fn("LOWER", sequelize.col("homeTeam")), {
+      scheduleWhere[Op.or] = [
+        sequelize.where(sequelize.fn("LOWER", sequelize.col("ScheduledGame.homeTeam")), {
           [Op.like]: `%${team.toLowerCase()}%`
         }),
-        sequelize.where(sequelize.fn("LOWER", sequelize.col("awayTeam")), {
+        sequelize.where(sequelize.fn("LOWER", sequelize.col("ScheduledGame.awayTeam")), {
           [Op.like]: `%${team.toLowerCase()}%`
         })
       ];
-    }
-
-    // create a match range that covers the entire day
-    if (date) {
-      const startDate = new Date(date);
-      const endDate = new Date(date);
-      endDate.setDate(endDate.getDate() + 1);
-      where.gameDay = {
-        [Op.gte]: startDate,
-        [Op.lt]: endDate
-      };
-    }
-
-    // add league filter
-    if (league) {
-      where.league = league;
     }
 
     const results = await GameResult.findAll({
       where,
       include: [{
         model: ScheduledGame,
-        where: league ? { league } : {}
+        where: scheduleWhere
       }],
-      order: [["gameDay", "DESC"]]
+      order: [[{ model: ScheduledGame }, "gameDay", "DESC"]]
+      // order by the gameDay column in the ScheduledGame table, instead of looking for a non-existent gameDay column in GameResult table
     });   // view most recent games at the top
 
     return res.json({ results });

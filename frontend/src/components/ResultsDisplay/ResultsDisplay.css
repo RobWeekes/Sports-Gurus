@@ -29,43 +29,6 @@
   /* condensed height */
 }
 
-/* top gradient line (hidden by default) */
-/* .result-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(to right, var(--primary-red), var(--primary-navy));
-  opacity: 0;
-  transition: opacity var(--transition-fast);
-} */
-
-/* bottom gradient line (hidden by default) */
-/* .result-card::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(to right, var(--primary-red), var(--primary-navy));
-  opacity: 0;
-  transition: opacity var(--transition-fast);
-} */
-
-/* .result-card:hover {
-  box-shadow: 0 4px 12px var(--shadow-color);
-  border-top: 2px solid transparent;
-  border-bottom: 2px solid transparent;
-} */
-
-/* .result-card:hover::before,
-.result-card:hover::after {
-  opacity: 1;
-} */
-
 /* team information */
 .team-info {
   display: flex;
@@ -120,6 +83,27 @@
   color: var(--medium-gray);
 }
 
+/* spread information */
+.spread {
+  font-size: 12px;
+  color: var(--primary-navy);
+  font-weight: 600;
+}
+
+/* league tag styling */
+.league-tag {
+  position: relative;
+  width: 30%;
+  font-size: 12px;
+  color: var(--primary-navy);
+  background-color: var(--light-gray);
+  padding-left: 10%;
+  /* padding-bottom: -10px; */
+  border-radius: 4px;
+  display: inline-block;
+  margin-top: 4px;
+}
+
 /* responsive adjustments */
 @media (max-width: 600px) {
   .result-card {
@@ -152,7 +136,7 @@
   }
 }
 
-/* filter controls styling */
+/* filter controls styling - updated */
 .filter-controls {
   display: flex;
   flex-wrap: wrap;
@@ -161,12 +145,14 @@
   padding: var(--space-sm);
   background-color: var(--light-gray);
   border-radius: var(--radius-sm);
+  align-items: flex-end;
 }
 
 .filter-group {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  min-width: 150px;
 }
 
 .filter-group label {
@@ -181,6 +167,26 @@
   border: 1px solid var(--medium-gray);
   border-radius: var(--radius-sm);
   font-size: 14px;
+  width: 100%;
+}
+
+.clear-filters-btn {
+  padding: 8px 16px;
+  background-color: var(--white);
+  color: var(--dark-gray);
+  border: 1px solid var(--medium-gray);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 36px;
+  margin-left: auto;
+  align-self: flex-end;
+}
+
+.clear-filters-btn:hover {
+  background-color: var(--light-gray);
+  border-color: var(--dark-gray);
 }
 
 .section-title {
@@ -204,4 +210,72 @@
 
 .no-results-message {
   color: var(--dark-gray);
+}
+
+/* additional responsive adjustments for filters */
+@media (max-width: 770px) {
+  .filter-controls {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: var(--space-xs);
+    gap: var(--space-xs);
+  }
+
+  .filter-group {
+    width: calc(50% - var(--space-xs));
+    min-width: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .filter-group label {
+    font-size: 12px;
+    margin-bottom: 0;
+    width: 55px;
+    /* fixed width for alignment */
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .filter-group select,
+  .filter-group input {
+    padding: 6px 8px;
+    font-size: 12px;
+    height: 32px;
+    flex: 1;
+    /* take remaining space */
+  }
+
+  .clear-filters-btn {
+    margin: var(--space-xs) auto 0;
+    padding: 6px 12px;
+    height: 32px;
+    font-size: 12px;
+    width: 100%;
+  }
+}
+
+/* tiny screens - stack in single column, keep labels to the left */
+@media (max-width: 480px) {
+  .filter-controls {
+    padding: var(--space-xs);
+    gap: var(--space-xs);
+  }
+
+  .filter-group {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .filter-group label {
+    padding-left: 1%;
+    text-align: left;
+    width: 60px;
+    /* slightly wider for better readability */
+  }
 }
