@@ -83,10 +83,14 @@ function PickPagesDisplay() {
     navigate(`/pickpages/${pageId}`);
   };
 
-  // // TO DO: ADD THIS EDIT function TO PICKS PAGE
-  // const handleEditPage = (pageId) => {
-  //   navigate(`/pickpages/${pageId}/edit`);
-  // };
+  // navigate to games page with the pick page ID as a query parameter
+  const handleAddPicks = (pageId) => {
+    console.log("Add picks clicked for page ID:", pageId);
+    // store the pickPageId in sessionStorage so it persists across page refreshes
+    sessionStorage.setItem("selectedPickPageId", pageId);
+    // navigate to the games page
+    navigate("/games");
+  };
 
   const formatDate = (dateString) => {
     const options = {
@@ -197,7 +201,6 @@ function PickPagesDisplay() {
                 <div className="stat-item">
                   <span className="stat-label">Win Rate:</span>
                   <span className="stat-value">
-                    {/* {page.totalPicks ? ((page.correctPicks / page.totalPicks) * 100).toFixed(1) + "%" : "N/A"} */}
                     {page.UserPicks?.length ? Math.round((page.UserPicks.filter(pick => pick.result === "WIN").length /
                       page.UserPicks.length) * 100) + "%"
                       : "0%"}
@@ -211,7 +214,10 @@ function PickPagesDisplay() {
                   onClick={() => handleViewPage(page.id)}
                 >View Picks
                 </button>
-                <button className="edit-button">Add Picks</button>
+                <button
+                  className="edit-button"
+                  onClick={() => handleAddPicks(page.id)}
+                >Add Picks</button>
                 {/* TO DO: ADD THIS EDIT BUTTON TO PICKS PAGE */}
                 {/* <button
                   className="edit-button"
@@ -219,7 +225,6 @@ function PickPagesDisplay() {
                 >
                   Edit Pick Page
                 </button> */}
-
               </div>
             </div>
           ))}

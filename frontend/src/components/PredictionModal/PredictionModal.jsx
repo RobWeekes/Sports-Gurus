@@ -1,6 +1,14 @@
-function PredictionModal({ game, preSelectedPageId }) {
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useModal } from "../../context/Modal";
+import { csrfFetch } from "../../store/csrf";
+import "./PredictionModal.css";
+
+
+function PredictionModal({ game }) {
   const { closeModal } = useModal();
   const sessionUser = useSelector(state => state.session.user);
+
   const [predictionType, setPredictionType] = useState("POINT SPREAD");
   const [prediction, setPrediction] = useState("");
   const [pages, setPages] = useState([]);
@@ -19,12 +27,8 @@ function PredictionModal({ game, preSelectedPageId }) {
           const data = await response.json();
           setPages(data.pickPages || []);
 
-          // If preSelectedPageId is provided, use it
-          if (preSelectedPageId) {
-            setSelectedPage(preSelectedPageId.toString());
-          }
-          // Otherwise select the first page by default if available
-          else if (data.pickPages && data.pickPages.length > 0) {
+          // select the first page by default if available
+          if (data.pickPages && data.pickPages.length > 0) {
             setSelectedPage(data.pickPages[0].id.toString());
           } else {
             // if no pages exist, show the new page form
@@ -35,10 +39,11 @@ function PredictionModal({ game, preSelectedPageId }) {
         console.error("Error fetching pick pages:", error);
       }
     }
+
     if (sessionUser) {
       fetchPages();
     }
-  }, [sessionUser, preSelectedPageId]);
+  }, [sessionUser]);
 
   // create a new pick page
   const handleCreatePage = async (e) => {
@@ -114,7 +119,6 @@ function PredictionModal({ game, preSelectedPageId }) {
       setIsSubmitting(false);
     }
   };
-  
 
   return (
     <div className="prediction-modal">

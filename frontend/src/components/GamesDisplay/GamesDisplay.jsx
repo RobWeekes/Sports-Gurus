@@ -18,19 +18,36 @@ function GamesDisplay() {
   const [pickPageName, setPickPageName] = useState("");
   const sessionUser = useSelector(state => state.session.user);
 
-  // extract pickPageId from URL query parameters
+  // extract pickPageId from URL query parameters or sessionStorage
   useEffect(() => {
+    // first check URL query parameters
     const queryParams = new URLSearchParams(location.search);
-    const pageId = queryParams.get("pickPageId");
+    const pageIdFromQuery = queryParams.get("pickPageId");
+
+    // then check sessionStorage
+    const pageIdFromStorage = sessionStorage.getItem("selectedPickPageId");
+
+    // use query parameter if available, otherwise use sessionStorage
+    const pageId = pageIdFromQuery || pageIdFromStorage;
 
     if (pageId) {
       setPickPageId(pageId);
-      // Fetch the pick page name if we have an ID
+      // fetch the pick page name if we have an ID
       if (sessionUser) {
         fetchPickPageName(pageId);
       }
+
+      // if we got the ID from sessionStorage and not from the URL,
+      // update the URL to include the pickPageId for better UX
+      if (!pageIdFromQuery && pageIdFromStorage) {
+        navigate(`/games?pickPageId=${pageIdFromStorage}`, { replace: true });
+      }
+    } else {
+      // clear pickPageId if not found
+      setPickPageId(null);
+      setPickPageName("");
     }
-  }, [location.search, sessionUser]);
+  }, [location.search, sessionUser, navigate]);
 
   // fetch the pick page name
   const fetchPickPageName = async (pageId) => {
@@ -92,11 +109,13 @@ function GamesDisplay() {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
-  // Clear the pick page selection and return to normal view
+  // clear the pick page selection and return to normal view
   const handleClearPickPage = () => {
     setPickPageId(null);
     setPickPageName("");
-    navigate("/games");
+    // clear from sessionStorage too
+    sessionStorage.removeItem("selectedPickPageId");
+    navigate("/games", { replace: true });
   };
 
 
@@ -181,7 +200,6 @@ function GamesDisplay() {
     </div>
   );
 }
-
 
 
 export default GamesDisplay;
