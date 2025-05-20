@@ -17,12 +17,19 @@ function App() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    dispatch(sessionActions.restoreUser())
-      .then(() => setIsLoaded(true))
-      .catch((error) => {
-        console.error("Error restoring user session:", error);
+    // Clean implementation without console logs
+    const loadUser = async () => {
+      try {
+        await dispatch(sessionActions.restoreUser());
+      } catch (e) {
+        // Silently handle error
+      } finally {
+        // Always set isLoaded to true
         setIsLoaded(true);
-      });
+      }
+    };
+
+    loadUser();
   }, [dispatch]);
 
   return (
