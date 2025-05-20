@@ -5,11 +5,10 @@ import { csrfFetch } from "../../store/csrf";
 import "./PredictionModal.css";
 
 
-function PredictionModal({ game }) {
+function PredictionModal({ game, preSelectedPageId }) {
   const { closeModal } = useModal();
   const sessionUser = useSelector(state => state.session.user);
-
-  const [predictionType, setPredictionType] = useState("POINT SPREAD");
+  const [predictionType, setPredictionType] = useState("winner");
   const [prediction, setPrediction] = useState("");
   const [pages, setPages] = useState([]);
   const [selectedPage, setSelectedPage] = useState("");
@@ -17,6 +16,7 @@ function PredictionModal({ game }) {
   const [showNewPageForm, setShowNewPageForm] = useState(false);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   // fetch user's pick pages
   useEffect(() => {
@@ -27,8 +27,14 @@ function PredictionModal({ game }) {
           const data = await response.json();
           setPages(data.pickPages || []);
 
-          // select the first page by default if available
-          if (data.pickPages && data.pickPages.length > 0) {
+          // if preSelectedPageId is provided, use it
+          if (preSelectedPageId) {
+            setSelectedPage(preSelectedPageId);
+            // clear it from sessionStorage after using it once
+            sessionStorage.removeItem('selectedPickPageId');
+          }
+          // otherwise select the first page by default if available
+          else if (data.pickPages && data.pickPages.length > 0) {
             setSelectedPage(data.pickPages[0].id.toString());
           } else {
             // if no pages exist, show the new page form
@@ -43,63 +49,60 @@ function PredictionModal({ game }) {
     if (sessionUser) {
       fetchPages();
     }
-  }, [sessionUser]);
+  }, [sessionUser, preSelectedPageId]);
 
-  // create a new pick page
-  const handleCreatePage = async (e) => {
-    e.preventDefault();
-    setErrors({});
-
-    if (!newPageName.trim()) {
-      setErrors({ pageName: "Page name is required" });
-      return;
-    }
-
-    try {
-      const response = await csrfFetch("/api/pickpages", {
-        method: "POST",
-        body: JSON.stringify({ pageName: newPageName })
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setPages([...pages, data.pickPage]);
-        setSelectedPage(data.pickPage.id.toString());
-        setShowNewPageForm(false);
-        setNewPageName("");
-      } else {
-        const data = await response.json();
-        setErrors({ pageName: data.message || "Failed to create page" });
-      }
-    } catch (error) {
-      console.error("Error creating page:", error);
-      setErrors({ pageName: "Failed to create page" });
-    }
-  };
-
-  // submit the prediction
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
-    setIsSubmitting(true);
 
-    // validate inputs
-    const validationErrors = {};
-    if (!selectedPage) validationErrors.page = "Please select or create a page";
-    if (!predictionType) validationErrors.predictionType = "Please select a prediction type";
-    if (!prediction) validationErrors.prediction = "Please make a prediction";
+    if (!prediction) {
+      setErrors({ prediction: "Please select a prediction" });
+      return;
+    }
 
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      setIsSubmitting(false);
+    if (!selectedPage && !newPageName) {
+      setErrors({ page: "Please select a pick page or create a new one" });
       return;
     }
 
     try {
+      setIsSubmitting(true);
+
+      // if creating a new page
+      let pageId = selectedPage;
+      if (showNewPageForm) {
+        if (!newPageName.trim()) {
+          setErrors({ newPageName: "Page name is required" });
+          setIsSubmitting(false);
+          return;
+        }
+
+        // Create new pick page
+        const pageResponse = await csrfFetch("/api/pickpages", {
+          method: "POST",
+          body: JSON.stringify({
+            pageName: newPageName,
+            user_id: sessionUser.id
+          })
+        });
+
+        if (!pageResponse.ok) {
+          const pageError = await pageResponse.json();
+          setErrors(pageError.errors || { general: pageError.message });
+          setIsSubmitting(false);
+          return;
+        }
+
+        const pageData = await pageResponse.json();
+        pageId = pageData.pickPage.id;
+      }
+
+      // Create the pick
       const response = await csrfFetch("/api/picks", {
         method: "POST",
         body: JSON.stringify({
-          page_id: parseInt(selectedPage),
+          user_id: sessionUser.id,
+          page_id: pageId,
           game_id: game.id,
           predictionType,
           prediction
@@ -107,178 +110,216 @@ function PredictionModal({ game }) {
       });
 
       if (response.ok) {
-        closeModal();
+        setSuccess(true);
+        setTimeout(() => {
+          closeModal();
+        }, 1500);
       } else {
         const data = await response.json();
         setErrors(data.errors || { general: data.message });
       }
-    } catch (error) {
-      console.error("Error submitting prediction:", error);
-      setErrors({ general: "Failed to submit prediction" });
+    } catch (err) {
+      console.error("Error submitting prediction:", err);
+      setErrors({ general: "An unexpected error occurred. Please try again." });
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  const handlePredictionTypeChange = (e) => {
+    setPredictionType(e.target.value);
+    setPrediction(""); // Reset prediction when type changes
+  };
+
+  const handlePageChange = (e) => {
+    const value = e.target.value;
+    if (value === "new") {
+      setShowNewPageForm(true);
+      setSelectedPage("");
+    } else {
+      setShowNewPageForm(false);
+      setSelectedPage(value);
+    }
+  };
+
 
   return (
     <div className="prediction-modal">
       <h2>Make a Prediction</h2>
 
       <div className="game-info">
-        <div className="game-teams">
-          <span className="home-team">{game.homeTeam}</span>
-          <span className="vs">vs</span>
-          <span className="away-team">{game.awayTeam}</span>
+        <div className="game-teams-modal">
+          <span className="team-name">{game.awayTeam}</span>
+          <span className="vs">@</span>
+          <span className="team-name">{game.homeTeam}</span>
         </div>
-        <div className="game-date">
-          {new Date(game.gameDay).toLocaleDateString(undefined, {
-            weekday: 'short',
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-          })}
+        <div className="game-details">
+          <span className="league">{game.league}</span>
+          <span className="date">
+            {new Date(game.gameDay).toLocaleDateString(undefined, {
+              weekday: "short",
+              month: "short",
+              day: "numeric",
+              hour: "2-digit",
+              minute: "2-digit"
+            })}
+          </span>
         </div>
       </div>
 
-      <form onSubmit={handleSubmit}>
-        {/* pick page selection */}
-        <div className="form-group">
-          <label htmlFor="page-select">Add to Pick Page:</label>
-          {showNewPageForm ? (
-            <div className="new-page-form">
+      {success ? (
+        <div className="success-message">
+          <p>Your prediction has been saved!</p>
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label>Prediction Type:</label>
+            <div className="prediction-type-options">
+              <label className="radio-label">
+                <input
+                  type="radio"
+                  name="predictionType"
+                  value="winner"
+                  checked={predictionType === "winner"}
+                  onChange={handlePredictionTypeChange}
+                />
+                Winner
+              </label>
+              <label className="radio-label">
+                <input
+                  type="radio"
+                  name="predictionType"
+                  value="spread"
+                  checked={predictionType === "spread"}
+                  onChange={handlePredictionTypeChange}
+                />
+                Against Spread
+              </label>
+              <label className="radio-label">
+                <input
+                  type="radio"
+                  name="predictionType"
+                  value="total"
+                  checked={predictionType === "total"}
+                  onChange={handlePredictionTypeChange}
+                />
+                Over/Under
+              </label>
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label>Your Prediction:</label>
+            {predictionType === "winner" && (
+              <div className="prediction-options">
+                <button
+                  type="button"
+                  className={`team-button ${prediction === game.awayTeam ? "selected" : ""}`}
+                  onClick={() => setPrediction(game.awayTeam)}
+                >
+                  {game.awayTeam} Win
+                </button>
+                <button
+                  type="button"
+                  className={`team-button ${prediction === game.homeTeam ? "selected" : ""}`}
+                  onClick={() => setPrediction(game.homeTeam)}
+                >
+                  {game.homeTeam} Win
+                </button>
+              </div>
+            )}
+
+            {predictionType === "spread" && (
+              <div className="prediction-options">
+                <button
+                  type="button"
+                  className={`team-button ${prediction === game.awayTeam ? "selected" : ""}`}
+                  onClick={() => setPrediction(game.awayTeam)}
+                >
+                  {game.awayTeam} Cover
+                </button>
+                <button
+                  type="button"
+                  className={`team-button ${prediction === game.homeTeam ? "selected" : ""}`}
+                  onClick={() => setPrediction(game.homeTeam)}
+                >
+                  {game.homeTeam} Cover
+                </button>
+              </div>
+            )}
+
+            {predictionType === "total" && (
+              <div className="prediction-options">
+                <button
+                  type="button"
+                  className={`team-button ${prediction === "OVER" ? "selected" : ""}`}
+                  onClick={() => setPrediction("OVER")}
+                >
+                  Over
+                </button>
+                <button
+                  type="button"
+                  className={`team-button ${prediction === "UNDER" ? "selected" : ""}`}
+                  onClick={() => setPrediction("UNDER")}
+                >
+                  Under
+                </button>
+              </div>
+            )}
+
+            {errors.prediction && <p className="error-message">{errors.prediction}</p>}
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="pickPage">Add to Pick Page:</label>
+            <select
+              id="pickPage"
+              value={selectedPage}
+              onChange={handlePageChange}
+              disabled={preSelectedPageId !== null}
+            >
+              <option value="">Select a Pick Page</option>
+              {pages.map(page => (
+                <option key={page.id} value={page.id}>
+                  {page.pageName}
+                </option>
+              ))}
+              <option value="new">+ Create New Pick Page</option>
+            </select>
+            {errors.page && <p className="error-message">{errors.page}</p>}
+          </div>
+
+          {showNewPageForm && (
+            <div className="form-group">
+              <label htmlFor="newPageName">New Page Name:</label>
               <input
+                id="newPageName"
                 type="text"
                 value={newPageName}
                 onChange={(e) => setNewPageName(e.target.value)}
-                placeholder="Enter page name"
+                placeholder="Enter a name for your new pick page"
+                maxLength={40}
               />
-              <button
-                type="button"
-                onClick={handleCreatePage}
-                className="create-page-btn"
-              >
-                Create
-              </button>
-              {pages.length > 0 && (
-                <button
-                  type="button"
-                  onClick={() => setShowNewPageForm(false)}
-                  className="cancel-btn"
-                >
-                  Cancel
-                </button>
-              )}
-              {errors.pageName && <p className="error">{errors.pageName}</p>}
-            </div>
-          ) : (
-            <div className="page-select-container">
-              <select
-                id="page-select"
-                value={selectedPage}
-                onChange={(e) => setSelectedPage(e.target.value)}
-              >
-                {pages.map(page => (
-                  <option key={page.id} value={page.id}>
-                    {page.pageName}
-                  </option>
-                ))}
-              </select>
-              <button
-                type="button"
-                onClick={() => setShowNewPageForm(true)}
-                className="new-page-btn"
-              >
-                + New Page
-              </button>
+              {errors.newPageName && <p className="error-message">{errors.newPageName}</p>}
             </div>
           )}
-          {errors.page && <p className="error">{errors.page}</p>}
-        </div>
 
-        {/* prediction type */}
-        <div className="form-group">
-          <label>Prediction Type:</label>
-          <div className="prediction-type-options">
-            <label className="radio-label">
-              <input
-                type="radio"
-                name="predictionType"
-                value="POINT SPREAD"
-                checked={predictionType === "POINT SPREAD"}
-                onChange={() => setPredictionType("POINT SPREAD")}
-              />
-              Point Spread
-            </label>
-            <label className="radio-label">
-              <input
-                type="radio"
-                name="predictionType"
-                value="OVER / UNDER"
-                checked={predictionType === "OVER / UNDER"}
-                onChange={() => setPredictionType("OVER / UNDER")}
-              />
-              Over/Under
-            </label>
+          {errors.general && <p className="error-message general-error">{errors.general}</p>}
+
+          <div className="form-actions">
+            <button type="submit" className="submit-button" disabled={isSubmitting}>
+              {isSubmitting ? "Saving..." : "Save Prediction"}
+            </button>
+            <button type="button" className="cancel-button" onClick={closeModal}>
+              Cancel
+            </button>
           </div>
-          {errors.predictionType && <p className="error">{errors.predictionType}</p>}
-        </div>
-
-        {/* prediction selection */}
-        <div className="form-group">
-          <label>Your Prediction:</label>
-          {predictionType === "POINT SPREAD" ? (
-            <div className="team-selection">
-              <button
-                type="button"
-                className={`team-btn ${prediction === game.homeTeam ? 'selected' : ''}`}
-                onClick={() => setPrediction(game.homeTeam)}
-              >
-                {game.homeTeam}
-              </button>
-              <button
-                type="button"
-                className={`team-btn ${prediction === game.awayTeam ? 'selected' : ''}`}
-                onClick={() => setPrediction(game.awayTeam)}
-              >
-                {game.awayTeam}
-              </button>
-            </div>
-          ) : (
-            <div className="over-under-selection">
-              <button
-                type="button"
-                className={`over-under-btn ${prediction === "OVER" ? 'selected' : ''}`}
-                onClick={() => setPrediction("OVER")}
-              >
-                OVER
-              </button>
-              <button
-                type="button"
-                className={`over-under-btn ${prediction === "UNDER" ? 'selected' : ''}`}
-                onClick={() => setPrediction("UNDER")}
-              >
-                UNDER
-              </button>
-            </div>
-          )}
-          {errors.prediction && <p className="error">{errors.prediction}</p>}
-        </div>
-
-        {errors.general && <p className="error general-error">{errors.general}</p>}
-
-        <div className="form-actions">
-          <button type="button" onClick={closeModal} className="cancel-btn">
-            Cancel
-          </button>
-          <button type="submit" className="submit-btn" disabled={isSubmitting}>
-            {isSubmitting ? "Submitting..." : "Submit Prediction"}
-          </button>
-        </div>
-      </form>
+        </form>
+      )}
     </div>
   );
 }
-
 
 
 export default PredictionModal;
