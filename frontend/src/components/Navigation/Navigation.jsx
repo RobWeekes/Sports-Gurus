@@ -1,10 +1,28 @@
+import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ProfileButton from "./ProfileButton";
 import "./Navigation.css";
 
-function Navigation({ isLoaded }) {
+function Navigation({ isLoaded: propsIsLoaded }) {
   const sessionUser = useSelector(state => state.session.user);
+  const [localIsLoaded, setLocalIsLoaded] = useState(false);
+
+  // Use both the prop isLoaded and our local state
+  const isLoaded = propsIsLoaded || localIsLoaded;
+
+  // Set a timeout to force isLoaded to true after 1000ms
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!isLoaded) {
+        console.log("Forcing isLoaded to true after timeout");
+        setLocalIsLoaded(true);
+      }
+    }, 1000);
+
+    // Clean up the timeout if the component unmounts or isLoaded becomes true
+    return () => clearTimeout(timer);
+  }, [isLoaded]);
 
   return (
     <div className="nav-content">
@@ -37,7 +55,5 @@ function Navigation({ isLoaded }) {
     </div>
   );
 }
-
-
 
 export default Navigation;
