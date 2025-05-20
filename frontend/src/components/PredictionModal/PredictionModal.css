@@ -1,21 +1,22 @@
 .prediction-modal {
-  width: 100%;
+  padding: 20px;
   max-width: 500px;
-  padding: 24px;
-  background-color: var(--white);
-  border-radius: var(--radius-md);
+  width: 100%;
+  font-family: var(--font-family);
 }
 
 .prediction-modal h2 {
   margin-top: 0;
-  margin-bottom: 16px;
-  color: var(--primary-navy);
+  margin-bottom: 20px;
   text-align: center;
+  color: var(--primary-navy);
+  font-size: 24px;
+  font-weight: 700;
 }
 
 .game-info {
-  background-color: var(--light-gray);
-  padding: 12px;
+  background-color: var(--light-blue);
+  padding: 15px;
   border-radius: var(--radius-sm);
   margin-bottom: 20px;
   text-align: center;
@@ -25,23 +26,45 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 8px;
-  font-weight: 600;
-}
-
-.home-team, .away-team {
+  margin-bottom: 10px;
+  font-weight: bold;
   font-size: 18px;
 }
 
+.away-team,
+.home-team {
+  font-weight: 700;
+  color: var(--primary-navy);
+  text-transform: uppercase;
+}
+
 .vs {
-  font-size: 14px;
-  color: var(--medium-gray);
+  margin: 0 10px;
+  color: var(--primary-red);
+  font-weight: bold;
 }
 
 .game-date {
   font-size: 14px;
-  color: var(--medium-gray);
+  color: var(--dark-gray);
+}
+
+.error-message {
+  color: var(--primary-red);
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: rgba(255, 0, 0, 0.1);
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+}
+
+.success-message {
+  color: green;
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: rgba(0, 128, 0, 0.1);
+  border-radius: var(--radius-sm);
+  font-weight: 500;
 }
 
 .form-group {
@@ -52,111 +75,183 @@
   display: block;
   margin-bottom: 8px;
   font-weight: 600;
-  color: var(--dark-gray);
+  color: var(--primary-navy);
 }
 
-.page-select-container {
+.page-selection {
   display: flex;
-  gap: 12px;
+  gap: 10px;
+  align-items: center;
 }
 
-.page-select-container select {
+.page-selection select {
   flex: 1;
-  padding: 8px 12px;
-  border: 1px solid var(--medium-gray);
+  padding: 10px;
+  border: 1px solid var(--medium-blue);
   border-radius: var(--radius-sm);
   font-size: 16px;
 }
 
-.new-page-form {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+.new-page-button {
+  background-color: var(--primary-navy);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
-.new-page-form input {
-  flex: 1;
-  min-width: 200px;
-  padding: 8px 12px;
-  border: 1px solid var(--medium-gray);
+.new-page-button:hover {
+  background-color: var(--primary-red);
+}
+
+.new-page-input {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.new-page-input input {
+  padding: 10px;
+  border: 1px solid var(--medium-blue);
   border-radius: var(--radius-sm);
   font-size: 16px;
+}
+
+.new-page-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.create-page-button,
+.cancel-new-page-button {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.create-page-button {
+  background-color: var(--primary-navy);
+  color: white;
+}
+
+.create-page-button:hover {
+  background-color: var(--medium-navy);
+}
+
+.cancel-new-page-button {
+  background-color: var(--medium-gray);
+  color: white;
+}
+
+.cancel-new-page-button:hover {
+  background-color: var(--dark-gray);
 }
 
 .prediction-type-options {
   display: flex;
-  gap: 20px;
+  gap: 10px;
 }
 
-.radio-label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-}
-
-.team-selection, .over-under-selection {
-  display: flex;
-  gap: 16px;
-  margin-top: 8px;
-}
-
-.team-btn, .over-under-btn {
+.prediction-type-option {
   flex: 1;
-  padding: 12px;
+  padding: 10px;
+  background-color: white;
   border: 2px solid var(--medium-gray);
   border-radius: var(--radius-sm);
-  background-color: var(--white);
-  font-size: 16px;
-  font-weight: 600;
   cursor: pointer;
+  font-weight: 600;
   transition: all 0.2s ease;
 }
 
-.team-btn:hover, .over-under-btn:hover {
+.prediction-type-option:hover {
   border-color: var(--primary-navy);
 }
 
-.team-btn.selected, .over-under-btn.selected {
-  background-color: var(--primary-navy);
-  color: var(--white);
+.prediction-type-option.selected {
+  border-color: var(--primary-navy);
+  background-color: var(--light-blue);
+  color: var(--primary-navy);
+}
+
+.prediction-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.prediction-option {
+  padding: 12px;
+  border: 2px solid var(--medium-gray);
+  border-radius: var(--radius-sm);
+  background-color: white;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.prediction-option:hover {
   border-color: var(--primary-navy);
 }
 
-.over-under-btn.selected:first-child {
-  background-color: var(--primary-red);
-  border-color: var(--primary-red);
+.prediction-option.selected {
+  border-color: var(--primary-navy);
+  background-color: var(--light-blue);
+  color: var(--primary-navy);
 }
 
 .form-actions {
   display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-top: 24px;
+  gap: 10px;
+  margin-top: 25px;
 }
 
-.submit-btn, .create-page-btn {
-  padding: 10px 16px;
+.submit-button {
+  flex: 1;
+  padding: 12px;
   background-color: var(--primary-navy);
-  color: var(--white);
+  color: white;
   border: none;
   border-radius: var(--radius-sm);
-  font-size: 16px;
-  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  font-weight: 600;
+  font-size: 16px;
 }
 
-.submit-btn:hover, .create-page-btn:hover {
-  background-color: var(--primary-navy-dark);
+.submit-button:hover:not(:disabled) {
+  background-color: var(--medium-navy);
 }
 
-.submit-btn:disabled {
+.submit-button:disabled {
   background-color: var(--medium-gray);
   cursor: not-allowed;
 }
 
-.cancel-btn, .new-page-btn {
+.cancel-button {
+  flex: 1;
+  padding: 12px;
+  background-color: var(--light-gray);
+  color: var(--dark-gray);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+  transition: background-color var(--transition-fast);
+}
+
+.cancel-button:hover {
+  background-color: var(--medium-gray);
+}
+
+.cancel-btn,
+.new-page-btn {
   padding: 10px 16px;
   background-color: var(--white);
   color: var(--dark-gray);
@@ -168,7 +263,8 @@
   transition: all 0.2s ease;
 }
 
-.cancel-btn:hover, .new-page-btn:hover {
+.cancel-btn:hover,
+.new-page-btn:hover {
   background-color: var(--light-gray);
 }
 
@@ -181,4 +277,22 @@
 .general-error {
   margin-bottom: 16px;
   text-align: center;
+}
+
+@media (max-width: 600px) {
+  .prediction-options {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .page-selection {
+    flex-direction: column;
+  }
+
+  .prediction-type-options {
+    flex-direction: column;
+  }
 }

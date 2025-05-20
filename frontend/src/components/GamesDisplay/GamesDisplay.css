@@ -79,7 +79,8 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 4px; /* increase border-top thickness */
+  height: 4px;
+  /* increase border-top thickness */
   background: linear-gradient(to right, var(--primary-red), var(--primary-navy));
   opacity: 0;
   transition: opacity var(--transition-fast);
@@ -92,7 +93,8 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 4px; /* Match the border-bottom thickness */
+  height: 4px;
+  /* Match the border-bottom thickness */
   background: linear-gradient(to right, var(--primary-red), var(--primary-navy));
   opacity: 0;
   transition: opacity var(--transition-fast);
@@ -214,6 +216,91 @@
   right: 10px;
 }
 
+/* New styles for pick page integration */
+.pick-page-info {
+  background-color: var(--light-blue);
+  padding: var(--space-md);
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-left: 4px solid var(--primary-navy);
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.pick-page-info p {
+  margin: 0;
+  font-size: var(--font-medium);
+  color: var(--primary-navy);
+}
+
+.back-to-page-button {
+  background-color: var(--primary-navy);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color var(--transition-fast);
+}
+
+.back-to-page-button:hover {
+  background-color: var(--primary-red);
+}
+
+.clear-filters-btn {
+  background-color: var(--medium-gray);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color var(--transition-fast);
+  align-self: flex-end;
+}
+
+.clear-filters-btn:hover {
+  background-color: var(--dark-gray);
+}
+
+.section-title {
+  color: var(--primary-navy);
+  font-size: 24px;
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-sm);
+  border-bottom: 2px solid var(--light-gray);
+}
+
+.success-message {
+  background-color: rgba(0, 128, 0, 0.1);
+  color: green;
+  padding: var(--space-md);
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-lg);
+  text-align: center;
+  font-weight: 500;
+}
+
+.login-prompt {
+  background-color: var(--light-blue);
+  padding: var(--space-lg);
+  border-radius: var(--radius-sm);
+  text-align: center;
+  margin: var(--space-xl) auto;
+  max-width: 500px;
+  border-left: 4px solid var(--primary-navy);
+}
+
+.login-prompt p {
+  margin: 0;
+  font-size: var(--font-medium);
+  color: var(--primary-navy);
+  font-weight: 500;
+}
+
 @media (max-width: 768px) {
   .filter-controls {
     flex-direction: column;
@@ -227,5 +314,11 @@
   .filter-group select,
   .filter-group input {
     flex: 1;
+  }
+
+  .pick-page-info {
+    flex-direction: column;
+    gap: var(--space-md);
+    text-align: center;
   }
 }

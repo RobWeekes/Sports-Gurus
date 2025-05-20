@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { csrfFetch } from "../../store/csrf";
 import "./PickPagesDisplay.css";
 
-
 function PickPagesDisplay() {
   const navigate = useNavigate();
   const sessionUser = useSelector(state => state.session.user);
@@ -15,6 +14,7 @@ function PickPagesDisplay() {
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [newPageName, setNewPageName] = useState("");
   const [formErrors, setFormErrors] = useState({});
+
 
   useEffect(() => {
     if (!sessionUser) {
@@ -83,10 +83,9 @@ function PickPagesDisplay() {
     navigate(`/pickpages/${pageId}`);
   };
 
-  // // TO DO: ADD THIS EDIT function TO PICKS PAGE
-  // const handleEditPage = (pageId) => {
-  //   navigate(`/pickpages/${pageId}/edit`);
-  // };
+  const handleAddPicks = (pageId) => {
+    navigate(`/games?pageId=${pageId}`);
+  };
 
   const formatDate = (dateString) => {
     const options = {
@@ -197,7 +196,6 @@ function PickPagesDisplay() {
                 <div className="stat-item">
                   <span className="stat-label">Win Rate:</span>
                   <span className="stat-value">
-                    {/* {page.totalPicks ? ((page.correctPicks / page.totalPicks) * 100).toFixed(1) + "%" : "N/A"} */}
                     {page.UserPicks?.length ? Math.round((page.UserPicks.filter(pick => pick.result === "WIN").length /
                       page.UserPicks.length) * 100) + "%"
                       : "0%"}
@@ -209,17 +207,15 @@ function PickPagesDisplay() {
                 <button
                   className="view-button"
                   onClick={() => handleViewPage(page.id)}
-                >View Picks
-                </button>
-                <button className="edit-button">Add Picks</button>
-                {/* TO DO: ADD THIS EDIT BUTTON TO PICKS PAGE */}
-                {/* <button
-                  className="edit-button"
-                  onClick={() => handleEditPage(page.id)}
                 >
-                  Edit Pick Page
-                </button> */}
-
+                  View Picks
+                </button>
+                <button
+                  className="edit-button"
+                  onClick={() => handleAddPicks(page.id)}
+                >
+                  Add Picks
+                </button>
               </div>
             </div>
           ))}

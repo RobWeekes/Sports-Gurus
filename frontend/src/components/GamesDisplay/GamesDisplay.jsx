@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 import { csrfFetch } from "../../store/csrf";
 import OpenModalButton from "../OpenModalButton";
 import PredictionModal from "../PredictionModal/PredictionModal";
@@ -12,6 +13,35 @@ function GamesDisplay() {
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState({ league: "", date: "" });
   const sessionUser = useSelector(state => state.session.user);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // get pageId from URL query parameters
+  const queryParams = new URLSearchParams(location.search);
+  const pageId = queryParams.get("pageId");
+  const [pickPage, setPickPage] = useState(null);
+
+  // fetch the pick page if pageId is provided
+  useEffect(() => {
+    if (!sessionUser || !pageId) return;
+
+    async function fetchPickPage() {
+      try {
+        const response = await csrfFetch(`/api/pickpages/${pageId}`);
+        if (response.ok) {
+          const data = await response.json();
+          setPickPage(data.pickPage);
+        } else {
+          setError("Invalid pick page. Please select a valid pick page.");
+        }
+      } catch (err) {
+        console.error("Error fetching pick page:", err);
+        setError("Failed to load pick page information.");
+      }
+    }
+
+    fetchPickPage();
+  }, [sessionUser, pageId]);
 
   useEffect(() => {
     async function fetchGames() {
@@ -60,9 +90,22 @@ function GamesDisplay() {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
+
   return (
     <div className="games-display">
       <h1 className="section-title">Games Schedule</h1>
+
+      {pageId && pickPage && (
+        <div className="pick-page-info">
+          <p>Adding picks to: <strong>{pickPage.pageName}</strong></p>
+          <button
+            className="back-to-page-button"
+            onClick={() => navigate(`/pickpages/${pageId}`)}
+          >
+            Back to Pick Page
+          </button>
+        </div>
+      )}
 
       <div className="filter-controls">
         <div className="filter-group">
@@ -120,7 +163,7 @@ function GamesDisplay() {
                 <div className="game-actions">
                   <OpenModalButton
                     buttonText="Make Prediction"
-                    modalComponent={<PredictionModal game={game} />}
+                    modalComponent={<PredictionModal game={game} pageId={pageId} />}
                     className="make-pick-button"
                   />
                 </div>
@@ -128,7 +171,7 @@ function GamesDisplay() {
             </div>
           ))}
         </div>
-      )}
+      )}@
     </div>
   );
 }
