@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
+const { Op } = require("sequelize");
 const { requireAuth } = require("../../utils/auth");
-const { ScheduledGame, GameResult } = require("../../db/models");
+const { ScheduledGame, GameResult, Sequelize } = require("../../db/models");
 
 
 // Get all Scheduled Games

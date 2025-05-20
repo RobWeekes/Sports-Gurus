@@ -241,19 +241,23 @@ router.post("/", requireAuth, requireAdmin, async (req, res) => {
             ) {
               pickResult = "WIN";
             }
-          } else if (pick.predictionType === "spread") {
+          } else if (pick.predictionType === "spread" || pick.predictionType === "POINT SPREAD") {
             // Spread pick
             if (
               (pick.prediction === result.favorite && result.coversSpread === "YES") ||
-              (pick.prediction === result.underdog && result.coversSpread === "NO")
+              (pick.prediction === result.underdog && result.coversSpread === "NO") ||
+              (pick.prediction.includes(result.favorite) && result.coversSpread === "YES") ||
+              (pick.prediction.includes(result.underdog) && result.coversSpread === "NO")
             ) {
               pickResult = "WIN";
             }
-          } else if (pick.predictionType === "total") {
+          } else if (pick.predictionType === "total" || pick.predictionType === "OVER / UNDER") {
             // Over/Under pick
             if (
               (pick.prediction === "OVER" && result.overUnder === "OVER") ||
-              (pick.prediction === "UNDER" && result.overUnder === "UNDER")
+              (pick.prediction === "UNDER" && result.overUnder === "UNDER") ||
+              (pick.prediction.includes("OVER") && result.overUnder === "OVER") ||
+              (pick.prediction.includes("UNDER") && result.overUnder === "UNDER")
             ) {
               pickResult = "WIN";
             }

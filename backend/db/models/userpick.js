@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(12),
       allowNull: false,
       validate: {
-        isIn: [["POINT SPREAD", "OVER / UNDER"]]
+        isIn: [["POINT SPREAD", "OVER / UNDER", "spread", "total", "winner"]]
       }
     },
     prediction: {
