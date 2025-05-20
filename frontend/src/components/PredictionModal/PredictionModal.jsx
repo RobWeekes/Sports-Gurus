@@ -18,7 +18,7 @@ function PredictionModal({ game, preSelectedPageId }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  // fetch user's pick pages
+  // fetch user"s pick pages
   useEffect(() => {
     async function fetchPages() {
       try {
@@ -31,7 +31,7 @@ function PredictionModal({ game, preSelectedPageId }) {
           if (preSelectedPageId) {
             setSelectedPage(preSelectedPageId);
             // clear it from sessionStorage after using it once
-            sessionStorage.removeItem('selectedPickPageId');
+            sessionStorage.removeItem("selectedPickPageId");
           }
           // otherwise select the first page by default if available
           else if (data.pickPages && data.pickPages.length > 0) {
@@ -277,7 +277,6 @@ function PredictionModal({ game, preSelectedPageId }) {
               id="pickPage"
               value={selectedPage}
               onChange={handlePageChange}
-              disabled={preSelectedPageId !== null}
             >
               <option value="">Select a Pick Page</option>
               {pages.map(page => (

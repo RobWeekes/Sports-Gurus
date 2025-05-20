@@ -54,7 +54,7 @@ router.get("/user/:userId", async (req, res) => {
 // WORKING - requireAuth ?
 
 
-// Get a Specific Pick Page
+// Get a Specific Pick Page with detailed picks
 // GET /api/pickpages/:pageId
 router.get("/:pageId", requireAuth, async (req, res) => {
   try {
@@ -63,20 +63,17 @@ router.get("/:pageId", requireAuth, async (req, res) => {
     const pickPage = await UserPickPage.findByPk(pageId, {
       include: [{
         model: UserPick,
-        attributes: ["id", "game_id", "predictionType", "prediction", "result"]
+        include: [{
+          model: ScheduledGame,
+          attributes: ["id", "league", "gameDay", "homeTeam", "awayTeam"]
+        }]
       }]
-    }); // not showing game results - let user request them separately
-
-    // const pickPage = await UserPickPage.findByPk(pageId, {
-    //   include: [{
-    //     model: UserPick,
-    //     include: [ScheduledGame]
-    //   }]
-    // });    // INCLUDES ALL PICK & GAME DATA
+    });
 
     if (!pickPage) return res.status(404).json({ message: "Pick page not found" });
 
-    // user can only access their own pick pages?
+    // Optional: Check if user owns this page
+    // Uncomment if you want to restrict access to only the page owner
     // if (pickPage.user_id !== req.user.id) {
     //   return res.status(403).json({ message: "Forbidden" });
     // }
@@ -131,7 +128,6 @@ router.post("/", requireAuth, async (req, res) => {
   }
 });
 // WORKING
-
 
 
 // Update a Pick Page by Page ID
@@ -203,7 +199,6 @@ router.delete("/:pageId", requireAuth, async (req, res) => {
   }
 });
 // WORKING
-
 
 
 

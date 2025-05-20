@@ -1,20 +1,17 @@
 import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { csrfFetch } from "../../store/csrf";
-import "./PickPagesDisplay.css";
+import "./PickPageDetail.css";
 
 
-function PickPagesDisplay() {
+function PickPageDetail() {
+  const { pageId } = useParams();
   const navigate = useNavigate();
   const sessionUser = useSelector(state => state.session.user);
-  // state, setter variables
-  const [pickPages, setPickPages] = useState([]);
+  const [pickPage, setPickPage] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [showCreateForm, setShowCreateForm] = useState(false);
-  const [newPageName, setNewPageName] = useState("");
-  const [formErrors, setFormErrors] = useState({});
 
   useEffect(() => {
     if (!sessionUser) {
@@ -22,87 +19,59 @@ function PickPagesDisplay() {
       return;
     }
 
-    async function fetchPickPages() {
+    async function fetchPickPage() {
       try {
         setLoading(true);
-        const response = await csrfFetch(`/api/pickpages/user/${sessionUser.id}`);
+        const response = await csrfFetch(`/api/pickpages/${pageId}`);
 
         if (response.ok) {
           const data = await response.json();
-          setPickPages(data.pickPages || []);
+          console.log("Fetched pick page data:", data);
+          setPickPage(data.pickPage);
           setError(null);
         } else {
           const errorData = await response.json();
-          setError(errorData.message || "Failed to fetch pick pages");
+          setError(errorData.message || "Failed to fetch pick page");
         }
       } catch (err) {
-        console.error("Error fetching pick pages:", err);
-        setError("Failed to load pick pages. Please try again.");
+        console.error("Error fetching pick page:", err);
+        setError("Failed to load pick page. Please try again.");
       } finally {
         setLoading(false);
       }
     }
 
-    fetchPickPages();
-  }, [sessionUser]);
+    fetchPickPage();
+  }, [pageId, sessionUser]);
 
-  const handleCreatePage = async (e) => {
-    e.preventDefault();
-    setFormErrors({});
-
-    if (!newPageName.trim()) {
-      setFormErrors({ pageName: "Page name is required" });
-      return;
-    }
-
-    try {
-      const response = await csrfFetch("/api/pickpages", {
-        method: "POST",
-        body: JSON.stringify({
-          pageName: newPageName,
-          user_id: sessionUser.id
-        })
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setPickPages([...pickPages, data.pickPage]);
-        setNewPageName("");
-        setShowCreateForm(false);
-      } else {
-        const errorData = await response.json();
-        setFormErrors(errorData.errors || { pageName: errorData.message });
-      }
-    } catch (err) {
-      console.error("Error creating pick page:", err);
-      setFormErrors({ general: "An unexpected error occurred. Please try again." });
-    }
+  const handleBackToPages = () => {
+    navigate("/pickpages");
   };
 
-  const handleViewPage = (pageId) => {
-    navigate(`/pickpages/${pageId}`);
-  };
-
-  // navigate to games page with the pick page ID as a query parameter
-  const handleAddPicks = (pageId) => {
+  const handleAddMorePicks = () => {
     navigate(`/games?pickPageId=${pageId}`);
   };
 
   const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
+
     const options = {
+      weekday: "short",
       year: "numeric",
       month: "short",
-      day: "numeric"
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
     };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
   if (!sessionUser) {
     return (
-      <div className="pick-pages-display">
-        <h1 className="section-title">My Pick Pages</h1>
+      <div className="pick-page-detail">
+        <h1>Pick Page Details</h1>
         <div className="login-prompt">
-          <p>Please log in to view and create pick pages.</p>
+          <p>Please log in to view pick page details.</p>
         </div>
       </div>
     );
@@ -110,114 +79,95 @@ function PickPagesDisplay() {
 
 
   return (
-    <div className="pick-pages-display">
-      <div className="pick-pages-header">
-        <h1 className="section-title">My Pick Pages</h1>
-        <button
-          className="create-button"
-          onClick={() => setShowCreateForm(!showCreateForm)}
-        >
-          {showCreateForm ? "Cancel" : "Create New Page"}
+    <div className="pick-page-detail">
+      <div className="page-header">
+        <button className="back-button" onClick={handleBackToPages}>
+          ← Back to Pick Pages
         </button>
+
+        {!loading && !error && pickPage && (
+          <button className="add-pick-button" onClick={handleAddMorePicks}>
+            Add More Picks
+          </button>
+        )}
       </div>
 
-      {showCreateForm && (
-        <div className="create-form">
-          <h2>Create New Pick Page</h2>
-          <form onSubmit={handleCreatePage}>
-            <div className="form-group">
-              <label htmlFor="pageName">Page Name:</label>
-              <input
-                id="pageName"
-                type="text"
-                value={newPageName}
-                onChange={(e) => setNewPageName(e.target.value)}
-                required
-                placeholder="Enter a name for your pick page"
-                maxLength={40}
-              />
-              {formErrors.pageName && (
-                <p className="error-message">{formErrors.pageName}</p>
-              )}
-            </div>
-            <div className="form-actions">
-              <button type="submit" className="submit-button">
-                Create
-              </button>
-              <button
-                type="button"
-                className="cancel-button"
-                onClick={() => {
-                  setShowCreateForm(false);
-                  setNewPageName("");
-                  setFormErrors({});
-                }}
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
-
       {loading ? (
-        <div className="loading-indicator">Loading pick pages...</div>
+        <div className="loading-indicator">Loading pick page...</div>
       ) : error ? (
         <div className="error-message">{error}</div>
-      ) : pickPages.length === 0 ? (
-        <div className="no-pages-message">
-          <p>You haven&apos;t created any pick pages yet.</p>
-          {!showCreateForm && (
-            <button
-              className="create-button"
-              onClick={() => setShowCreateForm(true)}
-            >
-              Create Your First Page
-            </button>
-          )}
-        </div>
-      ) : (
-        <div className="pick-pages-list">
-          {pickPages.map(page => (
-            <div key={page.id} className="pick-page-card">
-              <div className="pick-page-header">
-                <h3 className="pick-page-name">{page.pageName}</h3>
-                <span className="pick-page-date">Created: {formatDate(page.createdAt)}</span>
-              </div>
+      ) : pickPage ? (
+        <>
+          <h1 className="page-title">{pickPage.pageName}</h1>
+          <div className="page-info">
+            <p className="created-date">Created: {formatDate(pickPage.createdAt)}</p>
 
-              <div className="pick-page-stats">
-                <div className="stat-item">
-                  <span className="stat-label">Total Picks:</span>
-                  <span className="stat-value">{page.UserPicks?.length || page.totalPicks || 0}</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-label">Wins:</span>
-                  <span className="stat-value">{page.UserPicks?.filter(pick => pick.result === "WIN").length || page.correctPicks || 0}</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-label">Win Rate:</span>
-                  <span className="stat-value">
-                    {page.UserPicks?.length ? Math.round((page.UserPicks.filter(pick => pick.result === "WIN").length /
-                      page.UserPicks.length) * 100) + "%"
-                      : "0%"}
-                  </span>
-                </div>
+            <div className="picks-summary">
+              <div className="summary-item">
+                <span className="summary-label">Total Picks:</span>
+                <span className="summary-value">{pickPage.UserPicks?.length || 0}</span>
               </div>
-
-              <div className="pick-page-actions">
-                <button
-                  className="view-button"
-                  onClick={() => handleViewPage(page.id)}
-                >View Picks
-                </button>
-                <button
-                  className="edit-button"
-                  onClick={() => handleAddPicks(page.id)}
-                >Add Picks</button>
+              <div className="summary-item">
+                <span className="summary-label">Wins:</span>
+                <span className="summary-value">
+                  {pickPage.UserPicks?.filter(pick => pick.result === "WIN").length || 0}
+                </span>
+              </div>
+              <div className="summary-item">
+                <span className="summary-label">Win Rate:</span>
+                <span className="summary-value">
+                  {pickPage.UserPicks?.length
+                    ? Math.round((pickPage.UserPicks.filter(pick => pick.result === "WIN").length /
+                      pickPage.UserPicks.length) * 100) + "%"
+                    : "0%"}
+                </span>
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+
+          {pickPage.UserPicks?.length > 0 ? (
+            <div className="picks-list">
+              <h2 className="section-title">Your Picks</h2>
+              <table className="picks-table">
+                <thead>
+                  <tr>
+                    <th>Game</th>
+                    <th>Date</th>
+                    <th>League</th>
+                    <th>Prediction Type</th>
+                    <th>Prediction</th>
+                    <th>Result</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {pickPage.UserPicks.map(pick => (
+                    <tr key={pick.id} className="pick-row">
+                      <td>
+                        {pick.ScheduledGame ?
+                          `${pick.ScheduledGame.awayTeam} @ ${pick.ScheduledGame.homeTeam}` :
+                          "Game details unavailable"}
+                      </td>
+                      <td>{pick.ScheduledGame ? formatDate(pick.ScheduledGame.gameDay) : "N/A"}</td>
+                      <td>{pick.ScheduledGame ? pick.ScheduledGame.league : "N/A"}</td>
+                      <td>{pick.predictionType}</td>
+                      <td>{pick.prediction}</td>
+                      <td className={`result ${pick.result.toLowerCase()}`}>{pick.result}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="no-picks-message">
+              <p>You haven&apos;t added any picks to this page yet.</p>
+              <button onClick={handleAddMorePicks} className="add-pick-button">
+                Add Your First Pick
+              </button>
+            </div>
+          )}
+        </>
+      ) : (
+        <div className="not-found-message">Pick page not found.</div>
       )}
     </div>
   );
@@ -225,4 +175,4 @@ function PickPagesDisplay() {
 
 
 
-export default PickPagesDisplay;
+export default PickPageDetail;
