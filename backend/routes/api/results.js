@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { Op, Sequelize } = require("sequelize"); // Make sure Sequelize is imported
+const { Op, Sequelize } = require("sequelize"); // make sure Sequelize is imported
 const { requireAuth, requireAdmin } = require("../../utils/auth");
 const { GameResult, ScheduledGame, UserPick, sequelize } = require("../../db/models");
 

@@ -18,15 +18,16 @@ function Layout() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    console.log("Layout useEffect running");
+    // console.log("Layout useEffect running");
 
     // dispatch the action and set isLoaded to true afterward
-    const restoreUserPromise = dispatch(sessionActions.restoreUser());
-    console.log("restoreUserPromise:", restoreUserPromise);
+    // const restoreUserPromise = dispatch(sessionActions.restoreUser());
+    // console.log("restoreUserPromise:", restoreUserPromise);
+    dispatch(sessionActions.restoreUser());
 
     // set isLoaded = true after a short delay to ensure Redux state is updated - this is a workaround for the promise resolution issue
     setTimeout(() => {
-      console.log("Setting isLoaded to true after timeout");
+      // console.log("Setting isLoaded to true after timeout");
       setIsLoaded(true);
     }, 100);
 
@@ -59,7 +60,7 @@ function Layout() {
   //   })
   // }, [dispatch]);
 
-  console.log("Layout rendering with isLoaded:", isLoaded);
+  // console.log("Layout rendering with isLoaded:", isLoaded);
 
   return (
     <div className="app-container">

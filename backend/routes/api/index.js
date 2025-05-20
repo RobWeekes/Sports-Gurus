@@ -41,6 +41,9 @@ router.post("/test", (req, res) => {
 
 
 
+module.exports = router;
+
+
 
 // // ***************************** // //
 // // RESTORE TEST ROUTES IF NEEDED // //
@@ -84,7 +87,7 @@ router.post("/test", (req, res) => {
 // // ***************************** // //
 
 
-module.exports = router;
+// module.exports = router;
 
 
 // Example fetch request:

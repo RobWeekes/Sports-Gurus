@@ -26,7 +26,7 @@ function PickPageDetail() {
 
         if (response.ok) {
           const data = await response.json();
-          console.log("Fetched pick page data:", data);
+          // console.log("Fetched pick page data:", data);
           setPickPage(data.pickPage);
           setError(null);
         } else {
