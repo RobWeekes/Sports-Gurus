@@ -4,7 +4,7 @@ const { requireAdmin } = require('../utils/auth');
 
 async function testAdminMiddleware() {
   try {
-    console.log('Testing admin middleware...');
+    // console.log('Testing admin middleware...');
 
     // get admin user (ID 2)
     const adminUser = await User.findByPk(2);
@@ -20,11 +20,11 @@ async function testAdminMiddleware() {
       return;
     }
 
-    console.log('Admin user:', adminUser.firstName, adminUser.lastName);
-    console.log('isAdmin:', adminUser.isAdmin);
+    // console.log('Admin user:', adminUser.firstName, adminUser.lastName);
+    // console.log('isAdmin:', adminUser.isAdmin);
 
-    console.log('Regular user:', regularUser.firstName, regularUser.lastName);
-    console.log('isAdmin:', regularUser.isAdmin);
+    // console.log('Regular user:', regularUser.firstName, regularUser.lastName);
+    // console.log('isAdmin:', regularUser.isAdmin);
 
     // test requireAdmin middleware with admin user
     const reqAdmin = { user: adminUser };
@@ -33,7 +33,7 @@ async function testAdminMiddleware() {
       if (err) {
         console.error('requireAdmin middleware returned an error for admin user:', err);
       } else {
-        console.log('requireAdmin middleware passed for admin user');
+        // console.log('requireAdmin middleware passed for admin user');
       }
     };
 
@@ -44,7 +44,7 @@ async function testAdminMiddleware() {
     const resRegular = {};
     const nextRegular = (err) => {
       if (err) {
-        console.log('requireAdmin middleware correctly returned an error for regular user:', err.message);
+        // console.log('requireAdmin middleware correctly returned an error for regular user:', err.message);
       } else {
         console.error('requireAdmin middleware incorrectly passed for regular user');
       }

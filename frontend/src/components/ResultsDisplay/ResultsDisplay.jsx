@@ -76,12 +76,12 @@ function ResultsDisplay() {
         if (filter.status) queryParams.append("status", filter.status);
         if (filter.league) queryParams.append("league", filter.league);
 
-        console.log("Fetching results with params:", queryParams.toString());
+        // console.log("Fetching results with params:", queryParams.toString());
         const response = await csrfFetch(`/api/results?${queryParams.toString()}`);
 
         if (response.ok) {
           const data = await response.json();
-          console.log("Results received:", data.results.length);
+          // console.log("Results received:", data.results.length);
           setResults(data.results || []);
           setError(null);
         } else {

@@ -29,15 +29,15 @@ async function makeAdmin() {
       return;
     }
 
-    console.log(`Found user in ${tableName}:`, users[0]);
+    // console.log(`Found user in ${tableName}:`, users[0]);
 
     // Update the user to be an admin
     await sequelize.query(`UPDATE "${tableName}" SET "isAdmin" = 1 WHERE id = 4`);
-    console.log(`User with ID 4 in ${tableName} is now an admin!`);
+    // console.log(`User with ID 4 in ${tableName} is now an admin!`);
 
     // Verify the update
     const [updatedUsers] = await sequelize.query(`SELECT * FROM "${tableName}" WHERE id = 4`);
-    console.log(`Updated user in ${tableName}:`, updatedUsers[0]);
+    // console.log(`Updated user in ${tableName}:`, updatedUsers[0]);
 
     // Close the connection
     await sequelize.close();

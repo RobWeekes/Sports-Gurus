@@ -24,7 +24,7 @@ const removeUser = () => {
 
 // Update Profile thunk: try dispatching "setUser" instead of "updateUserProfile" ?
 const updateUserProfile = (profileData) => {
-  console.log("updateUserProfile action creator called with:", profileData);
+  // console.log("updateUserProfile action creator called with:", profileData);
   return {
     type: UPDATE_USER_PROFILE,
     payload: profileData
@@ -42,7 +42,7 @@ const sessionReducer = (state = initialState, action) => {
     case REMOVE_USER:
       return { ...state, user: null };
     case UPDATE_USER_PROFILE:
-      console.log("Reducer handling UPDATE_USER_PROFILE:", action.payload);
+      // console.log("Reducer handling UPDATE_USER_PROFILE:", action.payload);
       return { ...state, user: { ...state.user, ...action.payload } };
     default:
       return state;
@@ -111,7 +111,7 @@ export const logout = () => async (dispatch) => {
 
 // Update Profile thunk creator: calls PUT /api/users/:userId/profile
 export const updateProfile = (userId, profileData) => async (dispatch) => {
-  console.log("updateProfile called with:", userId, profileData);
+  // console.log("updateProfile called with:", userId, profileData);
 
   try {   // do I need const userId = req.params.user ?
     const response = await csrfFetch(`/api/users/${userId}/profile`, {
@@ -120,7 +120,7 @@ export const updateProfile = (userId, profileData) => async (dispatch) => {
     });
 
     const data = await response.json();
-    console.log("Profile update response:", data);
+    // console.log("Profile update response:", data);
 
     // dispatch the user object
     if (data.user) {

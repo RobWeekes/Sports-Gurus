@@ -11,7 +11,7 @@ async function checkDb() {
       return;
     }
 
-    console.log(`Database file found at ${dbPath}`);
+    // console.log(`Database file found at ${dbPath}`);
 
     // Create a direct connection
     const sequelize = new Sequelize({
@@ -22,27 +22,27 @@ async function checkDb() {
 
     // List all tables
     const [tables] = await sequelize.query("SELECT name FROM sqlite_master WHERE type='table'");
-    console.log("Available tables:", tables.map(t => t.name));
+    // console.log("Available tables:", tables.map(t => t.name));
 
     // Check each table
     for (const table of tables) {
       try {
         // Check table structure
         const [columns] = await sequelize.query(`PRAGMA table_info("${table.name}")`);
-        console.log(`\nColumns in ${table.name}:`, columns.map(c => c.name));
+        // console.log(`\nColumns in ${table.name}:`, columns.map(c => c.name));
 
         // Check for user-like columns
         const hasUserFields = columns.some(c => c.name === 'firstName' || c.name === 'lastName' || c.name === 'email');
         if (hasUserFields) {
-          console.log(`${table.name} looks like a users table!`);
+          // console.log(`${table.name} looks like a users table!`);
 
           // Check if isAdmin column exists
           const hasIsAdmin = columns.some(c => c.name === 'isAdmin');
-          console.log(`${table.name} has isAdmin column: ${hasIsAdmin}`);
+          // console.log(`${table.name} has isAdmin column: ${hasIsAdmin}`);
 
           // Check for users
           const [users] = await sequelize.query(`SELECT * FROM "${table.name}" LIMIT 5`);
-          console.log(`Sample users in ${table.name}:`, users);
+          // console.log(`Sample users in ${table.name}:`, users);
         }
       } catch (error) {
         console.error(`Error checking table ${table.name}:`, error);

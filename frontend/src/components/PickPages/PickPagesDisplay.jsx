@@ -85,7 +85,7 @@ function PickPagesDisplay() {
 
   // navigate to games page with the pick page ID as a query parameter
   const handleAddPicks = (pageId) => {
-    console.log("Add picks clicked for page ID:", pageId);
+    // console.log("Add picks clicked for page ID:", pageId);
     // store the pickPageId in sessionStorage so it persists across page refreshes
     sessionStorage.setItem("selectedPickPageId", pageId);
     // navigate to the games page

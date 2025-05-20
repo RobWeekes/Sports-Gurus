@@ -15,7 +15,7 @@ function Navigation({ isLoaded: propsIsLoaded }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       if (!isLoaded) {
-        console.log("Forcing isLoaded to true after timeout");
+        // console.log("Forcing isLoaded to true after timeout");
         setLocalIsLoaded(true);
       }
     }, 1000);

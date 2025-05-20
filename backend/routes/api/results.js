@@ -1,25 +1,24 @@
 const express = require("express");
 const router = express.Router();
-const { Op } = require("sequelize");
+const { Op, Sequelize } = require("sequelize"); // Make sure Sequelize is imported
 const { requireAuth, requireAdmin } = require("../../utils/auth");
 const { GameResult, ScheduledGame, UserPick, sequelize } = require("../../db/models");
-
 
 // Get all Game Results Matching Query Params
 // GET /api/results
 router.get("/", async (req, res) => {
   try {
-    console.log("-----Checking for game results-----");
-    console.log("API request received at /api/results");
-    console.log("Query parameters:", req.query);
+    // Remove or comment out console logs safely
+    // console.log("-----Checking for game results-----");
+    // console.log("API request received at /api/results");
+    // console.log("Query parameters:", req.query);
 
     const { date, team, status, league } = req.query;
-    console.log("Query parameters:", { date, team, status, league });
+    // console.log("Query parameters:", { date, team, status, league });
     const where = {};
     const scheduleWhere = {};
 
     // build the "WHERE" object before querying db:
-
     if (status) {   // case ignored with sequelize "LOWER" method
       where.status = sequelize.where(sequelize.fn("LOWER", sequelize.col("GameResult.status")), status.toLowerCase());
     }
@@ -42,11 +41,12 @@ router.get("/", async (req, res) => {
         [Op.lte]: endDate
       };
 
-      console.log("Date filter:", {
-        date,
-        startDate: startDate.toISOString(),
-        endDate: endDate.toISOString()
-      });
+      // Safely comment out console log
+      // console.log("Date filter:", {
+      //   date,
+      //   startDate: startDate.toISOString(),
+      //   endDate: endDate.toISOString()
+      // });
     }
 
     // this matches partial strings, ignore case - now properly qualified with table name
@@ -73,12 +73,11 @@ router.get("/", async (req, res) => {
 
     return res.json({ results });
   } catch (error) {
+    // Keep this console.error for server-side logging
     console.error("Error fetching results:", error);
     return res.status(500).json({ message: "Server error" });
   }
 });
-// TEST
-
 
 // Get All Leagues
 // GET /api/results/leagues
@@ -98,8 +97,6 @@ router.get("/leagues", async (req, res) => {
     return res.status(500).json({ message: "Server error" });
   }
 });
-// TEST
-
 
 // Get All the Teams
 // GET /api/results/teams
@@ -130,9 +127,6 @@ router.get("/teams", async (req, res) => {
     return res.status(500).json({ message: "Server error" });
   }
 });
-// TEST
-
-
 
 // Get Result for a Specific Game
 // GET /api/results/:gameId
@@ -153,22 +147,10 @@ router.get("/:gameId", async (req, res) => {
     return res.status(500).json({ message: "Server error" });
   }
 });
-// TEST
-
-
-
-// ADMIN ONLY ROUTES:
-
-// *TO DO: Add "isAdmin" column to users table (boolean)
-
 
 // Create or Update a Game Result
 // POST /api/results
 router.post("/", requireAuth, requireAdmin, async (req, res) => {
-  // // check if user is admin
-  // if (!req.user.isAdmin) {
-  //   return res.status(403).json({ message: "Forbidden" });
-  // }
   try {
     const {
       game_id, favorite, underdog, status,
@@ -224,55 +206,7 @@ router.post("/", requireAuth, requireAdmin, async (req, res) => {
       });
     }
 
-    // helper function to update user picks based on game result
-    async function updateUserPicks(gameId, result) {
-      try {
-        const picks = await UserPick.findAll({ where: { game_id: gameId } });
-
-        for (const pick of picks) {
-          let pickResult = "LOSS";
-
-          // determine if pick was correct based on prediction type
-          if (pick.predictionType === "winner") {
-            // Winner pick
-            if (
-              (pick.prediction === result.favorite && result.favoriteScore > result.underdogScore) ||
-              (pick.prediction === result.underdog && result.underdogScore > result.favoriteScore)
-            ) {
-              pickResult = "WIN";
-            }
-          } else if (pick.predictionType === "spread" || pick.predictionType === "POINT SPREAD") {
-            // Spread pick
-            if (
-              (pick.prediction === result.favorite && result.coversSpread === "YES") ||
-              (pick.prediction === result.underdog && result.coversSpread === "NO") ||
-              (pick.prediction.includes(result.favorite) && result.coversSpread === "YES") ||
-              (pick.prediction.includes(result.underdog) && result.coversSpread === "NO")
-            ) {
-              pickResult = "WIN";
-            }
-          } else if (pick.predictionType === "total" || pick.predictionType === "OVER / UNDER") {
-            // Over/Under pick
-            if (
-              (pick.prediction === "OVER" && result.overUnder === "OVER") ||
-              (pick.prediction === "UNDER" && result.overUnder === "UNDER") ||
-              (pick.prediction.includes("OVER") && result.overUnder === "OVER") ||
-              (pick.prediction.includes("UNDER") && result.overUnder === "UNDER")
-            ) {
-              pickResult = "WIN";
-            }
-          }
-
-          // update pick result
-          pick.result = pickResult;
-          await pick.save();
-        }
-      } catch (error) {
-        console.error("Error updating user picks:", error);
-      }
-    }
-
-    // if game is final (over), update all user picks for this game
+    // if game is final, update all user picks for this game
     if (status === "FINAL") {
       await updateUserPicks(game_id, result);
     }
@@ -283,17 +217,58 @@ router.post("/", requireAuth, requireAdmin, async (req, res) => {
     return res.status(500).json({ message: "Server error" });
   }
 });
-// TEST
 
+// helper function to update user picks based on game result
+async function updateUserPicks(gameId, result) {
+  try {
+    const picks = await UserPick.findAll({ where: { game_id: gameId } });
 
+    for (const pick of picks) {
+      let pickResult = "LOSS";
+
+      // determine if pick was correct based on prediction type
+      if (pick.predictionType === "winner") {
+        // Winner pick
+        if (
+          (pick.prediction === result.favorite && result.favoriteScore > result.underdogScore) ||
+          (pick.prediction === result.underdog && result.underdogScore > result.favoriteScore)
+        ) {
+          pickResult = "WIN";
+        }
+      } else if (pick.predictionType === "spread" || pick.predictionType === "POINT SPREAD") {
+        // Spread pick
+        if (
+          (pick.prediction === result.favorite && result.coversSpread === "YES") ||
+          (pick.prediction === result.underdog && result.coversSpread === "NO") ||
+          (pick.prediction.includes(result.favorite) && result.coversSpread === "YES") ||
+          (pick.prediction.includes(result.underdog) && result.coversSpread === "NO")
+        ) {
+          pickResult = "WIN";
+        }
+      } else if (pick.predictionType === "total" || pick.predictionType === "OVER / UNDER") {
+        // Over/Under pick
+        if (
+          (pick.prediction === "OVER" && result.overUnder === "OVER") ||
+          (pick.prediction === "UNDER" && result.overUnder === "UNDER") ||
+          (pick.prediction.includes("OVER") && result.overUnder === "OVER") ||
+          (pick.prediction.includes("UNDER") && result.overUnder === "UNDER")
+        ) {
+          pickResult = "WIN";
+        }
+      }
+
+      // update pick result
+      pick.result = pickResult;
+      await pick.save();
+    }
+  } catch (error) {
+    console.error("Error updating user picks:", error);
+  }
+}
 
 // Delete a Game Result
 // DELETE /api/results/:gameId
 router.delete("/:gameId", requireAuth, requireAdmin, async (req, res) => {
-  // check if user is admin
-  // if (!req.user.isAdmin) {
-  //   return res.status(403).json({ message: "Forbidden" });
-  // }
   try {
     const { gameId } = req.params;
 
@@ -315,14 +290,6 @@ router.delete("/:gameId", requireAuth, requireAdmin, async (req, res) => {
     return res.status(500).json({ message: "Server error" });
   }
 });
-// WORKING
-
-
-// // simple test route
-// router.get("/test", (req, res) => {
-//   return res.json({ message: "Test route working" });
-// });
-
 
 
 module.exports = router;

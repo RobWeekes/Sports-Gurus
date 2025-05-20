@@ -131,7 +131,7 @@ router.get("/:userId/stats", requireAuth, async (req, res) => {
 router.put("/:userId/profile", requireAuth, async (req, res) => {
   const { userId } = req.params;
   const { aboutMe, sportIcon } = req.body;
-  console.log("Updating profile for user:", userId, { aboutMe, sportIcon });
+  // console.log("Updating profile for user:", userId, { aboutMe, sportIcon });
 
   // ensure user can only update their own profile
   if (req.user.id !== parseInt(userId)) {
