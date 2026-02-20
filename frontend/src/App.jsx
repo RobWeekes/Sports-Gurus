@@ -36,16 +36,19 @@ function App() {
     <BrowserRouter>
       <Navigation isLoaded={isLoaded} />
       <main className="container">
-        {isLoaded && (
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/profile/settings" element={<ProfileSettings />} />
-            <Route path="/games" element={<GamesDisplay />} />
-            <Route path="/results" element={<ResultsDisplay />} />
-            <Route path="/pickpages" element={<PickPagesDisplay />} />
-            <Route path="/pickpages/:pageId" element={<PickPageDetail />} />
-          </Routes>
-        )}
+        {/* {isLoaded && ( */}
+        (
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/profile/settings" element={<ProfileSettings />} />
+          <Route path="/games" element={<GamesDisplay />} />
+          <Route path="/results" element={<ResultsDisplay />} />
+          <Route path="/pickpages" element={<PickPagesDisplay />} />
+          <Route path="/pickpages/:pageId" element={<PickPageDetail />} />
+        </Routes>
+        )
+        {/* ) } */}
+
       </main>
       <Footer />
     </BrowserRouter>

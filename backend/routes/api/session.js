@@ -105,7 +105,9 @@ router.get("/", async (req, res) => {
     return res.json({
       user: safeUser
     });
-  } // else return res.json({ user: null });
+  } else {
+    return res.json({ user: null });
+  }
 })
 
 
