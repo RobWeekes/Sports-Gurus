@@ -10,6 +10,7 @@
   background-position: center;
   background-repeat: no-repeat;
   min-height: 400px;
+  max-height: 400px;
   /* Adjust the height as needed */
   display: flex;
   flex-direction: column;
@@ -23,12 +24,6 @@
   margin-bottom: var(--space-xl);
 }
 
-.hero-section h1 {
-  font-size: var(--font-xxl);
-  color: var(--primary-navy);
-  margin-bottom: var(--space-md);
-}
-
 .hero-section p {
   font-size: var(--font-large);
   color: var(--dark-gray);
@@ -37,14 +32,19 @@
 }
 
 h1 {
+  font-size: var(--font-xxl);
+  color: var(--primary-navy);
+  /* margin-bottom: var(--space-md); */
   text-align: left;
 }
 
 .cta-buttons {
   display: flex;
   justify-content: center;
-  gap: var(--space-md);
-  margin-top: var(--space-lg);
+  gap: var(--space-lg);
+  /* margin-top: var(--space-sm); */
+  /* margin-bottom: var(--space-sm); */
+  /* padding: var(--space-sm) 0; */
 }
 
 .cta-button {

@@ -37,7 +37,7 @@ function App() {
       <Navigation isLoaded={isLoaded} />
       <main className="container">
         {/* {isLoaded && ( */}
-        (
+
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/profile/settings" element={<ProfileSettings />} />
@@ -46,9 +46,8 @@ function App() {
           <Route path="/pickpages" element={<PickPagesDisplay />} />
           <Route path="/pickpages/:pageId" element={<PickPageDetail />} />
         </Routes>
-        )
-        {/* ) } */}
 
+        {/* ) } */}
       </main>
       <Footer />
     </BrowserRouter>

@@ -9,14 +9,14 @@ function HomePage() {
   return (
     <div className="home-page">
       <section className="hero-section">
-
-        {!sessionUser && (
-          <div className="cta-buttons">
-            <Link to="/games" className="cta-button primary">Browse Games</Link>
-            <Link to="/results" className="cta-button secondary">View Results</Link>
-          </div>
-        )}
       </section>
+
+      {!sessionUser && (
+        <div className="cta-buttons">
+          <Link to="/games" className="cta-button primary">Browse Games</Link>
+          <Link to="/results" className="cta-button secondary">View Results</Link>
+        </div>
+      )}
 
       <h1>Welcome to Sports Gurus</h1>
       <h2>Your ultimate platform for sports predictions and analysis</h2>
